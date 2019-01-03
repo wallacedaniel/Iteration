@@ -15,7 +15,6 @@ int iterate = 1;
   
 void draw(){
   
-  //Remove an previous styles
   noStroke();
   noFill();
   

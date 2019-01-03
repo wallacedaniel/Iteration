@@ -22,17 +22,16 @@ class Designer {
     
     // BRICK PATTERN
     if(design == "brick-pattern"){ 
-      float[] designBounds = new float [] {.05, .4, .05, .4};      
-      this.bounds = designBounds;
+      this.bounds = new float [] {.05, .4, .05, .4};
       this.square = false;
     }
     // CONCENTRIC 
     else if(design == "concentric"){ 
-      this.square = false;
+      this.background = true;
     }
      // CONCENTRIC PATTERN
     else if(design == "concentric-pattern"){ 
-      this.bounds = new float [] {.05, .25, .05, .25};                         //   <<<<<<< do it like this
+      this.bounds = new float [] {.05, .25, .05, .25};                   
       this.square = true;
       this.background = true;
     }
@@ -50,35 +49,29 @@ class Designer {
     }
      // SNOWFLAKES
     else if(design == "snowflakes"){ 
-      float[] designBounds = new float [] {.1, .33, .1, .33};
-      this.bounds = designBounds;
+      this.bounds = new float [] {.1, .33, .1, .33};
       this.square = true;
       this.background = true;
     }
     // STAINED GLASS
     else if(design == "stained-glass"){ 
-      float[] designBounds = new float [] {.1, .33, .1, .33};
-      this.bounds = designBounds;
+      this.bounds = new float [] {.1, .33, .1, .33};
       this.square = true;
     }
     // STARRY LANDSCAPE
     else if(design == "starry-landscape"){ 
-      float[] designBounds = new float [] {.1, .33, .1, .33};
-      this.bounds = designBounds;
-      this.square = true;
+      this.bounds = new float [] {.1, .25, .1, .25};
       this.background = true;
     } 
       // STARS
     else if(design == "stars"){ 
-      float[] designBounds = new float [] {.05, .25, .05, .25};
-      this.bounds = designBounds;
+      this.bounds = new float [] {.05, .25, .05, .25};
       this.square = true;
       this.background = true;
     }
       // STRIPED
     else if(design == "striped"){  
-      float[] designBounds = new float [] {.1, .33, .1, .33};
-      this.bounds = designBounds;
+      this.bounds = new float [] {.1, .33, .1, .33};
       this.square = false;
        
       // OPTIONS
@@ -143,7 +136,8 @@ class Designer {
       this.canvas = new Canvas();
     }
     else {
-      this.canvas = new Canvas(this.bounds, this.square); 
+      this.canvas = new Canvas(this.bounds, this.square);
+      
     }
     
   }      

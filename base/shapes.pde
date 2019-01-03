@@ -44,8 +44,8 @@ public PShape drawPolygon(float x, float y, float radius, int npoints) {
   
   polygon.beginShape();
   
-  polygon.stroke(125);
-  polygon.strokeWeight(5);
+  polygon.stroke(0);
+  polygon.strokeWeight(50);
   //polygon.fill(125);
   
   for (float a = 0; a < TWO_PI; a += angle) {
