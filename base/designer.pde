@@ -117,14 +117,12 @@ class Designer {
     } //<>//
         // TILED POLYGONS
     else if(design == "tiled-polygons"){ 
-      float[] designBounds = new float [] {.05, .25, .05, .25};
-      this.bounds = designBounds;
+      this.bounds = new float [] {.05, .25, .05, .25};
       this.square = true;
     }
       // TILED TRIANGLE PATTERN
     else if(design == "tiled-triangle-pattern"){ 
-      float[] designBounds = new float [] {.05, .25, .05, .25};
-      this.bounds = designBounds;
+      this.bounds = new float [] {.05, .25, .05, .25};
       this.square = true;
       this.background = true;
     }

@@ -1,14 +1,27 @@
 
-public PShape drawStar(float x, float y, float radius1, float radius2, int npoints) {
+public PShape drawStar(float x, float y, float radius1, float radius2, int npoints, color[] colors) {
   float angle = TWO_PI / npoints;
   float halfAngle = angle/2.0;
   
   PShape star = createShape();
+  
+
+  int strokePicker = int(random(2,11));
+   
+   
+  int paletteLocation = int(random(2,11));  
+  while(paletteLocation == strokePicker){                   //  contrast enforce / abs value <3 or 4 to avoid blurriness  > additional element layers
+   paletteLocation = int(random(2,11));                     // and or less contrast means smaller star    just a litte more star space   and or some rotation
+  }                                                           // no 4  stars
+  
+  color newFill = colors[paletteLocation];
+  
+
   star.beginShape();
   
-  star.stroke(125);
-  star.strokeWeight(25);
-  star.fill(75);
+  star.stroke(colors[strokePicker]);
+  star.strokeWeight(random(5 , 80));                       // relative vs hard coded ?
+  star.fill(newFill);
   
   for (float a = 0; a < TWO_PI; a += angle) {
     float sx = x + cos(a) * radius2;

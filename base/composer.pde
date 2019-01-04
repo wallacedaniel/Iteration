@@ -50,7 +50,12 @@ class Composer {
       int strokePicker = 0;
       
       
-      if(design.design == "brick-pattern") {strokeWeight(random((W + H/2) * .02,(W + H/2) * .2));}
+      if(design.design == "brick-pattern" || design.design == "tiled-triangle-pattern") {strokeWeight(random((W + H/2) * .02,(W + H/2) * .2));}
+      if(design.design == "harlequin") {
+        strokeWeight(random((W + H/2) * .02,(W + H/2) * .15));
+        strokePicker = int(random(2,design.palette.colors.length));
+        stroke(design.palette.colors[strokePicker]);
+      }
       if(design.design == "concentric-pattern"){newStroke = color(random(0,255), random(0,255), random(0,255));}
                                                                          
       // CELLS  AND SHAPES
@@ -76,7 +81,7 @@ class Composer {
 
          if(design.design == "brick-pattern") {
            
-            stroke(design.palette.colors[0]);
+            stroke(firstColor);
             paletteLocation = int(random(1,design.palette.colors.length));  
             newFill = design.palette.colors[paletteLocation];
             fill(newFill);
@@ -118,9 +123,15 @@ class Composer {
 
          // HARLEQUIN
          if(design.design == "harlequin"){
-
-           stroke(125);
-           strokeWeight(25);
+ 
+          //stroke(design.palette.colors[1]);                      // different stroke options in designer    - none  - colors in palette 1/last and/or all options then force alt fill
+          paletteLocation = int(random(2,design.palette.colors.length));  
+          while(paletteLocation == strokePicker){
+           paletteLocation = int(random(2,design.palette.colors.length));   
+          }
+          
+          newFill = design.palette.colors[paletteLocation];
+          fill(newFill);
            
            newCell = createShape(QUAD, x + W/2, y, x + W, y + H/2, x + W/2, y + H, x, y + H/2);
          }
@@ -132,7 +143,13 @@ class Composer {
         
          
          // STARS
-         if(design.design == "stars"){newCell = drawStar(x + W/2, y + H/2, W/2, W/4, int(random(4,12)));}
+         if(design.design == "stars"){
+           
+           
+         
+          
+          newCell = drawStar(x + W/2, y + H/2, W/2, W/4, int(random(4,12)), design.palette.colors);
+         }
 
 
 
@@ -153,27 +170,17 @@ class Composer {
          // TILED TRIANGLE PATTERN
          if(design.design == "tiled-triangle-pattern"){  
            
-           stroke(125);
-           strokeWeight(25);
-           
-           paletteLocation = int(random(2,design.palette.colors.length));
-           newFill = design.palette.colors[paletteLocation];
-           fill(newFill);
+           stroke(design.palette.colors[design.palette.colors.length-1]);                                                           // in designer  stroke options  2 0r last color?  - none (or other alts?
+           fill(design.palette.colors[2]);                                                                                          // Outer border enforce
            newCell = createShape(TRIANGLE, x + W/2, y + H/2, x + W/2, y, x, y);          
            newCells.add(newCell);
-           paletteLocation = int(random(2,design.palette.colors.length));
-            newFill = design.palette.colors[paletteLocation];
-            fill(newFill);
+           fill(design.palette.colors[4]);
            newCell = createShape(TRIANGLE, x + W/2, y + H/2,x + W, y + H/2, x + W, y);
            newCells.add(newCell);
-           paletteLocation = int(random(2,design.palette.colors.length));
-            newFill = design.palette.colors[paletteLocation];
-            fill(newFill);
+           fill(design.palette.colors[6]);
            newCell = createShape(TRIANGLE, x + W/2, y + H/2, x + W/2, y + H, x + W, y + H);
            newCells.add(newCell);
-           paletteLocation = int(random(2,design.palette.colors.length));
-            newFill = design.palette.colors[paletteLocation];
-            fill(newFill);
+           fill(design.palette.colors[8]);
            newCell = createShape(TRIANGLE, x + W/2, y + H/2, x, y + H/2, x, y + H);
            newCells.add(newCell);
          }
