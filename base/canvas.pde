@@ -79,12 +79,8 @@ class Canvas {
        coordinatesArray.add(newCoordinates);
        newCoordinates = new int[]{width/2,height/2};
        coordinatesArray.add(newCoordinates);// levels * + ?        
-       // newCoordinates[0] = x;
-       // newCoordinates[1] = y;
-        
        coordinatesArray.add(newCoordinates);  
        this.coordinates = coordinatesArray; 
-       println(this.coordinates);
    }
   
   

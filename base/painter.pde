@@ -33,6 +33,7 @@ class Painter {
         for(PShape[] shape : layer){
           for(int i=0;i<shape.length;i++){
             shape(shape[i]);
+
           }  
         }
       }

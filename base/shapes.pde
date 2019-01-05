@@ -1,24 +1,20 @@
 
+// STAR SHAPE
+
 public PShape drawStar(float x, float y, float radius1, float radius2, int npoints, color[] colors) {
   float angle = TWO_PI / npoints;
   float halfAngle = angle/2.0;
   
   PShape star = createShape();
   
-
   int strokePicker = int(random(2,11));
-   
-   
   int paletteLocation = int(random(2,11));  
   while(paletteLocation == strokePicker){                   //  contrast enforce / abs value <3 or 4 to avoid blurriness  > additional element layers
    paletteLocation = int(random(2,11));                     // and or less contrast means smaller star    just a litte more star space   and or some rotation
   }                                                           // no 4  stars
-  
   color newFill = colors[paletteLocation];
   
-
-  star.beginShape();
-  
+  star.beginShape(); 
   star.stroke(colors[strokePicker]);
   star.strokeWeight(random(5 , 80));                       // relative vs hard coded ?
   star.fill(newFill);
@@ -35,31 +31,31 @@ public PShape drawStar(float x, float y, float radius1, float radius2, int npoin
   return star;
 }
 
-
 // Draws concentric stepped polygons with variables sides, with stepped gray values and opacity
-public PShape[] drawPolyTarget(float xloc, float yloc, int size, int polySides, int numSteps) {
+public PShape[] drawPolyTarget(float xloc, float yloc, int size, int polySides, int numSteps, color[] colors) {
   float alphaValues = 255/numSteps;
   float steps = size/numSteps;
+  int strokePicker = 1;
   PShape[] polyTarget = new PShape[numSteps];
   for (int i = 0; i < numSteps; i++) {
-    fill(245, i * alphaValues * .2);
+    
+    stroke(colors[strokePicker]);                        // tying to color picker really** limits qty of layers to 10
+    fill(245, i * alphaValues * .2);    //  fill transfered ??? to shape ?
     PShape poly = drawPolygon(xloc, yloc, size - i*steps, polySides);
     polyTarget[i] = poly;
+    strokePicker += 1;                                // get the color of this square < if same as strokePicker   strokePicker +=1
   }
   noFill();
   return polyTarget;
 }
 
-// Draws polygons with variables sides
+// Draws polygons with variables sides  
 public PShape drawPolygon(float x, float y, float radius, int npoints) {
   float angle = TWO_PI / npoints;
   PShape polygon = createShape();
   
-  polygon.beginShape();
-  
-  polygon.stroke(0);
-  polygon.strokeWeight(50);
-  //polygon.fill(125);
+  polygon.beginShape();  
+  polygon.strokeWeight(random(10,15));                                  // stroke as a % of  H / W           Smaller size in cell
   
   for (float a = 0; a < TWO_PI; a += angle) {
     float sx = x + cos(a) * radius;
@@ -130,24 +126,27 @@ void drawRadial(float diameter, int divisor, int angle, int x, int y, color elem
 } 
 
 
-
-
-
+*/
 
 
 
 
 // RADIALS
-void drawRadial(float diameter, int divisor, int angle, int x, int y, color elementColor, color elementColor2) {
+public PShape drawRadial(float diameter, int divisor, int angle, int x, int y, color[] colors) {
   float lastAngle = 0;
-  color[] radialSteps = getLerps(elementColor, elementColor2);
-  int index = int(random(0, radialSteps.length));
+  
+  int index = int(random(0, colors.length));
 
   Boolean check = true;
   int step = 3;
-
+  //PShape radial = createShape(ARC, x, y, 10, 10, 10, 10, 10);
+  PShape radial = createShape();
+  PShape radialGroup = createShape(GROUP);
+  
+  //PShape[] radialGroup = new PShape[divisor];
+  
   for (int i = 0; i < divisor; i++) {
-    if (index + step < radialSteps.length && check == true) {
+    if (index + step < colors.length && check == true) {
       index = index + step;
       check = true;
     } else if (index - step >= 0) {
@@ -158,16 +157,40 @@ void drawRadial(float diameter, int divisor, int angle, int x, int y, color elem
         check = true;
       }
     }
-    color radialColor = radialSteps[index];   
-    arc(x, y, diameter, diameter, lastAngle, lastAngle + radians(angle));
+    color radialColor = colors[index];
+    fill(radialColor);
+    radial = createShape(ARC, x, y, diameter, diameter, lastAngle, lastAngle + radians(angle));
+    radialGroup.addChild(radial);
     lastAngle += radians(angle);
   }
-   noFill();
+  noFill();
+  return radialGroup;
 } 
+
+
+
+
+
+/*
+
+ group = createShape(GROUP);
+  
+  // Make three shapes
+  PShape path = createShape();
+  path.beginShape();
+  path.vertex(-20, -20);
+  path.vertex(0, -40);
+  path.vertex(20, -20);
+  path.endShape();
+  PShape rectangle = createShape(RECT, -20, -20, 40, 40);
+  PShape circle = createShape(ELLIPSE, 0, 0, 20, 20);
+  
+  // Add all three as children
+  group.addChild(path);
+  group.addChild(rectangle);
+  group.addChild(circle);
+
 */
-
-
-
 
 
 
@@ -214,23 +237,6 @@ void drawTarget(float xloc, float yloc, int size, int numSteps) {
   }
   noFill();
 }
-
-
-
-// RADIALS
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
