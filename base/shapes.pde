@@ -1,37 +1,6 @@
 
-// STAR SHAPE
+// POLY TARGET
 
-public PShape drawStar(float x, float y, float radius1, float radius2, int npoints, color[] colors) {
-  float angle = TWO_PI / npoints;
-  float halfAngle = angle/2.0;
-  
-  PShape star = createShape();
-  
-  int strokePicker = int(random(2,11));
-  int paletteLocation = int(random(2,11));  
-  while(paletteLocation == strokePicker){                   //  contrast enforce / abs value <3 or 4 to avoid blurriness  > additional element layers
-   paletteLocation = int(random(2,11));                     // and or less contrast means smaller star    just a litte more star space   and or some rotation
-  }                                                           // no 4  stars
-  color newFill = colors[paletteLocation];
-  
-  star.beginShape(); 
-  star.stroke(colors[strokePicker]);
-  star.strokeWeight(random(5 , 80));                       // relative vs hard coded ?
-  star.fill(newFill);
-  
-  for (float a = 0; a < TWO_PI; a += angle) {
-    float sx = x + cos(a) * radius2;
-    float sy = y + sin(a) * radius2;
-    star.vertex(sx, sy);
-    sx = x + cos(a+halfAngle) * radius1;
-    sy = y + sin(a+halfAngle) * radius1;
-    star.vertex(sx, sy);
-  }
-  star.endShape(CLOSE);
-  return star;
-}
-
-// Draws concentric stepped polygons with variables sides, with stepped gray values and opacity
 public PShape[] drawPolyTarget(float xloc, float yloc, int size, int polySides, int numSteps, color[] colors) {
   float alphaValues = 255/numSteps;
   float steps = size/numSteps;
@@ -66,84 +35,15 @@ public PShape drawPolygon(float x, float y, float radius, int npoints) {
   return polygon;
 }
 
-
-public PShape drawPolar(int locX, int locY, float r, int divisor ) {
-  //translate(width/2, height/2);
-  translate(locX, locY);
-  PShape polar = createShape();
-  //r = 1000;
-  float x = 0;
-  float y = 0;
-  //float angle = TWO_PI / 12;
-  float angle = TWO_PI / divisor;
-  
-  //int ellipseSize = 350;
-  polar.beginShape();
-  for (float a = 0; a < TWO_PI * 6; a += angle) {  
-    float sx = x + cos(a) * r;
-    float sy = y + sin(a) * r;
-    line(0, 0, sx, sy);
-    //ellipse(sx, sy, ellipseSize, ellipseSize);  
-    //r += 100;
-  }
-  polar.endShape();
-  return polar;
-}
-
-
-/*
-
-// RADIALS
-void drawRadial(float diameter, int divisor, int angle, int x, int y, color elementColor, color elementColor2) {
-  float lastAngle = 0;
-  color[] radialSteps = getLerps(elementColor, elementColor2);
-  int index = int(random(0, radialSteps.length));
-
-  Boolean check = true;
-  int step = 3;
-
-  for (int i = 0; i < divisor; i++) {
-    if (index + step < radialSteps.length && check == true) {
-      index = index + step;
-      check = true;
-    } else if (index - step >= 0) {
-      index = index - step;
-      if (index - step >= 0) {
-        check = false;
-      } else {
-        check = true;
-      }
-    }
-    color radialColor = radialSteps[index];   
-    stroke(125);
-    strokeWeight(25);
-    noFill();
-    PShape radial = createShape(ARC, x, y, diameter, diameter, lastAngle, lastAngle + radians(angle));
-    shape(radial);
-    lastAngle += radians(angle);
-  }
-   noFill();
-} 
-
-
-*/
-
-
-
-
 // RADIALS
 public PShape drawRadial(float diameter, int divisor, int angle, int x, int y, color[] colors) {
-  float lastAngle = 0;
   
+  float lastAngle = 0;
   int index = int(random(0, colors.length));
-
   Boolean check = true;
   int step = 3;
-  //PShape radial = createShape(ARC, x, y, 10, 10, 10, 10, 10);
   PShape radial = createShape();
   PShape radialGroup = createShape(GROUP);
-  
-  //PShape[] radialGroup = new PShape[divisor];
   
   for (int i = 0; i < divisor; i++) {
     if (index + step < colors.length && check == true) {
@@ -167,42 +67,6 @@ public PShape drawRadial(float diameter, int divisor, int angle, int x, int y, c
   return radialGroup;
 } 
 
-
-
-
-
-/*
-
- group = createShape(GROUP);
-  
-  // Make three shapes
-  PShape path = createShape();
-  path.beginShape();
-  path.vertex(-20, -20);
-  path.vertex(0, -40);
-  path.vertex(20, -20);
-  path.endShape();
-  PShape rectangle = createShape(RECT, -20, -20, 40, 40);
-  PShape circle = createShape(ELLIPSE, 0, 0, 20, 20);
-  
-  // Add all three as children
-  group.addChild(path);
-  group.addChild(rectangle);
-  group.addChild(circle);
-
-*/
-
-
-
-
-
-
-
-
-
-
-
-
 // Returns a list of angle / divisor pairs - constrained to usable values 
 IntList[] radialOptions(int innerBound, int outerBound) { 
 
@@ -222,7 +86,59 @@ IntList[] radialOptions(int innerBound, int outerBound) {
   return radials;
 }
 
+// STARS
 
+public PShape drawStar(float x, float y, float radius1, float radius2, int npoints, color[] colors) {
+  
+  float angle = TWO_PI / npoints;
+  float halfAngle = angle/2.0; 
+  PShape star = createShape();  
+  int strokePicker = int(random(2,11));
+  int paletteLocation = int(random(2,11)); 
+  
+  while(paletteLocation == strokePicker){                   //  contrast enforce / abs value <3 or 4 to avoid blurriness  > additional element layers
+   paletteLocation = int(random(2,11));                     // and or less contrast means smaller star    just a litte more star space   and or some rotation
+  }                                                           // no 4  stars
+  color newFill = colors[paletteLocation];
+  
+  star.beginShape(); 
+  star.stroke(colors[strokePicker]);
+  star.strokeWeight(random(5 , 30));                       // relative vs hard coded ?
+  star.fill(newFill);
+  
+  for (float a = 0; a < TWO_PI; a += angle) {
+    float sx = x + cos(a) * radius2;
+    float sy = y + sin(a) * radius2;
+    star.vertex(sx, sy);
+    sx = x + cos(a+halfAngle) * radius1;
+    sy = y + sin(a+halfAngle) * radius1;
+    star.vertex(sx, sy);
+  }
+  star.endShape(CLOSE);
+  return star;
+}
+
+
+
+public PShape drawRose(float d, float n) {
+  
+  float k = n / d;
+  //translate(x, y);
+  
+  PShape rose = createShape();
+  rose.beginShape();
+  rose.stroke(0);
+  rose.strokeWeight(20);
+  
+  for (float a = 0; a < TWO_PI * d; a += 0.02) {
+    float r = 800 * cos(k * a);
+    float x = r * cos(a);
+    float y = r * sin(a);
+    rose.vertex(x, y);
+  }
+  rose.endShape(CLOSE);
+  return rose;
+}
 
 
 /*
@@ -237,9 +153,6 @@ void drawTarget(float xloc, float yloc, int size, int numSteps) {
   }
   noFill();
 }
-
-
-
 
 // CIRCLES
 class Circle{
@@ -314,6 +227,27 @@ class Circle{
 
 
 
-
-
 */
+
+
+void setGradient(int x, int y, float w, float h, color c1, color c2, String axis ) {
+
+  noFill();
+
+  if (axis == "Y") {  // Top to bottom gradient
+    for (int i = y; i <= y+h; i++) {
+      float inter = map(i, y, y+h, 0, 1);
+      color c = lerpColor(c1, c2, inter);
+      stroke(c);
+      line(x, i, x+w, i);
+    }
+  }  
+  else if (axis == "X") {  // Left to right gradient
+    for (int i = x; i <= x+w; i++) {
+      float inter = map(i, x, x+w, 0, 1);
+      color c = lerpColor(c1, c2, inter);
+      stroke(c);
+      line(i, y, i, y+h);
+    }
+  }
+}

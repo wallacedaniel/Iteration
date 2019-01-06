@@ -1,14 +1,12 @@
-//Puts together the shapes strokes colors based on designer and canvas - creates objects for painter        composer radial concentric polys glass
+//Puts together the shapes strokes colors based on designer and canvas - creates objects for painter        composer glass lanscape polar
 
 class Composer {
   
   PShape background;
-  
   ArrayList<PShape> cells; 
   ArrayList<PShape> rows;
   ArrayList<PShape> columns;
-  
-  ArrayList<ArrayList<PShape[]>> elements;                                                 // Simplify via Shape Groups
+  ArrayList<ArrayList<PShape[]>> elements;                                                 // Simplify via Shape Groups??
   
   Composer(Designer design){ 
        
@@ -16,16 +14,11 @@ class Composer {
   color lastColor = design.palette.colors[design.palette.colors.length-1];
   int paletteLocation; 
   int locHolder = 0;
-  
   ArrayList<PShape> newCells =  new ArrayList<PShape>();
-  
   ArrayList<ArrayList<PShape[]>> newElements =  new ArrayList<ArrayList<PShape[]>>();              
   ArrayList<PShape[]> layer =  new ArrayList<PShape[]>();
-  
   int H = design.canvas.H;
   int W = design.canvas.W;
-  
-  //String [] collection = new String [] {, "stained-glass", "striped", "snowflakes"};
  
     // BACKGROUND  
     if(design.background == true){  
@@ -33,34 +26,37 @@ class Composer {
       PShape newBackground = createShape(RECT, 0, 0, width, height);
       this.background = newBackground;
     }
+    
+      int randomQty = 0;
+      if(design.design == "starry-landscape"){randomQty = int(random(40,80));}
 
-    // canvas.type == "pattern"
+    // canvas.type == "grid"
     if(design.design == "harlequin" || design.design == "brick-pattern" || design.design == "tiled-triangle-pattern" || design.design == "tiled-polygons"  || design.design == "stained-glass"  || 
-        design.design == "snowflakes"  || design.design == "concentric-pattern" || design.design == "stars"){
+        design.design == "snowflakes"  || design.design == "concentric-pattern" || design.design == "stars" ||  design.design ==  "rose"){
           
       PShape newCell = createShape(RECT, 0, 0, width, height); // cells will never be null >>> what happens in painter if this paints? does it have no fill..so nothing?
-      PShape[] newShape = new PShape[design.canvas.coordinates.size()];     
-          
+      PShape[] newShape = new PShape[design.canvas.coordinates.size()];           
       int innerCount = 0;
-      int outerCount = 0;
-      
+      int outerCount = 0;   
       color newFill;
       color newStroke = 0;
-      int strokePicker = 0;
-            
+      int strokePicker = 0; 
+      //int coordSize = design.canvas.coordinates.size();
+      //int x;
+      //int y;
+      
       if(design.design == "brick-pattern" || design.design == "tiled-triangle-pattern") {strokeWeight(random((W + H/2) * .02,(W + H/2) * .2));}
       if(design.design == "harlequin") {
         strokeWeight(random((W + H/2) * .02,(W + H/2) * .15));
         strokePicker = int(random(2,design.palette.colors.length));
-        stroke(design.palette.colors[strokePicker]);
+        stroke(design.palette.colors[strokePicker]);   
       }
       if(design.design == "concentric-pattern"){newStroke = color(random(0,255), random(0,255), random(0,255));}
-                                                                         
-      // CELLS  AND SHAPES
+            
+     // CELLS  AND SHAPES
       for (int y = 0; y <= height; y += H) {
        for (int x = 0; x <= width; x += W) {
          
-         // palette filter >  - stripes finished - cells not
          paletteLocation = int(random(2,design.palette.colors.length));
          while(abs(paletteLocation - locHolder) < 2){
            paletteLocation = int(random(2,design.palette.colors.length));   
@@ -73,34 +69,31 @@ class Composer {
          
          //by canvas center coordinates Instead?   for coord : canvas.coordinates ??         <<<< can add concentrics and randoms into main loop
          
-         //  BRICKS    
-         
-         // Alt Rows
-
+         //  BRICKS 
          if(design.design == "brick-pattern") {
            
             stroke(firstColor);
             paletteLocation = int(random(1,design.palette.colors.length));  
             newFill = design.palette.colors[paletteLocation];
             fill(newFill);
-           
+            // alternating rows pattern
             if(outerCount % 2 == 0){newCell = createShape(RECT, x, y, W, H);}
             if(outerCount % 2 != 0){newCell = createShape(RECT, x - W/2, y, W, H);}
          }
             
-         /*  
-         Explore new styles
-         
-         // Alt Check Boards
-         if(design.design == "brick-pattern" &&  innerCount % 2 == 0){            
-            newCell = createShape(RECT, x, y, W, H);
+          // wtf innerCount > outerCount
+         if(design.design == "rose"){
+           if(innerCount % 2 == 0){
+             float d = 8;
+             float n = 5;
+             newCell = drawRose(d, n);
+             //newCell = drawStar(x + W/2, y + H/2, W/2, W/4, int(random(5,12)), design.palette.colors);
+           }
+            else{
+             newCell = createShape(RECT, x, y, W, H);
+           }
          }
-         if(design.design == "brick-pattern" &&  innerCount % 2 != 0){
-            newCell = createShape(RECT, x, y, W, H);
-         }
-         
-         // Concentric-pattern With fill >> scale style         
-         */
+
          //
          if(design.design == "concentric-pattern"){
           noFill();
@@ -117,7 +110,7 @@ class Composer {
 
          // HARLEQUIN
          if(design.design == "harlequin"){
- 
+                                                                    // better contrast enforcement
           //stroke(design.palette.colors[1]);                      // different stroke options in designer    - none  - colors in palette 1/last and/or all options then force alt fill
           paletteLocation = int(random(2,design.palette.colors.length));  
           while(paletteLocation == strokePicker){
@@ -127,38 +120,65 @@ class Composer {
           newFill = design.palette.colors[paletteLocation];
           fill(newFill);
            
-           newCell = createShape(QUAD, x + W/2, y, x + W, y + H/2, x + W/2, y + H, x, y + H/2);
-         }
+            newCell = createShape(QUAD, x + W/2, y, x + W, y + H/2, x + W/2, y + H, x, y + H/2);
+          }
          
           // STAINED GLASS
          if(design.design == "stained-glass"){
            
+           paletteLocation = int(random(0,design.palette.colors.length-2));
+           while(abs(paletteLocation - locHolder) < 2){
+             paletteLocation = int(random(1,design.palette.colors.length-2));   
+           }  
+           locHolder = paletteLocation;
+           fill(design.palette.colors[paletteLocation]);        
            
-           
-           
-           /*
-           ellipse(w + canvas.W/2, h + canvas.H/2, canvas.W/1.25, canvas.H/1.25);
-           
-           ellipse(w + canvas.W/2, h + canvas.H/2, canvas.W/4, canvas.H/4);
-           
-           quad(w, (h - canvas.H/2) + (canvas.H * .75), centerVertexX - (canvas.W * .75), centerVertexY - canvas.H/2, w, h + canvas.H/2 - (canvas.H * .75) , w - canvas.W/2 + (canvas.W * .75),  h );
-
-           ellipse(w, h, canvas.W/5, canvas.H/5);
-           */
-           
+           stroke(60);
+           strokeWeight(20);
            
            newCell =  createShape(RECT, x, y, W, H);
-           /*
-           // Gathers possible radials 
+
+           PShape shapeGroup = createShape(GROUP);
+             //if not = to stroke
+           fill(design.palette.colors[paletteLocation+2]);
+           strokeWeight(15);
+           PShape outerEllipse = createShape(ELLIPSE,x + W/2, y + H/2, W/1.25, H/1.25);
+           shapeGroup.addChild(outerEllipse);
+           
+          // Gathers possible radials 
           IntList[] radials = radialOptions(18, 40);
           // Picks radial options
           int randomIndex = int(random(0,radials[0].maxIndex()));
           int divisor = radials[0].get(randomIndex);
           int angle = radials[1].get(randomIndex);
     
-           newShape[innerCount] = drawRadial(W/2, divisor, angle, x + W/2,  y + H/2, design.palette.colors);
-           layer.add(newShape);  
-           */
+          PShape radial = drawRadial(W/2, divisor, angle, x + W/2,  y + H/2, design.palette.colors);
+          shapeGroup.addChild(radial);
+             
+           fill(firstColor); 
+           strokeWeight(10);                                                                              // should include smaller size cells
+           PShape innerEllipse = createShape(ELLIPSE,x + W/2, y + H/2, W/4, H/4);                        // Theres a ton of variety available here with alternating circles /diamonds neg space w/ noc cells  w /background etc.
+           shapeGroup.addChild(innerEllipse);
+           fill(firstColor);  
+          strokeWeight(20);
+          PShape cornerQuad = createShape(QUAD,x, (y - H/2) + (H * .75), x + W/2 - (W * .75), y + H/2 - H/2, x, y + H/2 - (H * .75) , x - W/2 + (W * .75),  y );    //   even if right  weird and wrong   y + H/2 - H/2
+          shapeGroup.addChild(cornerQuad);                               // top element
+          fill(design.palette.colors[design.palette.colors.length-2]);  
+          strokeWeight(15);
+           PShape cornerEllipse  = createShape(ELLIPSE,x, y, W/5, H/5);  // bottom element
+           shapeGroup.addChild(cornerEllipse);
+           
+           newShape[innerCount] = shapeGroup;
+           layer.add(newShape);        
+         }
+         
+         // SNOWFLAKES
+          
+         if(design.design == "snowflakes"){ 
+          strokeWeight(20);
+          Polar newPolar = new Polar(x + W/2, y + H/2, W/2, design.palette.colors);
+          newPolar.drawPolar();
+          
          }
     
          // STARS
@@ -299,26 +319,29 @@ class Composer {
     }
  
     if(design.design == "starry-landscape"){
+        
+        String axis = "Y";
+        setGradient(0, 0, width, height, lastColor, firstColor, axis);
+       /*
+        PShape[] newShape = new PShape[1];
+        
+        int layers = 1;
+        float horizonHigh = .2;
+        float horizonLow = .6;
       
-      int layers = 5;
-      float horizonHigh = .2;
-      float horizonLow = .6;
-      int colorCount = 1;
-      
-      stroke(0);
-      strokeWeight(50);
-      
-      while(layers > 0){
-        int curveY = int(random(height * horizonHigh, height * horizonLow));
-        int endY = curveY;
-        int endX = 0;
-        /*
-        smooth();
+        while(layers > 0){
+          int curveY = int(random(height * horizonHigh, height * horizonLow));
+          int endY = curveY;
+          int endX = 0;
+        
         PShape horizon = createShape();
-        horizon.beginShape();    
+        horizon.beginShape();
+        horizon.fill(200);
+        horizon.stroke(0);
+        horizon.strokeWeight(50);
         horizon.curveVertex(0, curveY); 
-        for (int i = 0; i <= width; i += design.canvas.W) {
-          fill(125);
+        
+        for (int i = 0; i <= width; i += design.canvas.W) {   
           horizon.curveVertex(i, curveY);
         
           if (i != width){          
@@ -329,18 +352,128 @@ class Composer {
           } 
         }
         horizon.curveVertex(endX, curveY);  
-        horizon.vertex(width, height);
-        horizon.vertex(0, height);
-        horizon.vertex(0, endY);
         horizon.endShape();
-        shape(horizon);
-        */
         
-        smooth();
-        beginShape();    
+        newShape[0] = horizon; 
+              
+        int x1 = 100;
+        int pair1 = 150;
+        int x2 = 140;
+        int pair2 = 190;
+        int x3 = 175;
+        int pair3 = 225;
+      
+        PShape pairs = createShape();
+        pairs.beginShape();
+        pairs.stroke(0);
+        pairs.strokeWeight(10);
+        pairs.vertex(x1, 300);
+        pairs.bezierVertex(100, 200, 200, 200, pair1, 300);
+        pairs.vertex(x2, 300);
+        pairs.bezierVertex(100, 200, 200, 200, pair2, 300);
+        pairs.vertex(x3, 300);
+        pairs.bezierVertex(100, 200, 200, 200, pair3, 300);
+        pairs.endShape();
+        newShape[0] = pairs; 
+      
+        int x1 = 100;
+        int pair1 = 150;
+        int x2 = 140;
+        int pair2 = 190;
+        int x3 = 175;
+        int pair3 = 225;
+        
+        PShape parent = createShape(GROUP);
+        parent.beginShape();
+        PShape child = createShape();
+        child.beginShape();
+        child.strokeWeight(10);
+        child.stroke(0);
+        child.vertex(x1, 450);
+        child.bezierVertex(100, 350, 200, 350, pair1, 450);
+        child.endShape();
+        parent.addChild(child);
+         
+        child = createShape();
+        child.beginShape();
+        child.strokeWeight(10);
+        child.stroke(0);
+        child.vertex(x2, 450);
+        child.bezierVertex(100, 350, 200, 350, pair2, 450);
+        child.endShape();
+        parent.addChild(child);
+         
+        child = createShape();
+        child.beginShape();
+        child.strokeWeight(10);
+        child.stroke(0);
+        child.vertex(x3, 450);
+        child.bezierVertex(100, 350, 200, 350, pair3, 450);
+        child.endShape();
+        parent.addChild(child);
+         
+        shape(parent);
+        
+         */
+        //layer.add(newShape);
+        //shape(pairs);
+        //newElements.add(layer); 
+        //this.elements = newElements;
+        
+        
+        
+        
+        
+        
+        
+        
+        /*
+         // Gathers possible radials 
+        IntList[] radials = radialOptions(18, 40);
+        
+        // Picks radial options
+        int randomIndex = int(random(0,radials[0].maxIndex()));
+        int divisor = radials[0].get(randomIndex);
+        int angle = radials[1].get(randomIndex);
+               
+         int x = design.canvas.coordinates.get(0)[0];
+         int y = design.canvas.coordinates.get(0)[1];
+         
+         PShape[] newShape = new PShape[1];       
+         newShape[0] = drawRadial(width*3, divisor, angle, int(random(-600, width/1.1)), int(random(-400, height/1.1)), design.palette.colors);
+         
+         shape(newShape[0]);
+         
+         */
+        
+      PShape newStar = new PShape(); 
+      for (int i = 0; i < randomQty; i++){
+           newStar = drawStar(random(0, width), random(0, height/2), random(75,55), random(40,20), int(random(5,12)), design.palette.colors);
+           shape(newStar);                                                                               
+       } 
+   
+      int layers = 5;
+      float horizonHigh = .2;
+      float horizonLow = .6;
+      int strokeWeight = 20;
+      
+      while(layers > 0){
+        int curveY = int(random(height * horizonHigh, height * horizonLow));
+        int endY = curveY;
+        int endX = 0;
+    
+       smooth();
+        //PShape horizon = createShape();
+        //PShape land = createShape();
+        //PShape landscape = createShape(GROUP);
+
+        beginShape();
+        fill(design.palette.colors[2 * layers]);
+        stroke(design.palette.colors[2 * layers - 1]);
+        strokeWeight(strokeWeight);
         curveVertex(0, curveY); 
-        for (int i = 0; i <= width; i += design.canvas.W) {
-          fill(125);
+        
+        for (int i = 0; i <= width; i += design.canvas.W) {   
           curveVertex(i, curveY);
         
           if (i != width){          
@@ -355,11 +488,12 @@ class Composer {
         vertex(0, height);
         vertex(0, endY);
         endShape();
-    
-        colorCount += 1;      
+        
         horizonHigh += .16;
         horizonLow += .1;
-        layers--;         
+        strokeWeight += 15;
+        
+        layers--; 
       }
     }
   }

@@ -3,9 +3,6 @@ class Painter {
   
   Painter(Designer design, Composer composition){
     
-    //background(design.palette.colors[0]);
-    //background(0);
-   
     if((design.background == true)){ 
         shape(composition.background);
     } 
@@ -33,11 +30,9 @@ class Painter {
         for(PShape[] shape : layer){
           for(int i=0;i<shape.length;i++){
             shape(shape[i]);
-
           }  
         }
       }
     }
-
   } 
 }

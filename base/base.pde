@@ -1,4 +1,4 @@
-// Re integrate all design into clean oop     -D Front End          Random Canvas     Divided Points    Landscape   <<<BoundsOver  Rose  Supershape1       remove all objects   multi canvas?
+// Re integrate all design into clean oop     -D Front End   Random Canvas     Divided Points    Landscape   <<<BoundsOver  Rose  Supershape1   remove all objects   multi canvas?  -neg image >>>  // Concentric-pattern With fill >> scale style 
 // Add significant new design elements
 // finalize py script in
 // Mult download sizes
@@ -24,12 +24,8 @@ void draw(){
   Designer design = new Designer(iteration.design);
   Composer composition = new Composer(design);
   Painter painter = new Painter(design, composition);
- 
+
   iteration.saveTitle(folder, iterate); 
   iterate += 1;
-  
-  
- 
-  
   
 }

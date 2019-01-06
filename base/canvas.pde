@@ -40,13 +40,8 @@ class Canvas {
     this.coordinates = coordinatesArray;
   }
   
-  //   ALT CANVASES
-  
-
    // random point between where and where - [4]xMin xMax yMin yMax
    Canvas(float[] coordBounds, int qty){
-     
-      
      
      ArrayList<int[]> coordinatesArray = new ArrayList<int[]>();
      
@@ -54,16 +49,12 @@ class Canvas {
        int[] newCoordinates = new int[2];
        int x = int(random(coordBounds[0],coordBounds[1]+1));
        int y = int(random(coordBounds[2],coordBounds[3]+1));
-       
-       
-       
         newCoordinates[0] = x;
         newCoordinates[1] = y;
         coordinatesArray.add(newCoordinates);
      }
      this.coordinates = coordinatesArray;
    }
-   
    
    Canvas(){
        
@@ -79,11 +70,9 @@ class Canvas {
        coordinatesArray.add(newCoordinates);
        newCoordinates = new int[]{width/2,height/2};
        coordinatesArray.add(newCoordinates);// levels * + ?        
-       coordinatesArray.add(newCoordinates);  
        this.coordinates = coordinatesArray; 
    }
-  
-  
+   
 // returns two IntList[]'s of all evenly divisible Widths and Heights for Canvas - constrained by Upper and Lower Bounds
   IntList[] createGrids(float innerWBound, float outerWBound, float innerHBound, float outerHBound) {
     IntList[] canvasD = new IntList[2];

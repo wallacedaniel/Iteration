@@ -47,21 +47,27 @@ class Designer {
       this.background = true;
       randomQty = 1;
     }
+     // ROSE
+    else if(design == "rose"){ 
+      this.bounds = new float [] {.05, .33, .05, .33};
+      this.square = true;
+      this.background = true;
+    }
      // SNOWFLAKES
     else if(design == "snowflakes"){ 
       this.bounds = new float [] {.1, .33, .1, .33};
       this.square = true;
-      this.background = true;
+      this.background = false;
     }
     // STAINED GLASS
     else if(design == "stained-glass"){ 
-      this.bounds = new float [] {.1, .33, .1, .33};
+      this.bounds = new float [] {.05, .33, .05, .33};
       this.square = true;
     }
     // STARRY LANDSCAPE
     else if(design == "starry-landscape"){ 
       this.bounds = new float [] {.1, .25, .1, .25};
-      this.background = true;
+      this.background = false;
     } 
       // STARS
     else if(design == "stars"){ 
@@ -127,6 +133,8 @@ class Designer {
       this.background = true;
     }
     
+    // CREATE CANVAS OBJECTS
+    
     if(design == "radial-starburst"){
       this.canvas = new Canvas(this.bounds, randomQty);
     }
@@ -135,8 +143,6 @@ class Designer {
     }
     else {
       this.canvas = new Canvas(this.bounds, this.square);
-      
     }
-    
   }      
 }
