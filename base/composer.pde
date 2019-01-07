@@ -1,4 +1,4 @@
-//Puts together the shapes strokes colors based on designer and canvas - creates objects for painter        composer glass lanscape polar
+//Puts together the shapes strokes colors based on designer and canvas - creates objects for painter -               striped pass  -  scales pass  - painter sort   -  superShape   
 
 class Composer {
   
@@ -34,7 +34,7 @@ class Composer {
     if(design.design == "harlequin" || design.design == "brick-pattern" || design.design == "tiled-triangle-pattern" || design.design == "tiled-polygons"  || design.design == "stained-glass"  || 
         design.design == "snowflakes"  || design.design == "concentric-pattern" || design.design == "stars" ||  design.design ==  "rose"){
           
-      PShape newCell = createShape(RECT, 0, 0, width, height); // cells will never be null >>> what happens in painter if this paints? does it have no fill..so nothing?
+      PShape newCell = createShape(RECT, 0, 0, width, height); 
       PShape[] newShape = new PShape[design.canvas.coordinates.size()];           
       int innerCount = 0;
       int outerCount = 0;   
@@ -45,7 +45,7 @@ class Composer {
       //int x;
       //int y;
       
-      if(design.design == "brick-pattern" || design.design == "tiled-triangle-pattern") {strokeWeight(random((W + H/2) * .02,(W + H/2) * .2));}
+      if(design.design == "brick-pattern" || design.design == "tiled-triangle-pattern") {strokeWeight(random((W + H/2) * .01,(W + H/2) * .2));}
       if(design.design == "harlequin") {
         strokeWeight(random((W + H/2) * .02,(W + H/2) * .15));
         strokePicker = int(random(2,design.palette.colors.length));
@@ -80,6 +80,17 @@ class Composer {
             if(outerCount % 2 == 0){newCell = createShape(RECT, x, y, W, H);}
             if(outerCount % 2 != 0){newCell = createShape(RECT, x - W/2, y, W, H);}
          }
+         
+         if(design.design == "super") {
+           
+            stroke(firstColor);
+            paletteLocation = int(random(1,design.palette.colors.length));  
+            newFill = design.palette.colors[paletteLocation];
+            fill(newFill);
+            // alternating rows pattern
+            if(outerCount % 2 == 0){newCell = superEllispe(x, y, design.palette.colors);}
+            if(outerCount % 2 != 0){newCell = createShape(RECT, x - W/2, y, W, H);}
+         }
             
           // wtf innerCount > outerCount
          if(design.design == "rose"){
@@ -99,6 +110,17 @@ class Composer {
           noFill();
           stroke(newStroke, random(80,200));
           strokeWeight(15);
+          newShape = new PShape[3];
+     
+          newShape[0] = createShape(ELLIPSE, x, y, W, H); 
+          newShape[1] = createShape(ELLIPSE, x, y, W/2, H/2);
+          newShape[2] = createShape(ELLIPSE, x, y, W * 2,H * 2);
+  
+         layer.add(newShape);    
+         }
+         
+         if(design.design == "scales"){
+          strokeWeight(random(80,200));
           newShape = new PShape[3];
      
           newShape[0] = createShape(ELLIPSE, x, y, W, H); 
@@ -176,15 +198,17 @@ class Composer {
           
          if(design.design == "snowflakes"){ 
           strokeWeight(20);
-          Polar newPolar = new Polar(x + W/2, y + H/2, W/2, design.palette.colors);
+          pushMatrix(); 
+          Polar newPolar = new Polar(x + W/2, y + H/2, W/2, design.palette.colors);  
           newPolar.drawPolar();
+          popMatrix();
           
          }
     
          // STARS
          if(design.design == "stars"){
            
-          newCell = drawStar(x + W/2, y + H/2, W/2, W/4, int(random(5,12)), design.palette.colors);
+          newCell = drawStar(x + W/2, y + H/2, W * .45, W * .20, int(random(5,12)), design.palette.colors);
          }
 
          // TILED POLYGON
@@ -426,8 +450,7 @@ class Composer {
         
         
         
-        
-        /*
+   /*
          // Gathers possible radials 
         IntList[] radials = radialOptions(18, 40);
         
@@ -439,19 +462,25 @@ class Composer {
          int x = design.canvas.coordinates.get(0)[0];
          int y = design.canvas.coordinates.get(0)[1];
          
-         PShape[] newShape = new PShape[1];       
-         newShape[0] = drawRadial(width*3, divisor, angle, int(random(-600, width/1.1)), int(random(-400, height/1.1)), design.palette.colors);
+         PShape[] newShape = new PShape[1];
+         newShape[0] = drawRadial(width*3, divisor, angle, int(skyX), int(skyY), design.palette.colors);
          
          shape(newShape[0]);
-         
          */
-        
+          
+       float skyX = random(-600, width/1.1);
+       float skyY = random(-400, height/1.1);
+       PShape target = drawTarget(skyX, skyY, width*2, int(random(6,12)));
+       shape(target);
+
+      //filter(INVERT);  
       PShape newStar = new PShape(); 
       for (int i = 0; i < randomQty; i++){
-           newStar = drawStar(random(0, width), random(0, height/2), random(75,55), random(40,20), int(random(5,12)), design.palette.colors);
+        
+           newStar = drawStar(random(0, width), random(0, height/2), random(15,25), random(45,55), int(random(5,12)), design.palette.colors);
            shape(newStar);                                                                               
        } 
-   
+       //filter(INVERT); 
       int layers = 5;
       float horizonHigh = .2;
       float horizonLow = .6;

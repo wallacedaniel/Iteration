@@ -1,5 +1,9 @@
-// Re integrate all design into clean oop     -D Front End   Random Canvas     Divided Points    Landscape   <<<BoundsOver  Rose  Supershape1   remove all objects   multi canvas?  -neg image >>>  // Concentric-pattern With fill >> scale style 
-// Add significant new design elements
+
+ // Bricks  >  Add superEllipse  
+ // Harlequin isCurrent(strokeWeight / strokeColor / background)  - gradient back (in diamonds?) - alt/additional back layers - additional elements in diamonds - no stoke option - add line/cirlce elements
+
+//    -D Front End     Supershape1   remove all objects  Concentric-pattern With fill >> scale style       
+
 // finalize py script in
 // Mult download sizes
 // New uploads
@@ -26,6 +30,7 @@ void draw(){
   Painter painter = new Painter(design, composition);
 
   iteration.saveTitle(folder, iterate); 
+  if(design.design == "stained-glass"){outputInverse(folder, design.design, iterate);}
   iterate += 1;
   
 }

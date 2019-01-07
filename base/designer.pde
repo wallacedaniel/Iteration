@@ -53,6 +53,18 @@ class Designer {
       this.square = true;
       this.background = true;
     }
+     // SCALES
+    else if(design == "scales"){ 
+      this.bounds = new float [] {.1, .33, .1, .33};
+      this.square = true;
+      this.background = false;
+    }
+     // SUPER
+    else if(design == "super"){ 
+      this.bounds = new float [] {.1, .33, .1, .33};
+      this.square = false;
+      this.background = false;
+    }
      // SNOWFLAKES
     else if(design == "snowflakes"){ 
       this.bounds = new float [] {.1, .33, .1, .33};
@@ -71,7 +83,7 @@ class Designer {
     } 
       // STARS
     else if(design == "stars"){ 
-      this.bounds = new float [] {.05, .25, .05, .25};
+      this.bounds = new float [] {.05, .33, .05, .33};
       this.square = true;
       this.background = true;
     }

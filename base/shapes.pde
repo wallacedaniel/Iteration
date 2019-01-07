@@ -1,6 +1,20 @@
 
-// POLY TARGET
+// ELLIPSE TARGET
+public PShape drawTarget(float xloc, float yloc, int size, int numSteps) {
+  PShape target = createShape(GROUP);
+  float grayvalues = 255/numSteps;
+  float steps = size/numSteps;
+  for (int i = 0; i < numSteps; i++) {
+    fill(245, i*grayvalues*.2);
+    noStroke();
+    PShape ellipse = createShape(ELLIPSE, xloc, yloc, size - i*steps, size - i*steps);
+    target.addChild(ellipse);
+  }
+  noFill();
+  return target;
+}
 
+// POLY TARGET
 public PShape[] drawPolyTarget(float xloc, float yloc, int size, int polySides, int numSteps, color[] colors) {
   float alphaValues = 255/numSteps;
   float steps = size/numSteps;
@@ -87,14 +101,13 @@ IntList[] radialOptions(int innerBound, int outerBound) {
 }
 
 // STARS
-
 public PShape drawStar(float x, float y, float radius1, float radius2, int npoints, color[] colors) {
   
   float angle = TWO_PI / npoints;
   float halfAngle = angle/2.0; 
   PShape star = createShape();  
-  int strokePicker = int(random(2,11));
-  int paletteLocation = int(random(2,11)); 
+  int strokePicker = int(random(3,11));
+  int paletteLocation = int(random(2,11));                       //set stroke  relative to starsize
   
   while(paletteLocation == strokePicker){                   //  contrast enforce / abs value <3 or 4 to avoid blurriness  > additional element layers
    paletteLocation = int(random(2,11));                     // and or less contrast means smaller star    just a litte more star space   and or some rotation
@@ -103,7 +116,7 @@ public PShape drawStar(float x, float y, float radius1, float radius2, int npoin
   
   star.beginShape(); 
   star.stroke(colors[strokePicker]);
-  star.strokeWeight(random(5 , 30));                       // relative vs hard coded ?
+  star.strokeWeight(random(5,15));                       // relative vs hard coded ?
   star.fill(newFill);
   
   for (float a = 0; a < TWO_PI; a += angle) {
@@ -118,8 +131,7 @@ public PShape drawStar(float x, float y, float radius1, float radius2, int npoin
   return star;
 }
 
-
-
+// ROSE
 public PShape drawRose(float d, float n) {
   
   float k = n / d;
@@ -141,19 +153,9 @@ public PShape drawRose(float d, float n) {
 }
 
 
+
+
 /*
-
-// Draws concentric circle "target" with stepped gray values and opacity
-void drawTarget(float xloc, float yloc, int size, int numSteps) {
-  float grayvalues = 255/numSteps;
-  float steps = size/numSteps;
-  for (int i = 0; i < numSteps; i++) {
-    fill(245, i*grayvalues*.2);
-    ellipse(xloc, yloc, size - i*steps, size - i*steps);
-  }
-  noFill();
-}
-
 // CIRCLES
 class Circle{
   
@@ -250,4 +252,44 @@ void setGradient(int x, int y, float w, float h, color c1, color c2, String axis
       line(i, y, i, y+h);
     }
   }
+}
+
+public PShape superEllispe(int locX, int locY, color[] colors) {          //  translate value??
+  translate(locX, locY);
+
+  float a = 100;
+  float b = 100;
+  float n = 2;
+ 
+  PShape superEllipse = createShape();
+  int strokePicker = int(random(2,11));
+  int paletteLocation = int(random(2,11));                       //set stroke  relative to starsize
+  
+  while(paletteLocation == strokePicker){                   //  contrast enforce / abs value <3 or 4 to avoid blurriness  > additional element layers
+   paletteLocation = int(random(2,11));                     // and or less contrast means smaller star    just a litte more star space   and or some rotation
+  } 
+                                                             // no 4  stars
+  color newFill = colors[paletteLocation]; 
+  superEllipse.beginShape();
+  superEllipse.stroke(colors[strokePicker]);
+  superEllipse.strokeWeight(random(0));                       // relative vs hard coded ?
+  superEllipse.fill(newFill);
+  
+  for (float angle = 0; angle < TWO_PI; angle += 0.1) {
+
+    // Superellipse
+    float na = 2 / n;
+    float x = pow(abs(cos(angle)), na) * a * sgn(cos(angle));
+    float y = pow(abs(sin(angle)), na) * b * sgn(sin(angle));
+    superEllipse.vertex(x, y);
+  }
+  superEllipse.endShape(CLOSE);
+  return superEllipse;
+}
+
+float sgn(float val) {
+  if (val == 0) {
+    return 0;
+  }
+  return val / abs(val);
 }

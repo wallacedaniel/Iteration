@@ -3,7 +3,7 @@ class Painter {
   
   Painter(Designer design, Composer composition){
     
-    if((design.background == true)){ 
+    if((design.background == true)){                                   // remove objects here?  for now? 
         shape(composition.background);
     } 
    
@@ -33,6 +33,11 @@ class Painter {
           }  
         }
       }
+    }
+    
+    if(design.design == "tiled-triangle-pattern"){
+      line(0, 0, 0, height);
+      line(0, 0, width, 0);
     }
   } 
 }

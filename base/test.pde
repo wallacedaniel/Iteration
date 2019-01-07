@@ -88,44 +88,57 @@ shape(parent)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-// Constants
-int Y_AXIS = 1;
-int X_AXIS = 2;
-color b1, b2, c1, c2;
-
+  
+PFont f;
+  
 void setup() {
   size(640, 360);
-
-  // Define colors
-  b1 = color(255);
-  b2 = color(0);
-  c1 = color(204, 102, 0);
-  c2 = color(0, 102, 153);
-
-  noLoop();
+  
+  // Create the font
+  printArray(PFont.list());
+  f = createFont("SourceCodePro-Regular.ttf", 24);
+  textFont(f);
 }
 
 void draw() {
-  // Background
-  setGradient(0, 0, width/2, height, b1, b2, X_AXIS);
-  setGradient(width/2, 0, width/2, height, b2, b1, X_AXIS);
-  // Foreground
-  setGradient(50, 90, 540, 80, c1, c2, Y_AXIS);
-  setGradient(50, 190, 540, 80, c2, c1, X_AXIS);
+  background(102);
+  textAlign(RIGHT);
+  drawType(width * 0.25);
+  textAlign(CENTER);
+  drawType(width * 0.5);
+  textAlign(LEFT);
+  drawType(width * 0.75);
+}
+
+void drawType(float x) {
+  line(x, 0, x, 65);
+  line(x, 220, x, height);
+  fill(0);
+  text("ichi", x, 95);
+  fill(51);
+  text("ni", x, 130);
+  fill(204);
+  text("san", x, 165);
+  fill(255);
+  text("shi", x, 210);
 }
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 */
