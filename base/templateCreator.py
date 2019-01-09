@@ -78,29 +78,37 @@ with open('templates.txt', 'w') as templates:
                 title = title.replace("-", " ")
                 print("     ")
                 check = input('Correct?  y  or  n ? :  ' + title + ' ')
-                #if newArray "contains" not "is equal" title  >   add the iterater to the end
-                # howmany times does new array "contain"?
 
-                    #####    Enumerate   ## easy solution add each name to an array ..if any of the names in the array contain the input ..count how many
-                #...add the next # to the end of the title and everything after  ...done
-                duplicateCount = 0
-                for name in namesArray:
+                duplicateCount = 1
+
+                for num, name in enumerate(namesArray):
+                    if title in namesArray[num]:
+                        duplicateCount += 1
+                        
                 
-                if title in namesArray[]: 
-                        ####
                 
-                # iterator is + of how many times "contains"
                 if check == 'y':
-                    namesArray[iterator] = title
+                    if duplicateCount != 1 and duplicateCount != 2:
+                        title = title + str(duplicateCount) 
+                    namesArray.append(title)
+                    fileOut = fileString + str(duplicateCount) + ".png"
+                    print(file + "          " + fileOut)
+                    os.rename(file, fileOut)
+                    shutil.move(fileOut, "finished/" + fileOut)
+                    iterator += 1
                     confirmed = True
-                fileOut = fileString + ".png"
-                os.rename(file, fileOut)
-                shutil.move(fileOut, "finished/" + fileOut)
-                iterator += 1
-
 
             link = dateString + fileString
-            downloadLink = shortDateString + fileString
+            downloadLink1 = shortDateString + fileString
+
+            link2 = dateString + fileString
+            downloadLink2 = shortDateString + fileString
+
+            lin3 = dateString + fileString
+            downloadLink3 = shortDateString + fileString
+
+            link4 = dateString + fileString
+            downloadLink4 = shortDateString + fileString
 
             #  Writes Wordpress template contents
 
@@ -141,7 +149,13 @@ with open('templates.txt', 'w') as templates:
             #Body
             templates.write('*********** BODY ***********' + '\n')
             templates.write('\n')
-            templates.write('[easy_media_download url="http://www.iteration.gallery/wp-content/uploads/' + downloadLink + '.png" text="Download" width="100" force_dl="1" color="grey_light" class="download"]')
+            templates.write('[easy_media_download url="http://www.iteration.gallery/wp-content/uploads/' + downloadLink1 + '.png" text="Download" width="100" force_dl="1" color="grey_light" class="download"]')
+            templates.write('\n')
+            templates.write('[easy_media_download url="http://www.iteration.gallery/wp-content/uploads/' + downloadLink2 + '.png" text="Download" width="100" force_dl="1" color="grey_light" class="download"]')
+            templates.write('\n')
+            templates.write('[easy_media_download url="http://www.iteration.gallery/wp-content/uploads/' + downloadLink3 + '.png" text="Download" width="100" force_dl="1" color="grey_light" class="download"]')
+            templates.write('\n')
+            templates.write('[easy_media_download url="http://www.iteration.gallery/wp-content/uploads/' + downloadLink4 + '.png" text="Download" width="100" force_dl="1" color="grey_light" class="download"]')
             templates.write('\n')
             templates.write('[Sassy_Social_Share]' + '\n')
             templates.write('\n')
