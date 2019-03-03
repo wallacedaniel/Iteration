@@ -5,7 +5,7 @@ public PShape drawTarget(float xloc, float yloc, int size, int numSteps) {
   float grayvalues = 255/numSteps;
   float steps = size/numSteps;
   for (int i = 0; i < numSteps; i++) {
-    fill(245, i*grayvalues*.2);
+    fill(245, i*grayvalues*.17);
     noStroke();
     PShape ellipse = createShape(ELLIPSE, xloc, yloc, size - i*steps, size - i*steps);
     target.addChild(ellipse);
@@ -23,8 +23,8 @@ public PShape[] drawPolyTarget(float xloc, float yloc, int size, int polySides, 
   for (int i = 0; i < numSteps; i++) {
     
     stroke(colors[strokePicker]);                        // tying to color picker really** limits qty of layers to 10
-    fill(245, i * alphaValues * .2);    //  fill transfered ??? to shape ?
-    PShape poly = drawPolygon(xloc, yloc, size - i*steps, polySides);
+    fill(245, i * alphaValues * .17);    //  fill transfered ??? to shape ?
+    PShape poly = drawPolygon(xloc, yloc, size - i*steps, polySides, 12);                                              // <<<<<<<   re implement randoms   not  12
     polyTarget[i] = poly;
     strokePicker += 1;                                // get the color of this square < if same as strokePicker   strokePicker +=1
   }
@@ -33,12 +33,12 @@ public PShape[] drawPolyTarget(float xloc, float yloc, int size, int polySides, 
 }
 
 // Draws polygons with variables sides  
-public PShape drawPolygon(float x, float y, float radius, int npoints) {
+public PShape drawPolygon(float x, float y, float radius, int npoints, int strokeWeight) {
   float angle = TWO_PI / npoints;
   PShape polygon = createShape();
   
   polygon.beginShape();  
-  polygon.strokeWeight(random(10,15));                                  // stroke as a % of  H / W           Smaller size in cell
+  polygon.strokeWeight(strokeWeight);                                  // stroke as a % of  H / W           Smaller size in cell
   
   for (float a = 0; a < TWO_PI; a += angle) {
     float sx = x + cos(a) * radius;
@@ -72,7 +72,7 @@ public PShape drawRadial(float diameter, int divisor, int angle, int x, int y, c
       }
     }
     color radialColor = colors[index];
-    fill(radialColor);
+    fill(radialColor, 50);
     radial = createShape(ARC, x, y, diameter, diameter, lastAngle, lastAngle + radians(angle));
     radialGroup.addChild(radial);
     lastAngle += radians(angle);
@@ -106,17 +106,20 @@ public PShape drawStar(float x, float y, float radius1, float radius2, int npoin
   float angle = TWO_PI / npoints;
   float halfAngle = angle/2.0; 
   PShape star = createShape();  
-  int strokePicker = int(random(3,11));
-  int paletteLocation = int(random(2,11));                       //set stroke  relative to starsize
+  //int strokePicker = int(random(3,11));
+  //int paletteLocation = int(random(2,11));  //set stroke  relative to starsize
   
-  while(paletteLocation == strokePicker){                   //  contrast enforce / abs value <3 or 4 to avoid blurriness  > additional element layers
-   paletteLocation = int(random(2,11));                     // and or less contrast means smaller star    just a litte more star space   and or some rotation
+  int strokePicker = int(random(0,colors.length));
+  int fillPicker = int(random(0,colors.length));
+  
+  while(fillPicker  == strokePicker){                   //  contrast enforce / abs value <3 or 4 to avoid blurriness  > additional element layers
+   fillPicker  = int(random(0,colors.length));                     // and or less contrast means smaller star    just a litte more star space   and or some rotation
   }                                                           // no 4  stars
-  color newFill = colors[paletteLocation];
+  color newFill = colors[fillPicker] ;
   
   star.beginShape(); 
   star.stroke(colors[strokePicker]);
-  star.strokeWeight(random(5,15));                       // relative vs hard coded ?
+  star.strokeWeight(random(int(height * .001),int(height * .003)));                       // relative vs hard coded ?            <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<,,
   star.fill(newFill);
   
   for (float a = 0; a < TWO_PI; a += angle) {
@@ -131,19 +134,21 @@ public PShape drawStar(float x, float y, float radius1, float radius2, int npoin
   return star;
 }
 
+
 // ROSE
-public PShape drawRose(float d, float n) {
+public PShape drawRose( int locX, int locY, float d, float n, int radius, color[] colors) {
   
   float k = n / d;
-  //translate(x, y);
+  translate(locX, locY);
   
   PShape rose = createShape();
   rose.beginShape();
-  rose.stroke(0);
-  rose.strokeWeight(20);
+  rose.stroke(colors[int(random(2,colors.length))]);
+  rose.noFill();
+  rose.strokeWeight(radius/15);
   
   for (float a = 0; a < TWO_PI * d; a += 0.02) {
-    float r = 800 * cos(k * a);
+    float r = radius * cos(k * a);
     float x = r * cos(a);
     float y = r * sin(a);
     rose.vertex(x, y);
@@ -152,7 +157,16 @@ public PShape drawRose(float d, float n) {
   return rose;
 }
 
-
+public int[] randomRose(){
+  int[] roseOptions = new int[2];
+  
+  do {
+    roseOptions[0] = int(random(1,10));
+    roseOptions[1] = int((random(1,8)));
+  } while (roseOptions[0]  == roseOptions[1] || (roseOptions[0] == 3 && roseOptions[1]  == 1)  || (roseOptions[0] == 6 && roseOptions[1]  == 2)  || (roseOptions[0] == 9 && roseOptions[1]  == 3)) ;
+  
+  return roseOptions;
+}
 
 
 /*
@@ -232,27 +246,14 @@ class Circle{
 */
 
 
-void setGradient(int x, int y, float w, float h, color c1, color c2, String axis ) {
 
-  noFill();
 
-  if (axis == "Y") {  // Top to bottom gradient
-    for (int i = y; i <= y+h; i++) {
-      float inter = map(i, y, y+h, 0, 1);
-      color c = lerpColor(c1, c2, inter);
-      stroke(c);
-      line(x, i, x+w, i);
-    }
-  }  
-  else if (axis == "X") {  // Left to right gradient
-    for (int i = x; i <= x+w; i++) {
-      float inter = map(i, x, x+w, 0, 1);
-      color c = lerpColor(c1, c2, inter);
-      stroke(c);
-      line(i, y, i, y+h);
-    }
-  }
-}
+
+
+
+
+
+
 
 public PShape superEllispe(int locX, int locY, color[] colors) {          //  translate value??
   translate(locX, locY);

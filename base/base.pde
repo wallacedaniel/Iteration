@@ -1,3 +1,4 @@
+// All Values coded relative to canvas
 
  // Bricks  >  Add superEllipse  
  // Harlequin isCurrent(strokeWeight / strokeColor / background)  - gradient back (in diamonds?) - alt/additional back layers - additional elements in diamonds - no stoke option - add line/cirlce elements
@@ -12,7 +13,8 @@
 
 
 void setup(){
-  size(6000,4000);   
+  size(4600,2000);
+  //size(6000,4000);
 }
 
 int iterate = 1;

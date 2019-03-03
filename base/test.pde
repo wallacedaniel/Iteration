@@ -127,9 +127,60 @@ void drawType(float x) {
 
 
 
+// RADIAL GRADIENT EXAMPLE
 
 
 
+
+int dim;
+
+void setup() {
+  size(640, 360);
+  dim = width/2;
+  background(0);
+  colorMode(HSB, 360, 100, 100);
+  noStroke();
+  ellipseMode(RADIUS);
+  frameRate(1);
+}
+
+void draw() {
+  background(0);
+  for (int x = 0; x <= width; x+=dim) {
+    drawGradient(x, height/2);
+  } 
+}
+
+void drawGradient(float x, float y) {
+  int radius = dim/2;
+  float h = random(0, 360);
+  for (int r = radius; r > 0; --r) {
+    fill(h, 90, 90);
+    ellipse(x, y, r, r);
+    h = (h + 1) % 360;
+  }
+}
+
+
+
+
+
+var yoff = 0;
+loadPixels();
+for(var y = 0; y < height; y++){
+  var xoff = 0;
+  for(var x = 0; x < width; x++){
+    var index = (x + y * width) * 4;
+    var r = nosie(xoff, yoff) * 255;
+    pixels[index + 0] = r;
+    pixels[index + 2] = r;
+    pixels[index + 2] = r;
+    pixels[index + 3] = 255;
+    xoff += inc;
+  }
+  yoff += inc;
+}
+updatePixels();
 
 
 

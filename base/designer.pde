@@ -77,8 +77,8 @@ class Designer {
       this.square = true;
     }
     // STARRY LANDSCAPE
-    else if(design == "starry-landscape"){ 
-      this.bounds = new float [] {.1, .25, .1, .25};
+    else if(design == "landscape"){ 
+      this.bounds = new float [] {.075, .2, .1, .25};
       this.background = false;
     } 
       // STARS
@@ -132,7 +132,7 @@ class Designer {
           int shapePick = int(random(0,shapes.length));
           this.designShapes[i] = shapes[shapePick];
       }      
-    } //<>//
+    } //<>// //<>//
         // TILED POLYGONS
     else if(design == "tiled-polygons"){ 
       this.bounds = new float [] {.05, .25, .05, .25};
@@ -143,6 +143,13 @@ class Designer {
       this.bounds = new float [] {.05, .25, .05, .25};
       this.square = true;
       this.background = true;
+    }
+    
+      // TEST
+    else if(design == "test"){ 
+      this.bounds = new float [] {.05, .25, .05, .25};
+      this.square = true;
+      this.background = false;
     }
     
     // CREATE CANVAS OBJECTS

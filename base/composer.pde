@@ -27,12 +27,19 @@ class Composer {
       this.background = newBackground;
     }
     
+    
+    
       int randomQty = 0;
-      if(design.design == "starry-landscape"){randomQty = int(random(40,80));}
+      if(design.design == "landscape"){
+        randomQty = int(random(50,80));
+        //randomQty = int(random(60,100));
+    }
+      
+      
 
     // canvas.type == "grid"
     if(design.design == "harlequin" || design.design == "brick-pattern" || design.design == "tiled-triangle-pattern" || design.design == "tiled-polygons"  || design.design == "stained-glass"  || 
-        design.design == "snowflakes"  || design.design == "concentric-pattern" || design.design == "stars" ||  design.design ==  "rose"){
+        design.design == "snowflakes"  || design.design == "concentric-pattern" || design.design == "stars" ||  design.design ==  "rose" ||  design.design ==  "test"){
           
       PShape newCell = createShape(RECT, 0, 0, width, height); 
       PShape[] newShape = new PShape[design.canvas.coordinates.size()];           
@@ -45,6 +52,42 @@ class Composer {
       //int x;
       //int y;
       
+      
+      
+      
+      //int color1 = 0;
+      if(design.design == "test") {
+        
+        //color1 = int((random(0,360)));
+        //background(firstColor);
+        
+        /*
+        float inc = 0.01;
+        
+        float yoff = 0;
+        loadPixels();
+        for(int y = 0; y < height; y++){
+          float xoff = 0;
+          for(int x = 0; x < width; x++){
+            int index = (x + y * width) * 4;
+            int r = nosie(xoff, yoff) * 255;
+            pixels[index + 0] = r;
+            pixels[index + 2] = r;
+            pixels[index + 2] = r;
+            pixels[index + 3] = 255;
+            xoff += inc;
+          }
+          yoff += inc;
+        }
+        updatePixels();
+       
+        */
+      }
+      
+      
+      
+      
+      
       if(design.design == "brick-pattern" || design.design == "tiled-triangle-pattern") {strokeWeight(random((W + H/2) * .01,(W + H/2) * .2));}
       if(design.design == "harlequin") {
         strokeWeight(random((W + H/2) * .02,(W + H/2) * .15));
@@ -52,6 +95,10 @@ class Composer {
         stroke(design.palette.colors[strokePicker]);   
       }
       if(design.design == "concentric-pattern"){newStroke = color(random(0,255), random(0,255), random(0,255));}
+      if(design.design == "snowflakes"){background(random(0,255), random(0,255), random(0,255));}
+      
+      
+      
             
      // CELLS  AND SHAPES
       for (int y = 0; y <= height; y += H) {
@@ -66,6 +113,42 @@ class Composer {
          fill(newFill);
          
          //  ********  DESIGN SHAPES  ********          <<< make all else ifs 
+         
+         
+         
+         
+         
+         
+         
+         
+         if(design.design == "test") {
+           //color1 = int((random(0,360)));
+           //radialGradient(x, y, W/2, color1);
+          //int locX = width/2;
+          //int locY = height/2;
+          
+          
+          
+          //int[] rosePicker = randomRose();
+  
+          //pushMatrix();
+          //PShape newRose = drawRose( x, y, rosePicker[0], rosePicker[1], W/3, design.palette.colors);
+          //shape(newRose);
+          //popMatrix();
+          
+          
+          
+          
+          
+         }
+         
+         
+         
+         
+         
+         
+         
+         
          
          //by canvas center coordinates Instead?   for coord : canvas.coordinates ??         <<<< can add concentrics and randoms into main loop
          
@@ -95,9 +178,9 @@ class Composer {
           // wtf innerCount > outerCount
          if(design.design == "rose"){
            if(innerCount % 2 == 0){
-             float d = 8;
-             float n = 5;
-             newCell = drawRose(d, n);
+             //float d = 8;
+             //float n = 5;
+             //newCell = drawRose(d, n);
              //newCell = drawStar(x + W/2, y + H/2, W/2, W/4, int(random(5,12)), design.palette.colors);
            }
             else{
@@ -197,9 +280,9 @@ class Composer {
          // SNOWFLAKES
           
          if(design.design == "snowflakes"){ 
-          strokeWeight(20);
+          //strokeWeight(20);
           pushMatrix(); 
-          Polar newPolar = new Polar(x + W/2, y + H/2, W/2, design.palette.colors);  
+          Polar newPolar = new Polar(x + W/2, y + H/2, W/4, design.palette.colors);  
           newPolar.drawPolar();
           popMatrix();
           
@@ -342,11 +425,146 @@ class Composer {
        this.elements = newElements;
     }
  
-    if(design.design == "starry-landscape"){
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+                                                                                                     // integrate radials rosese starOptions snowflakes 
+    if(design.design == "landscape"){ // Transparency to radials      -options in designer (radials rings stars snowflakes roses clouds radialGradients smallRadials) s  -mug ratio option/relative stroke 
+                                                                             // supershapes
+                                      // Society 6 seller?   - landscape generator
+      
+       // Background Gradient
+       String axis = "Y";
+       setGradient(0, 0, width, height, lastColor, firstColor, axis);
+     
+ 
+      // Picks radial options
+      IntList[] radials = radialOptions(18, 40);
+      int randomIndex = int(random(0,radials[0].maxIndex()));
+      int divisor = radials[0].get(randomIndex);
+      int angle = radials[1].get(randomIndex);
+      //int stylePicker = int(random(0, 2));
+      int stylePicker = 1;
+   
+      // Sky Focal Point
+      float skyX = random(-600, width/1.1);
+      float skyY = random(-400, height/1.1);
+
+     
+      // Sky Radials 
+      PShape[] newShape = new PShape[1];
+      newShape[0] = drawRadial(width*3, divisor, angle, int(skyX), int(skyY), design.palette.colors);
+      shape(newShape[0]);
+       
+      // Sky Rings
+      PShape target = drawTarget(skyX, skyY, width*2, int(random(6,12)));
+      shape(target);
+    
+      // Stars 
+      PShape newStar = new PShape(); 
+      PShape newRose = new PShape(); 
+      
+      if(stylePicker == 0) {
+        for (int i = 0; i < randomQty; i++){
+             
+             newStar = drawStar(random(0, width), random(0, height/2), random(10,15), random(35,45), int(random(5,12)), design.palette.colors);
+             shape(newStar);
+
+         }
+      }
+          
+  
+
+          
+       
+      // Horizons
+    
+      int layers = 5;
+      float horizonHigh = .2;
+      float horizonLow = .6;
+      int strokeWeight = int(height * .005);
+      
+      while(layers > 0){
+        int curveY = int(random(height * horizonHigh, height * horizonLow));
+        int endY = curveY;
+        int endX = 0;
+    
+       smooth();
+        //PShape horizon = createShape();
+        //PShape land = createShape();
+        //PShape landscape = createShape(GROUP);
+
+        beginShape();
+        fill(design.palette.colors[2 * layers]);
+        stroke(design.palette.colors[2 * layers - 1]);
+        strokeWeight(strokeWeight);
+        curveVertex(0, curveY); 
         
-        String axis = "Y";
-        setGradient(0, 0, width, height, lastColor, firstColor, axis);
-       /*
+        for (int i = 0; i <= width; i += design.canvas.W) {   
+          curveVertex(i, curveY);
+        
+          if (i != width){          
+              curveY = int(random(height * horizonHigh, height * horizonLow));
+          }  
+          if (i == width){
+              endX = i;
+          } 
+        }
+        curveVertex(endX, curveY);  
+        vertex(width, height);
+        vertex(0, height);
+        vertex(0, endY);
+        endShape();
+        
+        horizonHigh += .16;
+        horizonLow += .1;
+        strokeWeight += int(height * .004);
+        
+        layers--; 
+        
+        
+      }
+      if(stylePicker == 1) {
+         for (int i = 0; i < randomQty; i++){
+        
+      
+           /*
+           
+
+            int[] rosePicker = randomRose();
+            pushMatrix(); 
+            newRose = drawRose( int(random(0, width)), int(random(height/3, height)), rosePicker[0], rosePicker[1], int(random(35,55)), design.palette.colors);  
+            shape(newRose);
+            popMatrix();
+            
+            */
+            pushMatrix(); 
+            Polar newSnowflake = new Polar(int(random(0, width)), int(random(0, height)), random(20,140), design.palette.colors);  
+            newSnowflake.drawPolar();
+            popMatrix();
+                      
+       } 
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+
+  /*
         PShape[] newShape = new PShape[1];
         
         int layers = 1;
@@ -448,82 +666,4 @@ class Composer {
         
         
         
-        
-        
-   /*
-         // Gathers possible radials 
-        IntList[] radials = radialOptions(18, 40);
-        
-        // Picks radial options
-        int randomIndex = int(random(0,radials[0].maxIndex()));
-        int divisor = radials[0].get(randomIndex);
-        int angle = radials[1].get(randomIndex);
-               
-         int x = design.canvas.coordinates.get(0)[0];
-         int y = design.canvas.coordinates.get(0)[1];
-         
-         PShape[] newShape = new PShape[1];
-         newShape[0] = drawRadial(width*3, divisor, angle, int(skyX), int(skyY), design.palette.colors);
-         
-         shape(newShape[0]);
-         */
-          
-       float skyX = random(-600, width/1.1);
-       float skyY = random(-400, height/1.1);
-       PShape target = drawTarget(skyX, skyY, width*2, int(random(6,12)));
-       shape(target);
-
-      //filter(INVERT);  
-      PShape newStar = new PShape(); 
-      for (int i = 0; i < randomQty; i++){
-        
-           newStar = drawStar(random(0, width), random(0, height/2), random(15,25), random(45,55), int(random(5,12)), design.palette.colors);
-           shape(newStar);                                                                               
-       } 
-       //filter(INVERT); 
-      int layers = 5;
-      float horizonHigh = .2;
-      float horizonLow = .6;
-      int strokeWeight = 20;
-      
-      while(layers > 0){
-        int curveY = int(random(height * horizonHigh, height * horizonLow));
-        int endY = curveY;
-        int endX = 0;
     
-       smooth();
-        //PShape horizon = createShape();
-        //PShape land = createShape();
-        //PShape landscape = createShape(GROUP);
-
-        beginShape();
-        fill(design.palette.colors[2 * layers]);
-        stroke(design.palette.colors[2 * layers - 1]);
-        strokeWeight(strokeWeight);
-        curveVertex(0, curveY); 
-        
-        for (int i = 0; i <= width; i += design.canvas.W) {   
-          curveVertex(i, curveY);
-        
-          if (i != width){          
-              curveY = int(random(height * horizonHigh, height * horizonLow));
-          }  
-          if (i == width){
-              endX = i;
-          } 
-        }
-        curveVertex(endX, curveY);  
-        vertex(width, height);
-        vertex(0, height);
-        vertex(0, endY);
-        endShape();
-        
-        horizonHigh += .16;
-        horizonLow += .1;
-        strokeWeight += 15;
-        
-        layers--; 
-      }
-    }
-  }
-}

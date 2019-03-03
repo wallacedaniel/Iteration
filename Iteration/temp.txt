@@ -17,3 +17,14 @@
 <?php
 	endwhile;
 ?>
+
+
+
+if ( has_post_format( 'image' )) {
+  echo 'this is the image format';
+}
+
+if ( has_post_format( 'standard' )) {
+  echo 'this is the image format';
+}
+
