@@ -3,8 +3,16 @@ class Painter {
   
   Painter(Designer design, Composer composition){
     
-    if((design.background == true)){                                   // remove objects here?  for now? 
+    if((design.background == true)){       // remove objects here?  for now? 
+     
+     /*
+      if(design.design == "harlequin"){
+         setGradient(0, 0, width, height, design.palette.colors[0], design.palette.colors[design.palette.colors.length-1], "Y");
+      } else {
         shape(composition.background);
+      }
+      */
+      shape(composition.background);
     } 
    
     if((composition.rows != null)){    

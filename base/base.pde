@@ -13,8 +13,8 @@
 
 
 void setup(){
-  size(4600,2000);
-  //size(6000,4000);
+  //size(8000,8000);
+  size(6000,4000);
 }
 
 int iterate = 1;
@@ -29,7 +29,7 @@ void draw(){
   Iteration iteration = new Iteration();
   Designer design = new Designer(iteration.design);
   Composer composition = new Composer(design);
-  Painter painter = new Painter(design, composition);
+  //Painter painter = new Painter(design, composition);
 
   iteration.saveTitle(folder, iterate); 
   if(design.design == "stained-glass"){outputInverse(folder, design.design, iterate);}

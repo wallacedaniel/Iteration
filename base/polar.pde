@@ -79,8 +79,8 @@ class Polar{
         radius = radius * (i * .25);
       }       
       
-      fillColor = this.palette[int(random(0,palette.length-1))];
-      strokeColor = this.palette[int(random(0,palette.length-1))];
+      fillColor = this.palette[int(random(2,palette.length))];
+      strokeColor = this.palette[int(random(2,palette.length))];
       stroke(strokeColor);
       
       for (float a = 0; a < TWO_PI * 6; a += angle) {  
@@ -126,8 +126,8 @@ class Polar{
               radius = radius * (j * .25);
             }   
 
-            fillColor = this.palette[int(random(0,palette.length-1))]; 
-            strokeColor = this.palette[int(random(0,palette.length-1))];
+            fillColor = this.palette[int(random(2,palette.length))]; 
+            strokeColor = this.palette[int(random(2,palette.length))];
             stroke(strokeColor);
             
             for (float a = 0; a < TWO_PI * 6; a += angle) {  

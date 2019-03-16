@@ -1,3 +1,5 @@
+// Every Shape should be Target
+
 
 // ELLIPSE TARGET
 public PShape drawTarget(float xloc, float yloc, int size, int numSteps) {
@@ -5,10 +7,11 @@ public PShape drawTarget(float xloc, float yloc, int size, int numSteps) {
   float grayvalues = 255/numSteps;
   float steps = size/numSteps;
   for (int i = 0; i < numSteps; i++) {
-    fill(245, i*grayvalues*.17);
-    noStroke();
+    //fill(245, i*grayvalues*.12);
+    //noStroke();
+    stroke(125);
     PShape ellipse = createShape(ELLIPSE, xloc, yloc, size - i*steps, size - i*steps);
-    target.addChild(ellipse);
+    target.addChild(ellipse);                                                              //  <<<<<<<<  instead of arrays below??
   }
   noFill();
   return target;
@@ -18,7 +21,7 @@ public PShape drawTarget(float xloc, float yloc, int size, int numSteps) {
 public PShape[] drawPolyTarget(float xloc, float yloc, int size, int polySides, int numSteps, color[] colors) {
   float alphaValues = 255/numSteps;
   float steps = size/numSteps;
-  int strokePicker = 1;
+  int strokePicker = 2;
   PShape[] polyTarget = new PShape[numSteps];
   for (int i = 0; i < numSteps; i++) {
     
@@ -134,6 +137,24 @@ public PShape drawStar(float x, float y, float radius1, float radius2, int npoin
   return star;
 }
 
+/*
+
+paletteLocation = int(random(2,design.palette.colors.length));
+         
+          while(paletteLocation == strokePicker){
+            paletteLocation = int(random(2,design.palette.colors.length));   
+          }
+         
+
+          while(abs(paletteLocation - locHolder) < 2){
+             paletteLocation = int(random(2,design.palette.colors.length));   
+           }  
+          newFill = design.palette.colors[paletteLocation];
+          locHolder = paletteLocation;
+          fill(newFill);
+
+*/
+
 
 // ROSE
 public PShape drawRose( int locX, int locY, float d, float n, int radius, color[] colors) {
@@ -143,8 +164,16 @@ public PShape drawRose( int locX, int locY, float d, float n, int radius, color[
   
   PShape rose = createShape();
   rose.beginShape();
-  rose.stroke(colors[int(random(2,colors.length))]);
+  
+  int paletteLocation = int(random(4,colors.length - 1));
+         
+  color newFill = colors[paletteLocation];
+
+  
+  //rose.stroke(colors[int(random(6,colors.length))]);
+  rose.stroke(colors[colors.length-1]);
   rose.noFill();
+  //rose.fill(newFill);
   rose.strokeWeight(radius/15);
   
   for (float a = 0; a < TWO_PI * d; a += 0.02) {
@@ -254,7 +283,6 @@ class Circle{
 
 
 
-
 public PShape superEllispe(int locX, int locY, color[] colors) {          //  translate value??
   translate(locX, locY);
 
@@ -286,6 +314,36 @@ public PShape superEllispe(int locX, int locY, color[] colors) {          //  tr
   }
   superEllipse.endShape(CLOSE);
   return superEllipse;
+}
+
+
+
+
+public PShape drawSuperTarget(int xLoc, int yLoc,  color[] colors, int numSteps, float a, float b, float n) {
+  
+  strokeWeight(10);  //  a or b %
+  translate(xLoc, yLoc);
+  PShape superTarget = createShape(GROUP);
+
+  for (int i = 0; i < numSteps; i++) {
+    
+    PShape superShape = createShape();  
+      
+    superShape.beginShape();
+    superShape.stroke(colors[colors.length-1]);
+    superShape.fill(colors[int(random(1,colors.length-3))]);    
+    for (float angle = 0; angle < TWO_PI; angle += 0.1) {
+      float na = 2 / n;
+      float x = pow(abs(cos(angle)), na) * a * sgn(cos(angle));
+      float y = pow(abs(sin(angle)), na) * b * sgn(sin(angle));
+      superShape.vertex(x, y);
+    }
+    a *= .5;
+    b *= .5;
+    superShape.endShape(CLOSE);
+    superTarget.addChild(superShape);
+  }
+  return superTarget;
 }
 
 float sgn(float val) {

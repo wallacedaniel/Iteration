@@ -8,8 +8,8 @@ class Palette {
   
   Palette(){
    
-    //color color1 = color(random(0,255), random(0,255), random(0,255));
-    //color color2 = color(random(0,255), random(0,255), random(0,255));
+    color color1 = color(random(0,255), random(0,255), random(0,255));
+    color color2 = color(random(0,255), random(0,255), random(0,255));
      /*
     //color color1 = color(210, 242, 142);  //mountain
     //
@@ -55,12 +55,12 @@ class Palette {
     color color1 = color(66, 219, 241);
     color color2 = color(233, 246, 237);
     color color1 = color(132, 33, 189);
+   
+         color color2 = color(173,207,223);
+    color color1 = color(40, 60, 156);
     
    */
-
-     color color2 = color(173,207,223);
-    color color1 = color(40, 60, 156);
-       
+  
     color[] colorSteps = getLerps(color1, color2);
     
     this.colors = getLerps(color1, color2);

@@ -35,12 +35,23 @@ class Designer {
       this.square = true;
       this.background = true;
     }
+    
+    
+    
+    
+    
     // HARLEQUIN
     else if(design == "harlequin"){  
       this.bounds = new float [] {.05, .25, .05, .25};
       this.square = false;
-      this.background = true;
+      this.background = false;
     } 
+    
+    
+    
+    
+    
+    
     // RADIAL STARBURST
     else if(design == "radial-starburst"){ 
       this.bounds = new float[] {0, width, 0, height};  
@@ -148,7 +159,7 @@ class Designer {
       // TEST
     else if(design == "test"){ 
       this.bounds = new float [] {.05, .25, .05, .25};
-      this.square = true;
+      this.square = false;
       this.background = false;
     }
     

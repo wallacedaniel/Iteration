@@ -1,5 +1,13 @@
 //Puts together the shapes strokes colors based on designer and canvas - creates objects for painter -               striped pass  -  scales pass  - painter sort   -  superShape   
 
+
+//style1 no border  solid b [0] random f [rest]
+//style2 same add rose in b
+//style3 same add snowflake in b
+//style4 same add polyDiamondTargets in b
+//style4 same add polyDiamondTargets in b
+//style4 same w back diamonds
+
 class Composer {
   
   PShape background;
@@ -42,7 +50,8 @@ class Composer {
         design.design == "snowflakes"  || design.design == "concentric-pattern" || design.design == "stars" ||  design.design ==  "rose" ||  design.design ==  "test"){
           
       PShape newCell = createShape(RECT, 0, 0, width, height); 
-      PShape[] newShape = new PShape[design.canvas.coordinates.size()];           
+      PShape[] newShape = new PShape[design.canvas.coordinates.size()]; 
+      PShape newShapeGroup = createShape(GROUP);
       int innerCount = 0;
       int outerCount = 0;   
       color newFill;
@@ -85,25 +94,80 @@ class Composer {
       }
       
       
+      /*
+      
+        full grad background
+        row grad background
+        
+        
+        
+        
+        
+        
+        
+        ArrayList<PShape> newRows =  new ArrayList<PShape>();
+        for (int y = 0; y <= height; y += H) {
+                
+         // palette filter
+         paletteLocation = int(random(0,design.palette.colors.length));
+         while(abs(paletteLocation - locHolder) < 2){
+           paletteLocation = int(random(0,design.palette.colors.length));   
+         }  
+         color newFill = design.palette.colors[paletteLocation];
+         locHolder = paletteLocation; 
+         fill(newFill);  // << filteredFill
+                
+          PShape newRow = createShape(RECT, 0, y, width, H); 
+          newRows.add(newRow);  
+        }
+        this.rows = newRows;
+        
+        
+        style 1  minimal stroke (last) alt open back (first) random front (btwn)
+        
+      
+      */
+      
+       if(design.design == "harlequin") {
+         
+        
+        background(design.palette.colors[0]);   
+        // if  
+        //strokeWeight(random((W + H/2) * .02,(W + H/2) * .15));
+        strokeWeight((W + H/2) * .02);
+        //strokePicker = int(random(2, design.palette.colors.length));
+        //stroke(design.palette.colors[strokePicker]);
+        stroke(lastColor);
+        
+      }
       
       
+
+      float n = 0;
+      float superOption = 0;
       
       if(design.design == "brick-pattern" || design.design == "tiled-triangle-pattern") {strokeWeight(random((W + H/2) * .01,(W + H/2) * .2));}
-      if(design.design == "harlequin") {
-        strokeWeight(random((W + H/2) * .02,(W + H/2) * .15));
-        strokePicker = int(random(2,design.palette.colors.length));
-        stroke(design.palette.colors[strokePicker]);   
-      }
       if(design.design == "concentric-pattern"){newStroke = color(random(0,255), random(0,255), random(0,255));}
       if(design.design == "snowflakes"){background(random(0,255), random(0,255), random(0,255));}
-      
-      
-      
-            
+      if( design.design == "test" ){
+        background(firstColor);
+        float[] superOptions = new float[]{5,3,1.5,0.7,0.5,0.3};
+        int superPicker = int(random(0,superOptions.length));
+        superOption = superOptions[superPicker];
+      }
      // CELLS  AND SHAPES
+     
       for (int y = 0; y <= height; y += H) {
+        
+ 
+        if(design.design == "harlequin"){
+          //setGradient(0, y - (H/2), width, H,firstColor, lastColor, "Y");
+          
+        }
+
+        
        for (int x = 0; x <= width; x += W) {
-         
+         /*
          paletteLocation = int(random(2,design.palette.colors.length));
          while(abs(paletteLocation - locHolder) < 2){
            paletteLocation = int(random(2,design.palette.colors.length));   
@@ -111,22 +175,14 @@ class Composer {
          newFill = design.palette.colors[paletteLocation];
          locHolder = paletteLocation;
          fill(newFill);
-         
+         */
          //  ********  DESIGN SHAPES  ********          <<< make all else ifs 
-         
-         
-         
-         
-         
-         
-         
          
          if(design.design == "test") {
            //color1 = int((random(0,360)));
            //radialGradient(x, y, W/2, color1);
           //int locX = width/2;
           //int locY = height/2;
-          
           
           
           //int[] rosePicker = randomRose();
@@ -138,18 +194,13 @@ class Composer {
           
           
           
+        pushMatrix();
+        newShapeGroup = drawSuperTarget(x, y, design.palette.colors, 2, W/2, H/2, superOption);
+        shape(newShapeGroup);
+        popMatrix();
           
-          
+
          }
-         
-         
-         
-         
-         
-         
-         
-         
-         
          //by canvas center coordinates Instead?   for coord : canvas.coordinates ??         <<<< can add concentrics and randoms into main loop
          
          //  BRICKS 
@@ -164,16 +215,6 @@ class Composer {
             if(outerCount % 2 != 0){newCell = createShape(RECT, x - W/2, y, W, H);}
          }
          
-         if(design.design == "super") {
-           
-            stroke(firstColor);
-            paletteLocation = int(random(1,design.palette.colors.length));  
-            newFill = design.palette.colors[paletteLocation];
-            fill(newFill);
-            // alternating rows pattern
-            if(outerCount % 2 == 0){newCell = superEllispe(x, y, design.palette.colors);}
-            if(outerCount % 2 != 0){newCell = createShape(RECT, x - W/2, y, W, H);}
-         }
             
           // wtf innerCount > outerCount
          if(design.design == "rose"){
@@ -212,21 +253,124 @@ class Composer {
   
          layer.add(newShape);    
          }
+         
+         /*
+         
+         what it does now:
+           background array[0] via painter
+           above - set [random not background] stroke color + width 
+           fill - set [random not background not stroke]
+           singleShape - leaves alternate full bg - gathered for painter
+             
+           
+           styles
+             minimal stroke - variable stroke
+             
+             plain back - full grade(don't like yet ... dbl?) - row grade - random stripe - diamond target                             enforce contrast 
+             
+             random rose all
+             1 - 3 diamonds random all
+             diamonds n spheres
+             light dark double diamond
+             snowflakes
+             radials
+             stars
+             polytargets
+         */              
 
          // HARLEQUIN
          if(design.design == "harlequin"){
-                                                                    // better contrast enforcement
-          //stroke(design.palette.colors[1]);                      // different stroke options in designer    - none  - colors in palette 1/last and/or all options then force alt fill
-          paletteLocation = int(random(2,design.palette.colors.length));  
-          while(paletteLocation == strokePicker){
-           paletteLocation = int(random(2,design.palette.colors.length));   
-          }
+           
+           noStroke();
           
+ 
+         
+           // better contrast enforcement
+          //stroke(design.palette.colors[1]);                   
+          paletteLocation = int(random(2,design.palette.colors.length));
+          /*
+          while(paletteLocation == strokePicker){
+            paletteLocation = int(random(2,design.palette.colors.length));   
+          }
+          */
+
+          while(abs(paletteLocation - locHolder) < 2){
+             paletteLocation = int(random(2,design.palette.colors.length));   
+           }  
           newFill = design.palette.colors[paletteLocation];
+          locHolder = paletteLocation;
           fill(newFill);
            
-            newCell = createShape(QUAD, x + W/2, y, x + W, y + H/2, x + W/2, y + H, x, y + H/2);
+                           // Half way points // 
+          newCell = createShape(QUAD, x + W/2, y, x + W, y + H/2, x + W/2, y + H, x, y + H/2);
+          shape(newCell);
+          
+          int[] rosePicker = randomRose();
+          PShape newRose;
+          
+          
+           int numSteps = int(random(4,6));
+           //int[] possPoints = new int[]{4,6,8,10,12};                        //  increased options?
+           //int pointsIndex = int(random(0,5));
+           //int points = possPoints[pointsIndex];
+           int points = 4;
+          PShape ellipseTarget;
+          pushMatrix();
+          if(W > H){
+             //newRose = drawRose( x, y, rosePicker[0], rosePicker[1], H/4, design.palette.colors);
+            
+             //Polar newPolar = new Polar(x, y, H/4, design.palette.colors);  
+             //newPolar.drawPolar();
+     
+
+             
+             //newShape = drawPolyTarget( x,  y , H/2, points, numSteps, design.palette.colors);
+             
+             ellipseTarget = drawTarget(x, y, H, 5);
+             shape(ellipseTarget);
+             
+             //for(int i = 0; i < newShape.length; i++){
+               //shape(newShape[i]);
+             //}
+             
+          } 
+         // else if (W == H){
+            //Polar newPolar = new Polar(x, y, H/5, design.palette.colors);  
+            // newPolar.drawPolar();
+          //}
+          else
+          {
+             //newRose = drawRose( x, y, rosePicker[0], rosePicker[1], W/4, design.palette.colors);
+             
+             //Polar newPolar = new Polar(x, y, W/4, design.palette.colors);  
+             //newPolar.drawPolar();
+             //newShape = drawPolyTarget( x,  y , W/2, points, numSteps, design.palette.colors);
+             
+             //for(int i = 0; i < newShape.length; i++){
+               //shape(newShape[i]);
+             //}
+             
+             
+             ellipseTarget = drawTarget(x, y, W, 5);
+             shape(ellipseTarget);
+             
+              
           }
+          //shape(newRose);
+          
+          
+          popMatrix();
+          
+
+
+          
+          
+          }
+          
+   
+          
+   
+          
          
           // STAINED GLASS
          if(design.design == "stained-glass"){

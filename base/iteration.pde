@@ -9,7 +9,7 @@ class Iteration {
     //String [] collection = new String [] {"harlequin", "stained-glass", "landscape", "radial-starburst", "striped", "stars", "tiled-triangle-pattern",
     //"tiled-polygons", "concentric-pattern", "concentric", "brick-pattern", "snowflakes"};
     
-    String [] collection = new String [] {"landscape"};
+    String [] collection = new String [] {"test"};
     int randomIndex = int(random(0, collection.length));
     this.design = collection[randomIndex];    
   }

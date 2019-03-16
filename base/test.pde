@@ -191,5 +191,75 @@ updatePixels();
 
 
 
+
+
+
+
+
+
+
+//-width/2+20, -height/2+20, 0, 10, 2, 0.01
+
+
+
+PShape newShape = drawSuper(x, y);
+
+public PShape drawSuper(int xLoc, int yLoc) {
   
+  strokeWeight(50);
+
+  translate(xLoc,  int yLoc);
+
+  float a = 100;
+  float b = 100;
+  float n = 200;
+  
+  PShape superTarget = createShape(GROUP);
+
+  float grayvalues = 255/numSteps;
+  float steps = size/numSteps;
+  for (int i = 0; i < numSteps; i++) {
+    
+    PShape superShape = createShape();  
+    
+    superShape.fill(245, i*grayvalues*.12);
+    //noStroke();
+    superShape.stroke(125);
+   
+
+  superShape.beginShape();
+  for (float angle = 0; angle < TWO_PI; angle += 0.1) {
+
+    float na = 2 / n;
+    float x = pow(abs(cos(angle)), na) * a * sgn(cos(angle));
+    float y = pow(abs(sin(angle)), na) * b * sgn(sin(angle));
+    superShape.vertex(x, y);
+  }
+  superShape.endShape(CLOSE);
+  
+  superTarget.addChild(superShape);
+  return superTarget;
+}
+
+float sgn(float val) {
+  if (val == 0) {
+    return 0;
+  }
+  return val / abs(val);
+}
+
+
+
+
+
+
+
 */
+
+
+
+
+
+
+
+  

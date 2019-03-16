@@ -84,12 +84,14 @@ with open('templates.txt', 'w') as templates:
                 for num, name in enumerate(namesArray):
                     if title in namesArray[num]:
                         duplicateCount += 1
+                        print('add duplicate')
                         
                 
                 
                 if check == 'y':
                     if duplicateCount != 1 and duplicateCount != 2:
-                        title = title + str(duplicateCount) 
+                        title = title + str(duplicateCount)
+                        print(str(duplicateCount))
                     namesArray.append(title)
                     fileOut = fileString + str(duplicateCount) + ".png"
                     print(file + "          " + fileOut)
