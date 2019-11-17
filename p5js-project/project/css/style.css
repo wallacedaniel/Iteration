@@ -1,0 +1,75 @@
+li {
+    list-style-type: none;
+}
+#controls-container{
+    background: yellow;
+}
+#controls-main{
+    flex-grow: 9;
+}
+#canvas-panel{
+    background: blue;
+}
+}           
+#canvas-types{}                                                                                                
+#canvas-size{}   
+#canvas-w, #canvas-h{
+    width:10%;
+}
+#layer-drop{}                                                        
+#shapes=container{}                                                               
+#shapes{}                                                              
+#layers=container{}              
+#grid-layer{}               
+#random-layer{}                            
+#random-qty{}
+#random-bounds{}                                        
+#horizon-layer{}                             
+#simple-layer{}            
+#controls-sidebar{
+    flex-grow: 3;
+}
+#palette-controls{
+    background: red;
+}                                                    
+#palette-steps{}                                                                                  
+#palette-types{}                                                                             
+#color-1{}
+#color-1-display{}                                                         
+#color-2{}
+#color-2-display{}                                                                           
+#color-3{}
+#color-3-display{}
+#create-palette{}
+#saved-palettes{}                                                                                                    
+#saved-images{
+    background: purple; 
+}            
+#saved-designs{
+    background: pink;
+}                                                          
+#app-controls{
+    background: aliceblue;
+}
+#play{}                               
+#stop{}                                     
+#rate{}
+#name{}
+#data{}
+#design{}
+
+
+#canvas-container{
+
+}
+#iteration-canvas{
+
+}
+
+.flex-container {
+  display: flex;
+}
+
+.hide {
+    display: none;
+}

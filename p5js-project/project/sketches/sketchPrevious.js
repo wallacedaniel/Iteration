@@ -78,7 +78,7 @@ Iteration Object - all input
 let canvas, W, H, c1, c2, dimensions, strokeW, newStroke, newFill, colorIndex, firstDraw, canvasButton, c, bgStyle, bg, shapes, dropImage, img, newFile, newImage, colorHolder, cellHolder, shapeFillHolder, randomQty, shapeStrokeHolder, randomQtyElement, square, r1, g1, b1, r2, g2, b2, palette;
 
 function setup() {
-    noLoop();
+    //noLoop();
     noStroke();
     noFill();
     firstDraw = 1;
@@ -97,13 +97,11 @@ function setup() {
     shapes.option('supers');
     shapes.option('snowflakes');   
     
-    //let setSelected = ;
-    
     
     //createCanvas(800, 800, WEBGL);
-    c = createCanvas(8000, 8000);
-    W = createInput(400);  // as % of starting canvas
-    H = createInput(400);
+    c = createCanvas(800, 800);
+    W = createInput(40);  // as % of starting canvas
+    H = createInput(40);
     strokeW = createInput(4);  // H * .05                                                          // <<<<<<<<<<<<<???????????????
     
     randomQtyElement = select('#randomQty'); 
@@ -112,7 +110,7 @@ function setup() {
     square = true;
     
     dimensions = randomDimensions(square); 
-    canvas = new Canvas(400, 400);   
+    canvas = new Canvas(40, 40);   
     
     updateCanvas = select('#updateCanvas');
     updateCanvas.mousePressed(getInput);
@@ -139,8 +137,8 @@ function setup() {
     
     
     
-   c1 = color(255,250,245);
-   c2 = color(255, 125, 20);
+   //c1 = color(255,250,245);
+   //c2 = color(255, 125, 20);
     
     
     
@@ -196,7 +194,7 @@ class Canvas {
             //point(this.coordinates[i][0], this.coordinates[i][1]);
         }
         */
-        bg = 'cells';
+        
             
         if(bg == 'background'){
  
@@ -306,8 +304,8 @@ class Canvas {
             cellHolder = 0;                //    <<<<<<<<<<<<<<<<<<<<!!!!!!!
               
             */
-                console.log("something");
-            background(palette.colors[0]);    
+
+            //background(palette.colors[0]);    
             
             let lineCount = 1;
             let lineCount2 = height/canvas.H;
@@ -354,13 +352,13 @@ class Canvas {
                 
               fill(newFill);     
                 
-                let shape = 'stars';
+                //let shape = 'roses';
 
                 if(shape == 'diamonds'){
                     quad(canvas.cells[i][0] + canvas.cells[i][2]/2, canvas.cells[i][1], canvas.cells[i][0] + canvas.cells[i][2], canvas.cells[i][1] + canvas.cells[i][3]/2, canvas.cells[i][0] + canvas.cells[i][2]/2, canvas.cells[i][1] + canvas.cells[i][3],  canvas.cells[i][0], canvas.cells[i][1] + canvas.cells[i][3]/2);  
                 }
                 else if(shape == 'polygons'){
-                    polygon(canvas.coordinates[i][2], canvas.coordinates[i][3], canvas.W/2, floor(random(3,11))); 
+                    drawTarget(canvas.coordinates[i][2], canvas.coordinates[i][3], canvas.W/2, floor(random(3,11))); 
                 }
                 else if(shape == 'snowflakes'){
                     let newFlake = new Snowflake(40, canvas.coordinates[i][2], canvas.coordinates[i][3], palette); 
@@ -598,9 +596,24 @@ class Palette {
 
 
 
+/*
+// ELLIPSE TARGET
+public PShape drawTarget(float xloc, float yloc, int size, int numSteps) {
+  PShape target = createShape(GROUP);
+  float grayvalues = 255/numSteps;
+  float steps = size/numSteps;
+  for (int i = 0; i < numSteps; i++) {
+    //fill(245, i*grayvalues*.12);
+    //noStroke();
+    stroke(125);
+    PShape ellipse = createShape(ELLIPSE, xloc, yloc, size - i*steps, size - i*steps);
+    target.addChild(ellipse);                                                              //  <<<<<<<<  instead of arrays below??
+  }
+  noFill();
+  return target;
+}
 
-
-
+*/
 
 
 
@@ -847,6 +860,21 @@ function randomDimensions(square){
         
     return newDimensions;
 }
+
+function drawTarget(xLoc, yLoc, size, numSteps, colors, polySides) {
+  let alphaValues = 255/numSteps;
+  let steps = size/numSteps;
+  let strokePicker = 2;
+
+  for (let i = 0; i < numSteps; i++) {
+    stroke(colors[strokePicker]);                  
+    fill(245, i * alphaValues * .17);    
+    polygon(xloc, yloc, size - i*steps, polySides, numSteps);                                   
+    strokePicker += 1;                               
+  }
+  noFill();
+}
+
 
 function polygon(x, y, radius, npoints) {
   let angle = TWO_PI / npoints;
@@ -1421,57 +1449,6 @@ arc(479, 300, 280, 280, PI, TWO_PI);
 
 
 
-
-// ELLIPSE TARGET
-public PShape drawTarget(float xloc, float yloc, int size, int numSteps) {
-  PShape target = createShape(GROUP);
-  float grayvalues = 255/numSteps;
-  float steps = size/numSteps;
-  for (int i = 0; i < numSteps; i++) {
-    //fill(245, i*grayvalues*.12);
-    //noStroke();
-    stroke(125);
-    PShape ellipse = createShape(ELLIPSE, xloc, yloc, size - i*steps, size - i*steps);
-    target.addChild(ellipse);                                                              //  <<<<<<<<  instead of arrays below??
-  }
-  noFill();
-  return target;
-}
-
-// POLY TARGET
-public PShape[] drawPolyTarget(float xloc, float yloc, int size, int polySides, int numSteps, color[] colors) {
-  float alphaValues = 255/numSteps;
-  float steps = size/numSteps;
-  int strokePicker = 2;
-  PShape[] polyTarget = new PShape[numSteps];
-  for (int i = 0; i < numSteps; i++) {
-    
-    stroke(colors[strokePicker]);                        // tying to color picker really** limits qty of layers to 10
-    fill(245, i * alphaValues * .17);    //  fill transfered ??? to shape ?
-    PShape poly = drawPolygon(xloc, yloc, size - i*steps, polySides, 12);                                              // <<<<<<<   re implement randoms   not  12
-    polyTarget[i] = poly;
-    strokePicker += 1;                                // get the color of this square < if same as strokePicker   strokePicker +=1
-  }
-  noFill();
-  return polyTarget;
-}
-
-// Draws polygons with variables sides  
-public PShape drawPolygon(float x, float y, float radius, int npoints, int strokeWeight) {
-  float angle = TWO_PI / npoints;
-  PShape polygon = createShape();
-  
-  polygon.beginShape();  
-  polygon.strokeWeight(strokeWeight);                                  // stroke as a % of  H / W           Smaller size in cell
-  
-  for (float a = 0; a < TWO_PI; a += angle) {
-    float sx = x + cos(a) * radius;
-    float sy = y + sin(a) * radius;
-    polygon.vertex(sx, sy);
-  }
-  polygon.endShape(CLOSE);
-  return polygon;
-}
 
 
 

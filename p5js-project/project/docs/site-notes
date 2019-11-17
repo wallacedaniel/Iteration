@@ -1,0 +1,84 @@
+<table class="shop_table shop_table_responsive cart woocommerce-cart-form__contents" cellspacing="0">
+		<thead>
+			<tr>
+				<th class="product-remove">&nbsp;</th>
+				<th class="product-thumbnail">&nbsp;</th>
+				<th class="product-name">Product</th>
+				<th class="product-price">Price</th>
+				<th class="product-quantity">Quantity</th>
+				<th class="product-subtotal">Total</th>
+			</tr>
+		</thead>
+		<tbody>
+			
+								<tr class="woocommerce-cart-form__cart-item cart_item">
+
+						<td class="product-remove">
+							<a href="https://www.iteration.gallery/cart/?remove_item=4a0c7872ea6c69556410158aa45310c1&amp;_wpnonce=ad6e609a8c" class="remove" aria-label="Remove this item" data-product_id="8584" data-product_sku="645295593">×</a>						</td>
+
+						<td class="product-thumbnail">
+						<a href="https://www.iteration.gallery/product/microfiber-duvet-cover-8/?attribute_home-decor-size=Queen"><img width="325" height="325" src="https://www.iteration.gallery/wp-content/uploads/2019/04/43421-14-325x325.jpg" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail img-fluid" alt="" srcset="https://www.iteration.gallery/wp-content/uploads/2019/04/43421-14-325x325.jpg 325w, https://www.iteration.gallery/wp-content/uploads/2019/04/43421-14-150x150.jpg 150w, https://www.iteration.gallery/wp-content/uploads/2019/04/43421-14-300x300.jpg 300w, https://www.iteration.gallery/wp-content/uploads/2019/04/43421-14-768x768.jpg 768w, https://www.iteration.gallery/wp-content/uploads/2019/04/43421-14-1024x1024.jpg 1024w, https://www.iteration.gallery/wp-content/uploads/2019/04/43421-14-90x90.jpg 90w, https://www.iteration.gallery/wp-content/uploads/2019/04/43421-14-600x600.jpg 600w, https://www.iteration.gallery/wp-content/uploads/2019/04/43421-14-100x100.jpg 100w, https://www.iteration.gallery/wp-content/uploads/2019/04/43421-14.jpg 1200w" sizes="(max-width: 325px) 100vw, 325px"></a>						</td>
+
+						<td class="product-name" data-title="Product">
+						<a href="https://www.iteration.gallery/product/microfiber-duvet-cover-8/?attribute_home-decor-size=Queen">Microfiber Duvet Cover - Queen</a>						</td>
+
+						<td class="product-price" data-title="Price">
+							<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>185.00</span>						</td>
+
+						<td class="product-quantity" data-title="Quantity">
+							<div class="quantity">
+		<label class="screen-reader-text" for="quantity_5cc8deb993a33">Microfiber Duvet Cover - Queen quantity</label>
+		<input type="number" id="quantity_5cc8deb993a33" class="input-text qty text" step="1" min="0" max="" name="cart[4a0c7872ea6c69556410158aa45310c1][qty]" value="1" title="Qty" size="4" inputmode="numeric">
+	</div>
+							</td>
+
+						<td class="product-subtotal" data-title="Total">
+							<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>185.00</span>						</td>
+					</tr>
+					
+			
+			<tr>
+				<td colspan="6" class="actions">
+
+											<div class="coupon">
+							<label for="coupon_code">Coupon:</label> <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="Coupon code"> <button type="submit" class="button" name="apply_coupon" value="Apply coupon">Apply coupon</button>
+													</div>
+					
+					<button type="submit" class="button" name="update_cart" value="Update cart" disabled="">Update cart</button>
+
+					
+					<input type="hidden" id="woocommerce-cart-nonce" name="woocommerce-cart-nonce" value="ad6e609a8c"><input type="hidden" name="_wp_http_referer" value="/cart/">				</td>
+			</tr>
+
+					</tbody>
+	</table>
+    
+    
+    
+    
+    
+    
+    
+    https://www.facebook.com/IterationArt/
+    https://twitter.com/IterationArt
+    https://www.pinterest.com/iteration2286/
+    https://www.instagram.com/iterationart
+    https://iteration-gallery.tumblr.com/
+    
+    
+   https://vis4.net/chromajs/
+   https://www.w3schools.com/colors/colors_monochromatic.asp
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
