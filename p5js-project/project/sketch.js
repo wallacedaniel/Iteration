@@ -2,25 +2,187 @@
 
 // Layers and  layer types would be good for learning inheritence in JS
 
+
+
+
+
 class Iteration {
   constructor(width, height) {
     this.width;
     this.height;
     this.layers = []; 
   }
+    
+  paint(){
+      
+  }
 
 }
 
 
-// UI is ...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// starts w default 100 total random coords w uniform default radius scale canvasW * .05  
+
+class RandomLayer {
+  constructor(canvasW, canvasH) {
+    this.W = canvasW;                     ///   START OVER WIDTH HEIGHT CONVERSION W THIS.W AND H
+    this.H = canvasH;
+    this.type = 'random';
+    this.qty = 100;
+
+    this.coordinates = this.newCoordinates(this.qty);    
+  
+    this.radiusScale = canvasW * .05;
+    this.coordsRadius = [];
+      
+    this.shapes = [];
+    this.bounds;
+  }
+    
+    
+    
+    
+    get randomLayerQty() {   // badly named?..shouldnt include random .. unclear as to function
+        return this.qty;
+    }
+    set randomLayerQty(qty) {
+        this.qty = qty;
+    }
+    get randomLayerCoords() {
+        return this.coordinates;
+    }
+    set randomLayerCoords(coordinates) {
+        this.coordinates = coordinates;
+    } 
+    get randomLayerSpread() {
+        return this.spread;
+    }
+    set randomLayerSpread(spread) {
+        this.spread = spread;
+    }
+    get randomLayerBounds() {
+        return this.bounds;
+    }
+    set randomLayerBounds(bounds) {   
+        this.bounds = bounds;
+    }  
+    
+    get randomLayerRadius() {
+        return this.radiusScale;
+    }
+    set randomLayerRadius(radius) {   
+        this.radiusScale = radius;
+    } 
+    
+    get randomLayerRadiusScale() {
+        return this.radiusScale;
+    }
+    set randomLayerRadiusScale(scale) {   
+        this.radiusScale = scale;
+    }  
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    newCoordinates(qty, radiusScale, radiusVariation, spread, bounds){   // figure out easy default radiusScale then pass in multiplier
+        
+        this.randomLayerQty = qty;
+        this.randomLayerRadiusScale = radiusScale;
+        
+        let radiusCoords = [];
+        
+        for (let i = 0; i < qty; i++) {
+            
+            if(radiusVariation){
+                radiusCoords.push(int(random(radiusScale - radiusVariation, radiusScale + radiusVariation)));         
+            }
+            else {
+                radiusCoords.push(radiusScale);    
+            } 
+        }
+        this.randomLayerRadius = radiusCoords;                         
+        
+        
+    
+        
+        let coordinates = [];
+        
+        for (let i = 0; i < qty; i++) {          // for  the quantity  .. if spread ..  we have empty coords array like shape in ex.  ... 
+            
+             if(spread){
+                 
+                
+                let counter = 0; 
+
+                while(counter < 10000){ 
+
+
+                    let overlapping = false;
+                    let coords = createVector(int(random(0, this.W + 1)), int(random(0, this.H + 1)));    
+
+                    for (let j = 0; j < coordinates.length; j++) {
+
+                          let existingCoord = coordinates[j];
+
+                          let d = dist(coords.x, coords.y, existingCoord.x, existingCoord.y);
+
+                          if (d < (radiusCoords[i] + radiusCoords[j]) * spread) {
+                            overlapping = true;
+                            break;
+                          }
+                        }
+
+                        if (!overlapping) {
+                          coordinates.push(coords);
+                          break;
+                        }
+
+                        counter++; 
+
+                    }
+
+             } else {
+                let coords = createVector(int(random(0, this.W + 1)), int(random(0, this.H + 1)));
+                coordinates.push(coords);
+             }
+             
+        }
+        
+        this.randomLayerCoords = coordinates;
+    }
+    
+ 
+}
+    
+    
+
 
 
 class GridLayer {
-  constructor(W, H, width, height) {
+  constructor(W, H, canvasW, canvasH) {
     this.type = 'grid';
     this.W = W;
     this.H = H;
-    this.coordinates = this.newCoordinates(this.W, this.H, width, height);
+    this.coordinates = this.newCoordinates(this.W, this.H, canvasW, canvasH);
       
     this.rows; 
     this.columns;                        
@@ -106,7 +268,7 @@ class GridLayer {
     newCoordinates(W, H, width, height){
         
         let coordinates = [];
-        for (let i = 0; i <= width; i += W) {  
+        for (let i = 0; i <= canvasW; i += W) {  
             for (let j = 0; j <= height; j += H) {
                  let coords = createVector(i, j);
                  coordinates.push(coords);
@@ -115,55 +277,55 @@ class GridLayer {
         this.W = W;
         this.H = H;
         this.gridCoordinates = coordinates;
-        if(this.rows){this.newRows(H, width, height);}
-        if(this.columns){this.newColumns(W, width, height);}
+        if(this.rows){this.newRows(H, canvasW, canvasH);}
+        if(this.columns){this.newColumns(W, canvasW, canvasH);}
         
-        if(this.cells){this.newCells(W, H, width, height);}
-        if(this.horizontals){this.newHorizontals(W, H, width, height);}
-        if(this.verticals){this.newVerticals(W, H, width, height);}
-        if(this.diagonalsA){this.newDiagonalsA(W, H, width, height);}
-        if(this.diagonalsB){this.newDiagonalsB(W, H, width, height);}
+        if(this.cells){this.newCells(W, H, canvasW, canvasH);}
+        if(this.horizontals){this.newHorizontals(W, H, canvasW, canvasH);}
+        if(this.verticals){this.newVerticals(W, H, canvasW, canvasH);}
+        if(this.diagonalsA){this.newDiagonalsA(W, H, canvasW, canvasH);}
+        if(this.diagonalsB){this.newDiagonalsB(W, H, canvasW, canvasH);}
     }
     
     
     // how and or why to get rows .... from coords ..  
     
-    newRows(H, width, height){
+    newRows(H, canvasW, canvasH){
         
         let rows = [];
         
-        for (let i = 0; i <= height; i += H) {        
+        for (let i = 0; i <= canvasH; i += H) {        
              let coords = createVector(0, i);
              let row = [];
              row.push(coords);
-             row.push(width);
+             row.push(canvasW);
              row.push(H); 
              rows.push(row);
         }
         this.gridRows = rows;      
     }   
     
-    newColumns(W, width, height){
+    newColumns(W, canvasW, canvasH){
         
         let columns = [];
         
-        for (let i = 0; i <= width; i += W) {        
+        for (let i = 0; i <= canvasW; i += W) {        
              let coords = createVector(i, 0);
              let column = [];
              column.push(coords);
              column.push(W);
-             column.push(height); 
+             column.push(canvasH); 
              columns.push(column);
         }
         this.gridColumns = columns;      
     }
     
-    newCells(W, H, width, height){
+    newCells(W, H, canvasW, canvasH){
         
         let cells = [];
         
-        for (let i = 0; i <= width; i += W) {  
-            for (let j = 0; j <= height; j += H) {  
+        for (let i = 0; i <= canvasW; i += W) {  
+            for (let j = 0; j <= canvasW; j += H) {  
                 let cell = {};
                 let coordinates = createVector(i, j);
                 cell.coords = coordinates;
@@ -176,11 +338,11 @@ class GridLayer {
         this.gridCells = cells;
     }
     
-    newHorizontals(W, H, width, height){
+    newHorizontals(W, H, canvasW, canvasH){
         
         let horizontals = [];
         
-        for (let i = 0; i <= height; i += H) { 
+        for (let i = 0; i <= canvasH; i += H) { 
              let wIterator = 0;   
              let horizontal = [];
              while(wIterator <= width){
@@ -194,14 +356,14 @@ class GridLayer {
         
     }
     
-    newVerticals(W, H, width, height){
+    newVerticals(W, H, canvasW, canvasH){
         
         let verticals = [];
 
-        for (let i = 0; i <= width; i += W) { 
+        for (let i = 0; i <= canvasW; i += W) { 
              let hIterator = 0;  
              let vertical = [];
-             while(hIterator <= height){
+             while(hIterator <= canvasH){
                  let coords = createVector(i, hIterator);
                  vertical.push(coords);
                  hIterator += H;
@@ -214,7 +376,7 @@ class GridLayer {
     
     // seems like diagonals can be condensed
     
-    newDiagonalsA(W, H, width, height){
+    newDiagonalsA(W, H, canvasW, canvasH){                        ///             FINISH WIDTH HEIGHT CONVERSION  
         
         let diagonals = [];
         let hCount = 1;
@@ -485,6 +647,7 @@ let i;
 let grid;
 let palette;
 let  c, canvasW, canvasH;
+let testRandom;
 
 
 function setup() {
@@ -503,24 +666,31 @@ function setup() {
     palette = new Palette(color1, color2, color3);
     palette.newSwatches(palette.colors);
     
-    grid = new GridLayer(200,160,400,400);
-//    grid = new GridLayer();
-    grid.newCoordinates(200,160,600,400);
-    grid.newRows(200,600,400);
-    grid.newColumns(200,600,400);
-    grid.newCells(200,200,600,400);
-    grid.newHorizontals(200,200,600,400);
-    grid.newVerticals(200,200,600,400);
-    grid.newDiagonalsA(200,200,600,400);
-    grid.newDiagonalsB(200,200,600,400);
+    grid = new GridLayer(200,200,800,800);
+    grid = new GridLayer();
+    grid.newCoordinates(200,200,800,800);
+    grid.newRows(200,800,800);
+    grid.newColumns(200,800,800);
+    grid.newCells(200,200,800,800);
+    grid.newHorizontals(200,200,800,800);
+    grid.newVerticals(200,200,800,800);
+    grid.newDiagonalsA(200,200,800,800);
+    grid.newDiagonalsB(200,200,800,800);
     
-    
+
     
     
     // Creates Canvas
     let canvasContainer = select('#canvas-container');
-    c = createCanvas(600, 400);
+    c = createCanvas(800, 800);
     c.parent(canvasContainer);
+    
+    
+    testRandom = new RandomLayer(800, 800);
+    testRandom.newCoordinates(200, width * .05, 20, 1.2);
+//    testRandom.newSpread(10);
+//    testRandom.newCoordsRadius(40, 15);
+    
     
     // Canvas Size Input
     canvasW = select('#canvas-w');                 // constrain and optimize interface on options
@@ -738,10 +908,54 @@ function removeLayer() {
 }
 
 
+
+let roseShapes = [
+    {'d':59, 'n':6},{'d':83, 'n':4},{'d':83, 'n':6},{'d':95, 'n':6},{'d':14, 'n':4},{'d':97, 'n':8},{'d':79, 'n':4},{'d':79, 'n':5},{'d':79, 'n':8},{'d':51, 'n':4},{'d':46, 'n':6},{'d':87, 'n':6},{'d':23, 'n':8},{'d':71, 'n':4},{'d':25, 'n':4},{'d':91, 'n':7},{'d':38, 'n':4},{'d':49, 'n':5},{'d':87, 'n':4},{'d':70, 'n':8},{'d':71, 'n':5},{'d':19, 'n':6},{'d':67, 'n':5},{'d':57, 'n':6},{'d':13, 'n':6},{'d':47, 'n':8},{'d':39, 'n':8},{'d':41, 'n':4}
+]; 
+
+
+
 function draw() {
     
-    stroke(100, 50, 200);
-    strokeWeight(1);
+    stroke(0);
+    
+    strokeWeight(2);
+    
+    for(let [index, coord] of testRandom.coordinates.entries()){
+        
+//        strokeWeight(testRandom.randomLayerRadius[index]);
+//        point(coord.x, coord.y);
+        
+        
+          fill(palette.swatches[int(random(0, palette.swatches.length - 1))][int(random(0, palette.swatches[0].length - 1))]);
+        
+           stroke(palette.swatches[int(random(0, palette.swatches.length - 1))][int(random(0, palette.swatches[0].length - 1))]);
+        
+        
+        
+            let d;
+            let n;
+            do {
+                d = int(random(1,10));
+                n = int((random(1,8)));
+            } while (d  == n || (d == 3 && n  == 1)  || (d == 6 && n  == 2)  || (d == 9 && n == 3)) ;
+            push();
+            translate(coord.x, coord.y);
+            rose(d, n, testRandom.randomLayerRadius[index]);
+            pop();  
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    }
+    
   
     
 //    grid.rows.forEach(function(el){
@@ -753,24 +967,8 @@ function draw() {
 //        rect(); 
 //    });
     
-    grid.cells.forEach(function(el){  
+    //grid.cells.forEach(function(el){  
         
-        
-        
-        
-    push();
-    translate(el.center.x, el.center.y);
-    roseM(int(random(10,100)), int(random(2,9)), el.W * .4);
-    pop();
-    
-        
-        
-        
-        
-        
-        
-        
-    });
 //        
 //       
 ////                                   
@@ -789,7 +987,7 @@ function draw() {
 //        //console.log(palette);
 //        
 //        
-//        stroke(palette.swatches[int(random(0, palette.swatches.length - 1))][int(random(0, palette.swatches[0].length - 1))]);
+ //       stroke(palette.swatches[int(random(0, palette.swatches.length - 1))][int(random(0, palette.swatches[0].length - 1))]);
 //        //stroke(palette.swatches[2][int(random(0, palette.swatches[0].length - 1))]);
 //        //stroke(palette.swatches[2][0]);
 //        
@@ -823,10 +1021,28 @@ function draw() {
 ////        rose(d, n, el.W * .4);
 ////        pop();  
 ////        
+//        let roseIndex = int(random(0,roseShapes.length));
+//        
+//        let d = int(random(10,100));
+//        let n = int(random(2,9));    
+//        
+//        push();
+//        translate(el.center.x, el.center.y);
+//       //roseM(d, n, el.W * .5);
+////roseM(79, 4, el.W * .5);
+//        roseM(roseShapes[roseIndex].d, roseShapes[roseIndex].n, el.W * .5);
+//        console.log('d = ' + d + ' and n = ' + n);
+//        pop();
+//
+//        
+        
 //        
 //        // STARS
-//        //star(el.center.x, el.center.y, el.W * .2, el.W * .4, int((random(4,24))));      
+//        //star(el.center.x, el.center.y, el.W * .2, el.W * .4, int((random(4,24)))); 
+    
 //    });
+    
+    
 //  
 }
 
