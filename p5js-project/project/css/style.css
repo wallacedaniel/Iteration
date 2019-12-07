@@ -1,23 +1,109 @@
+body{
+    color: #042441;
+    background-color: #fbfbfb;
+}
+
+#app-sidebar{
+    border-right:1px solid #bdbdbd;
+}
+
+canvas {
+    background:#fff;
+}
+
 li {
     list-style-type: none;
 }
+
+.h1, h1 {
+    font-size: 1.75rem;
+    padding-top: 6px;
+}
+
+
+.h2, h2 {
+    font-size: 1.25rem;
+    margin-bottom: 0;
+}
+
+/*
 #controls-container{
     background: yellow;
 }
+*/
 #controls-main{
-    flex-grow: 9;
+    background: #d6d6d6;
+    padding-top: 6px;
 }
+
+#controls-sidebar input{
+    width: 100%;
+    padding-left: 4px;
+    border-radius: 4px;
+}
+
+#controls-main div {
+    padding: 10px 20px;
+}
+
+#controls-sidebar {
+    background: #f0f0f0;
+    padding-top: 6px;
+}
+
+/*
 #canvas-panel{
     background: blue;
 }
-}           
-#canvas-types{}                                                                                                
-#canvas-size{}   
-#canvas-w, #canvas-h{
-    width:10%;
+*/
+#canvas-panel li{
+   
 }
-#layer-drop{}                                                        
-#shapes=container{}                                                               
+
+#canvas-panel div{
+    padding: 0;
+}
+
+#size{
+    text-align: right;
+    padding: 6px 16px 0 0;
+    background: #b9b9b9;
+}
+
+#title {
+    background: #b9b9b9;
+}
+
+#size label {
+    margin-right: 2px;
+}
+
+#canvas-panel h2{
+    padding: 0 15px;
+}
+           
+#canvas-types{}                                                                                                
+#canvas-size{
+    margin-left: 5px;
+    margin-bottom: 4px;
+}   
+#canvas-w, #canvas-h{
+   width: 26%;
+    padding-left: 4px;;
+    border-radius: 4px;
+}
+#layer-drop{}
+#layer-types, #shape-types{
+     padding-left: 0;
+     margin: 0;
+}
+
+#layer-types li, #shape-types li{
+     padding-left: 2px;
+    padding-right: 2px;
+}
+
+                                                            
 #shapes{}                                                              
 #layers=container{}              
 #grid-layer{}               
@@ -26,12 +112,14 @@ li {
 #random-bounds{}                                        
 #horizon-layer{}                             
 #simple-layer{}            
-#controls-sidebar{
-    flex-grow: 3;
-}
+/*
+
+*/
+/*
 #palette-controls{
     background: red;
 }                                                    
+*/
 #palette-steps{}                                                                                  
 #palette-types{}                                                                             
 #color-1{}
@@ -42,6 +130,7 @@ li {
 #color-3-display{}
 #create-palette{}
 #saved-palettes{}                                                                                                    
+/*
 #saved-images{
     background: purple; 
 }            
@@ -51,6 +140,7 @@ li {
 #app-controls{
     background: aliceblue;
 }
+*/
 #play{}                               
 #stop{}                                     
 #rate{}
@@ -60,15 +150,21 @@ li {
 
 
 #canvas-container{
-
+    text-align: center;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 12px;
 }
 #iteration-canvas{
 
 }
 
+/*
 .flex-container {
   display: flex;
 }
+*/
 
 .hide {
     display: none;

@@ -4,118 +4,134 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iteration</title>  
-    <link rel="stylesheet" type="text/css" href="css/style.css"> 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script src="../p5.min.js"></script>
     <script src="../addons/p5.dom.min.js"></script>
     <script src="../addons/p5.sound.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.0.3/chroma.min.js"></script>
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.0.3/chroma.min.js"></script>-->
     <script src="sketch.js"></script> 
   </head>
   <body>
-    <div>
-        
-        
-        
-        
-        <section id="controls-container" class="flex-container">
-            <div id="controls-main">                                        <!-- flex grow into css -->                  
-                <div id="canvas-panel"> 
-                    <h2>Iteration</h2>
-                    <h3>Add Layers</h3>
-                    <ul id="layer-types">                                                                  
-                    </ul>
-                    <h3>Canvas Size</h3>
-                    <label for="canvas-w">Width</label>                               <!--  canvas size 100 min 12000 max rounds to divisible by 10 -->
-                    <input type="text" id="canvas-w">
-                    <label for="canvas-h">Height</label>   
-                    <input type="text" id="canvas-h">
-                    <button id="canvas-size">Update</button>
-                </div>
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                <div id="shapes-container">                                                      <!-- shapes are draggable into layer panels  -->
-                    <h2>Shapes Palette</h2>
-                    <ul id="shape-types">                                                            <!-- for shapess type add li  ---   li's are draggable into layer drops -->                                                        
-                    </ul>
-                </div>
-                <div id="layers-container">
-                    <h2>Layers</h2>
-                </div>  
-            </div>
-            <div id="controls-sidebar">
-                <div id="palette-controls">
-                    <h2>Palette</h2>
-                    <label for="palette-steps">Steps</label>                              
-                    <input type="number" id="palette-steps">  
-                    <h2>Types</h2>  
-                                                                                <!-- range resulting length min 3 max?         -->                  
-                    <ul id="palette-types">                                     <!-- for  palette type in palette types  - depending on palette type display qty of color assigners -->                    
-                    </ul>    
-                                                                                                                                        <!-- select and assign to color1/2/3 -->
-                    <label for="color-1">Color 1</label>                              
-                    <input type="text" id="color-1">
-                    <div id="color-1-display"></div>                   <!-- display squares are color pickers that auto assign-->
-                    <label for="color-2">Color 2</label>                              
-                    <input type="text" id="color-2">
-                    <div id="color-2-display"></div>                                   <!-- rgb enter/sgl inpu -->
-                    <label for="color-3">Color 3</label>                              
-                    <input type="text" id="color-3">
-                    <div id="color-3-display"></div> 
-                    <button id="create-palette">Create</button>  
-                </div>
-                <div id="saved-palettes">                                       <!--  drag drop palettes on receiving elements -->
+    <div class="container-fluid ">
+        <div class="row">
+            <div id="app-sidebar" class="col-3">
+            <section id="controls-container">      <!--     these ids in here could use renaming-->
+                    <div class="row">
+                        <div id="title" class="col-4">
+                            <h1>Iteration</h1>
+                        </div> 
 
-                </div>                                                             <!--  saved palettes display the color range -->
-                <div id="saved-images">
-                    <h2>Image Palette</h2>                                        <!--  drop directly in then draggable into layers w settings like shapes -->
-                                                                                 <!--  drage drop saved image  >  click set image to  >  pop up > settings -->
-                </div>
-                <div id="saved-designs">                                          <!-- click save designd   >   pop up  > load?saveData?close? -->                                            <!--  Random/Range options -->
-                    <h2>Desgin Templates</h2>
-                </div>
-                <div id="app-controls">
-                    <button id="play">Play</button>                                
-                    <button id="stop">Stop</button>
-                    <label for="rate">Rate</label>                                <!--  range -- -->
-                    <input type="text" id="rate">
-                    <label for="name">Name</label>                                 <!--  include in save -->
-                    <input type="text" id="name">
-                    <label for="data">Save Data</label>                            <!--  write to file -->                        
-                    <input type="radio" id="data">
-                    <label for="design">Save Design</label>                        <!-- shallow save -->                          
-                    <input type="radio" id="design">
-                    <button id="save">Save</button>
-                </div>
+                        <div id="size" class="col-8">
+                                <label for="canvas-w">W</label>                               <!--  canvas size 100 min 12000 max rounds to divisible by 10 -->
+                                <input type="text" id="canvas-w">
+                                <label for="canvas-h">H</label>   
+                                <input type="text" id="canvas-h">
+                                <button id="canvas-size" type="button" class="btn btn-secondary">@</button>
+                        </div>
+                        
+                        
+                        <div id="controls-main" class="col-9">                                                         
+                          
+                            <h2>Layers</h2>
+                            <ul id="layer-types" class="row">                                                                  
+                            </ul>
+
+
+
+                                                 <!-- shapes are draggable into layer panels  -->
+                            <h2>Shapes</h2>
+                            <ul id="shape-types" class="row">                                                            <!-- for shapess type add li  ---   li's are draggable into layer drops -->                                                        
+                            </ul>
+                            
+                            <div id="layers-container">
+
+                            </div>  
+                        </div>
+
+
+
+
+                        <div id="controls-sidebar" class="col-3">
+                            <div id="palette-controls">
+                                <h2>Palette</h2>
+                                <label for="palette-steps">Steps</label>                              
+                                <input type="number" id="palette-steps">  
+                                <h2>Types</h2>  
+                                                                                            <!-- range resulting length min 3 max?         -->                  
+                                <ul id="palette-types">                                     <!-- for  palette type in palette types  - depending on palette type display qty of color assigners -->                    
+                                </ul>    
+                                   
+                                
+                                <!-- select and assign to color1/2/3 -->
+                                
+                                
+                                <label for="color-1">Color 1</label>                              
+                                <input type="text" id="color-1">
+                                <div id="color-1-display"></div>                   <!-- display squares are color pickers that auto assign-->
+                                <label for="color-2">Color 2</label>                              
+                                <input type="text" id="color-2">
+                                <div id="color-2-display"></div>                                   <!-- rgb enter/sgl inpu -->
+                                <label for="color-3">Color 3</label>                              
+                                <input type="text" id="color-3">
+                                <div id="color-3-display"></div> 
+                                <button id="create-palette" type="button" class="btn btn-secondary">P</button>  
+                            </div>
+                            <div id="saved-palettes">                                       <!--  drag drop palettes on receiving elements -->
+
+                            </div>                                                             <!--  saved palettes display the color range -->
+                            <div id="saved-images">
+                                <h2>Image Palette</h2>                                        <!--  drop directly in then draggable into layers w settings like shapes -->
+                                                                                             <!--  drage drop saved image  >  click set image to  >  pop up > settings -->
+                            </div>
+                            <div id="saved-designs">                                          <!-- click save designd   >   pop up  > load?saveData?close? -->                                            <!--  Random/Range options -->
+                                <h2>Desgin Templates</h2>
+                            </div>
+                            <div id="app-controls">
+                                <button id="play" type="button" class="btn btn-secondary">></button>                                
+                                <button id="stop" type="button" class="btn btn-secondary">[]</button>
+                                <label for="rate">Rate</label>                                <!--  range -- -->
+                                <input type="text" id="rate">
+                                <label for="name">Name</label>                                 <!--  include in save -->
+                                <input type="text" id="name">
+                                <label for="data">Save Data</label>                            <!--  write to file -->                        
+                                <input type="radio" id="data">
+                                <label for="design">Save Design</label>                        <!-- shallow save -->                          
+                                <input type="radio" id="design">
+                                <button id="save" type="button" class="btn btn-secondary">S</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </section>
             </div>
-        </section>
-        <section  id="canvas-container">
-        </section> 
-        
-        <section >
-            
-            <div>
-            
+            <div class="col-9">
+                <section  id="canvas-container">
+                </section> 
+            </div>
+        </div>
+    </div>
                 <!-- assuming filtered values of ??? ..assuming fully implemented canvas H and W input 
             
                 <!-- sliders mapped to H/W options available to grid based on canvas H and W -->
                 
                 <!-- this full spike updates coordinates and draws points -->
             
-            </div>
-            
-        </section> 
-        
-    </div>
   </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+

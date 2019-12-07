@@ -1,5 +1,11 @@
 /*
 
+TABLES
+https://www.webadvanced.com/news/painless-responsive-tables
+
+colorpicker
+https://mdbootstrap.com/plugins/jquery/color-picker/
+
 colors
 https://www.sessions.edu/color-calculator/
 
