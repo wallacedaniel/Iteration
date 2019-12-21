@@ -1,0 +1,234 @@
+
+
+#add_payment_method table.cart td, #add_payment_method table.cart th, .woocommerce-cart table.cart td, .woocommerce-cart table.cart th, .woocommerce-checkout table.cart td, .woocommerce-checkout table.cart th, .woocommerce table.shop_table td {
+    max-width: 100px;
+}
+
+.shop_table a, .woocommerce-Price-amount, #add_payment_method table.cart input, .woocommerce-cart table.cart input, .woocommerce-checkout table.cart input{
+	display: block;
+}
+
+.woocommerce-cart.woocommerce-page .woocommerce [name="update_cart"].button {
+    margin: 15px auto;
+    display: block;
+}
+
+.woocommerce .cart-collaterals .cart_totals, .woocommerce-page .cart-collaterals .cart_totals {
+    width: 100%;
+    float: none;
+}
+
+.woocommerce-cart.woocommerce-page .woocommerce .cart_totals h2 {
+    text-align: center;
+	margin-bottom: 30px;
+}
+
+.woocommerce-cart table.cart img {
+    width: 70%;
+}
+
+.woocommerce table.shop_table td {
+    padding: 0px 12px;
+	line-height: 0.5;
+    font-size: 1.2em;
+}
+
+#add_payment_method .wc-proceed-to-checkout a.checkout-button, .woocommerce-cart .wc-proceed-to-checkout a.checkout-button, .woocommerce-checkout .wc-proceed-to-checkout a.checkout-button {
+    text-align: left;
+    padding-top: .2em;
+    width: 33%;
+    margin: 0 auto;
+}
+
+pre {
+	overflow: hidden;
+}
+
+.woocommerce .cart-collaterals::after, .woocommerce .cart-collaterals::before, .woocommerce-page .cart-collaterals::after, .woocommerce-page .cart-collaterals::before {
+    content: none;
+}
+
+.woocommerce table.shop_table tbody:first-child tr:first-child td, .woocommerce table.shop_table tbody:first-child tr:first-child th {
+    vertical-align: middle;
+}
+
+.woocommerce-cart td{
+	line-height: .4 !important;
+	vertical-align: middle !important;
+}
+
+.woocommerce ul#shipping_method li label {
+    display: inline-flex;
+	float: left;
+}
+
+.woocommerce table.shop_table th {
+    padding: 9px 12px 9px 20px;
+}
+
+.woocommerce-shipping-totals th {
+	padding-top:20px;
+}
+
+body .shipping p {
+    line-height: 0;
+}
+
+.woocommerce .cart-collaterals, .woocommerce-page .cart-collaterals {
+    line-height: 0;
+}
+
+.woocommerce table.shop_table {
+	margin: 0;
+}
+
+.woocommerce table.shop_table th {
+    line-height: 2em;
+    font-size: 1.2em;
+}
+
+.maincontainer .post-contents .post-category, .maincontainer .post-contents .post-title, .maincontainer .post-contents .post-date {
+    margin-bottom: 0;
+}
+
+.maincontainer .post-contents .single-page-title.post-title h1 {
+    margin-bottom: 0px;
+}
+
+#add_payment_method .wc-proceed-to-checkout, .woocommerce-cart .wc-proceed-to-checkout, .woocommerce-checkout .wc-proceed-to-checkout {
+    padding: 0;
+	margin-top:33px;
+}
+
+.product-remove {
+	width: 5%;
+}
+
+.product-name {
+	width: 45%;
+}
+
+.woocommerce-page form.checkout.woocommerce-checkout {
+    line-height: 0;
+}
+
+.woocommerce form .form-row::after, .woocommerce form .form-row::before, .woocommerce-page form .form-row::after, .woocommerce-page form .form-row::before {
+	content: none;
+}
+
+.woocommerce-form__label-for-checkbox {
+	display: inline;
+}
+
+.woocommerce form.checkout_coupon, .woocommerce form.login, .woocommerce form.register {
+    line-height: 0;
+	margin: 0;
+}
+
+form .form-row input.input-text, .woocommerce form .form-row textarea {
+    float: left;
+}
+
+.woocommerce .woocommerce-form-login .woocommerce-form-login__rememberme {
+    display: inline;
+}
+
+.lost_password a {
+	float: left;
+}
+
+.woocommerce form .form-row label {
+    line-height: 1.5;
+}
+
+.woocommerce-account .woocommerce::after, .woocommerce-account .woocommerce::before {
+    content: none;
+}
+
+.woocommerce-billing-fields__field-wrapper {
+	padding-top: 16px;
+}
+
+.woocommerce-billing-fields__field-wrapper .form-row label {
+    line-height: 1.2;
+}
+
+.woocommerce-checkout-review-order-table td{
+	padding: 16px 12px;
+}
+
+#add_payment_method .checkout .col-2 h3#ship-to-different-address, .woocommerce-cart .checkout .col-2 h3#ship-to-different-address, .woocommerce-checkout .checkout .col-2 h3#ship-to-different-address {
+    line-height: 0;
+}
+
+.woocommerce-checkout-review-order-table .woocommerce-Price-amount {
+	display: inline-block;
+}
+
+#post-4907 .woocommerce table.shop_table .product-name, #post-4907 .woocommerce table.shop_table .product-total  {
+    line-height: 1;
+    padding-bottom: 18px;
+}
+
+#add_payment_method #payment ul.payment_methods, .woocommerce-cart #payment ul.payment_methods, .woocommerce-checkout #payment ul.payment_methods {
+    padding: 0 1em;
+}
+
+#add_payment_method #payment ul.payment_methods, .woocommerce-cart #payment ul.payment_methods, .woocommerce-checkout #payment ul.payment_methods {
+    padding: 0 1em;
+    margin: 0;
+}
+
+.woocommerce-error, .woocommerce-info, .woocommerce-message {
+	margin: 0;
+}
+
+#add_payment_method #payment div.payment_box, .woocommerce-cart #payment div.payment_box, .woocommerce-checkout #payment div.payment_box {
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0 1em;
+    margin: 0;
+}
+
+#add_payment_method #payment ul.payment_methods li:not(.woocommerce-notice)::before, .woocommerce-cart #payment ul.payment_methods li:not(.woocommerce-notice)::after, .woocommerce-cart #payment ul.payment_methods li:not(.woocommerce-notice)::before, .woocommerce-checkout #payment ul.payment_methods li:not(.woocommerce-notice)::after, .woocommerce-checkout #payment ul.payment_methods li:not(.woocommerce-notice)::before {
+    content: none;
+}
+
+#add_payment_method #payment ul.payment_methods li, .woocommerce-cart #payment ul.payment_methods li, .woocommerce-checkout #payment ul.payment_methods li {
+    line-height: 0.4;
+}
+
+#add_payment_method #payment div.payment_box p:last-child, .woocommerce-cart #payment div.payment_box p:last-child, .woocommerce-checkout #payment div.payment_box p:last-child {
+    line-height: 0;
+}
+
+.woocommerce-privacy-policy-text p {
+	margin: 0;
+}
+
+.woocommerce #payment #place_order, .woocommerce-page #payment #place_order {
+    float: none;
+    display: block;
+	margin: 10px auto 0;
+    font-size: 18px;
+}
+
+.woocommerce ul#shipping_method li {
+    line-height: 0;
+}
+
+@media screen and (max-width: 992px) {
+	
+}
+
+
+
+
+
+
+
+
+
+
+

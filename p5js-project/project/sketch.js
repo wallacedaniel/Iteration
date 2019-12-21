@@ -28,8 +28,8 @@ class Iteration {
 class Layer { 
   constructor(type, canvasW, canvasH) {
     this.type = type;
-    this.canvasW = canvasW;
-    this.canvasH = canvasH; 
+    this.W = canvasW;
+    this.H = canvasH; 
     this.shapes = [];
     this.palette = [];
     this.add(this.type);
@@ -38,8 +38,8 @@ class Layer {
   add(type) {
       
       
-      let layer = new GridLayer();
-      layer.newCoordinates(40,40,600,400);
+//      let layer = new GridLayer();
+//      layer.newCoordinates(40,40,600,400);
     
 //    layer.newRows(40,600,400);
 //    layer.newColumns(40,600,400);
@@ -49,42 +49,41 @@ class Layer {
 //    layer.newDiagonalsA(40,40,600,400);
 //    layer.newDiagonalsB(40,40,600,400);
   
-      i.layers.push(layer);
+      //i.layers.push(layer);
 
       // adds layer panel to layer container
       let layersContainer = select('#layers-container');                               
       let layerPanel = createElement('div'); 
       layerPanel.parent(layersContainer);
-      let layerTitle = createElement('h3', layer.type);
+      let layerTitle = createElement('h3', this.type);
       layerTitle.parent(layerPanel);
       //layerTitle.mousePressed(layerToggle);
-      let settings = layer.settingsUI();   
-      let settingsContainer = createDiv(settings);
-      settingsContainer.parent(layerPanel);
+//      let settings = layer.settingsUI();   
+//      let settingsContainer = createDiv(settings);
+//      settingsContainer.parent(layerPanel);
       
-    
     
       // creates remove button
       let removeButton = createElement('button', 'Remove'); 
       removeButton.parent(layerPanel);
-      removeButton.mousePressed(removeLayer); 
+      removeButton.mousePressed(this.remove); 
+      
   }
     
   remove() {
       
       let layerPanel = this.parent();
       this.parent().remove();
-      
   }
 }
 
 class RandomLayer extends Layer {
-    constructor(type, canvasW, canvasH) {
-    super(type, canvasW, canvasH); 
-    this.qty = 100;
-    this.coordinates = this.randomLayerCoords(this.qty);   
-    this.radiusScale = canvasW * .05;
-    this.coordsRadius = [];
+    constructor(canvasW, canvasH) {
+        super('random', canvasW, canvasH); 
+        this.qty = 100;
+        this.coordinates = [];//this.newCoordinates(this.qty);   
+        this.radiusScale = canvasW * .05;
+        this.coordsRadius = [];
     }
     
     get randomLayerQty() {   
@@ -97,6 +96,7 @@ class RandomLayer extends Layer {
         return this.coordinates;
     }
     set randomLayerCoords(coordinates) {
+        
         this.coordinates = coordinates;
     } 
     get randomLayerRadius() {
@@ -112,7 +112,9 @@ class RandomLayer extends Layer {
         this.radiusScale = scale;
     }  
     
-     newCoordinates(qty, radiusScale, radiusVariation, spread, bounds){   
+    newCoordinates(qty, radiusScale, radiusVariation, spread){ 
+        
+        
         
         this.randomLayerQty = qty;
         this.randomLayerRadiusScale = radiusScale;
@@ -132,7 +134,7 @@ class RandomLayer extends Layer {
         
         let coordinates = [];
         
-        for (let i = 0; i < qty; i++) {         
+        for (let i = 0; i < qty; i++) {
             
              if(spread){
  
@@ -141,7 +143,7 @@ class RandomLayer extends Layer {
                 while(counter < 10000){ 
 
                     let overlapping = false;
-                    let coords = createVector(int(random(0, this.W + 1)), int(random(0, this.H + 1)));    
+                    let coords = createVector(int(random(0, super.W + 1)), int(random(0, super.H + 1)));  //  
 
                     for (let j = 0; j < coordinates.length; j++) {
 
@@ -168,23 +170,252 @@ class RandomLayer extends Layer {
     }
 }
 
-class GridLayer extends Layer {
-  constructor(W, H, canvasW, canvasH) {
-    this.type = 'grid';
-    this.W = W;
-    this.H = H;
-    this.coordinates = this.newCoordinates(this.W, this.H, canvasW, canvasH);
-      
-    this.rows; 
-    this.columns;                        
-    this.cells; 
-    this.horizontals;
-    this.verticals;
-    this.diagonalsA;
-    this.diagonalsB;           //  ********  WANT EVERYTHING BESIDES NEW COORDINATES AS PRIVATE TO THE CLASS *****
-  }
+class tempGridLayer extends Layer {
+    constructor(type, canvasW, canvasH, W, H) {
+        super(type, canvasW, canvasH); 
+        this.W = W;
+        this.H = H;
+        this.coordinates = this.newCoordinates(this.W, this.H, canvasW, canvasH);
+        this.rows; 
+        this.columns;                        
+        this.cells; 
+        this.horizontals;
+        this.verticals;
+        this.diagonalsA;
+        this.diagonalsB;           
+    }
+  
+    get gridW() {
+        return this.W;
+    }
+    set gridW(W) {
+        this.W = W;
+    }
+    get gridH() {
+        return this.H;
+    }
+    set gridH(H) {
+        this.H = H;
+    }
+    get gridCoordinates() {
+        return this.coordinates;
+    }
+    set gridCoordinates(coordinates) {
+        this.coordinates = coordinates;
+    }   
+    get gridRows() {
+        return this.rows;
+    }
+    set gridRows(rows) {
+        this.rows = rows;
+    }
+    get gridColumns() {
+        return this.columns;
+    }
+    set gridColumns(columns) {
+        this.columns = columns;
+    }
+    get gridCells() {
+        return this.cells;
+    }
+    set gridCells(cells) {
+        this.cells = cells;
+    }
+    get gridHorizontals() {
+        return this.horizontals;
+    }
+    set gridHorizontals(horizontals) {
+        this.horizontals = horizontals;
+    }
+    get gridVerticals() {
+        return this.verticals;
+    }
+    set gridVerticals(verticals) {
+        this.verticals = verticals;
+    }
+    get gridDiagonalsA() {
+        return this.diagonalsA;
+    }
+    set gridDiagonalsA(diagonalsA) {
+        this.diagonalsA = diagonalsA;
+    }
+    get gridDiagonalsB() {
+        return this.diagonalsB;
+    }
+    set gridDiagonalsB(diagonalsB) {
+        this.diagonalsB = diagonalsB;
+    }
     
+    newCoordinates(W, H, width, height){
+        
+        let coordinates = [];
+        for (let i = 0; i <= canvasW; i += W) {  
+            for (let j = 0; j <= height; j += H) {
+                 let coords = createVector(i, j);
+                 coordinates.push(coords);
+            }
+        }
+        this.W = W;
+        this.H = H;
+        this.gridCoordinates = coordinates;
+        if(this.rows){this.newRows(H, canvasW, canvasH);}
+        if(this.columns){this.newColumns(W, canvasW, canvasH);}
+        if(this.cells){this.newCells(W, H, canvasW, canvasH);}
+        if(this.horizontals){this.newHorizontals(W, H, canvasW, canvasH);}
+        if(this.verticals){this.newVerticals(W, H, canvasW, canvasH);}
+        if(this.diagonalsA){this.newDiagonalsA(W, H, canvasW, canvasH);}
+        if(this.diagonalsB){this.newDiagonalsB(W, H, canvasW, canvasH);}
+    }
     
+    newRows(H, canvasW, canvasH){
+        
+        let rows = [];
+        
+        for (let i = 0; i <= canvasH; i += H) {        
+             let coords = createVector(0, i);
+             let row = [];
+             row.push(coords);
+             row.push(canvasW);
+             row.push(H); 
+             rows.push(row);
+        }
+        this.gridRows = rows;      
+    }   
+    
+    newColumns(W, canvasW, canvasH){
+        
+        let columns = [];
+        
+        for (let i = 0; i <= canvasW; i += W) {        
+             let coords = createVector(i, 0);
+             let column = [];
+             column.push(coords);
+             column.push(W);
+             column.push(canvasH); 
+             columns.push(column);
+        }
+        this.gridColumns = columns;      
+    }
+    
+    newCells(W, H, canvasW, canvasH){
+        
+        let cells = [];
+        
+        for (let i = 0; i <= canvasW; i += W) {  
+            for (let j = 0; j <= canvasW; j += H) {  
+                let cell = {};
+                let coordinates = createVector(i, j);
+                cell.coords = coordinates;
+                cell.W = W;
+                cell.H = H;
+                cell.center = createVector(i + W/2, j + H/2);
+                cells.push(cell);
+            }
+        }
+        this.gridCells = cells;
+    }
+    
+    newHorizontals(W, H, canvasW, canvasH){
+        
+        let horizontals = [];
+        
+        for (let i = 0; i <= canvasH; i += H) { 
+             let wIterator = 0;   
+             let horizontal = [];
+             while(wIterator <= width){
+                 let coords = createVector(wIterator, i);
+                 horizontal.push(coords);
+                 wIterator += W;
+             }
+             horizontals.push(horizontal);
+        }
+        this.gridHorizontals = horizontals;  
+    }
+    
+    newVerticals(W, H, canvasW, canvasH){
+        
+        let verticals = [];
+
+        for (let i = 0; i <= canvasW; i += W) { 
+             let hIterator = 0;  
+             let vertical = [];
+             while(hIterator <= canvasH){
+                 let coords = createVector(i, hIterator);
+                 vertical.push(coords);
+                 hIterator += H;
+             }
+             verticals.push(vertical);
+        }
+        this.gridVerticals = verticals;    
+    }
+    
+    newDiagonalsA(W, H, canvasW, canvasH){                        
+        
+        let diagonals = [];
+        let hCount = 1;
+        for (let i = height - H; i >= 0; i -= H) {
+             let diagonal = [];
+             let startCoord = createVector(0, i);        
+             diagonal.push(startCoord);
+             for(let j = 0; j < hCount; j++){
+                 let coord = createVector(startCoord.x + ((j + 1) * W), startCoord.y + ((j + 1) * H));
+                 diagonal.push(coord);
+             }
+             diagonals.push(diagonal);
+             hCount+=1;
+        }
+        
+        let wCount = 1;
+        
+        for (let i = width - W; i >= W; i -= W) {
+             let diagonal = [];
+             let startCoord = createVector(i, 0);        
+             diagonal.push(startCoord);
+            
+             for(let j = 0; j < wCount; j++){  
+                 let coord = createVector(startCoord.x + ((j + 1) * W), startCoord.y + ((j + 1) * H));
+                 diagonal.push(coord);
+             }
+             diagonals.push(diagonal);
+             wCount+=1;  
+        }
+        this.gridDiagonalsA = diagonals;
+    }
+    
+    newDiagonalsB(W, H, width, height){
+        
+        let diagonals = [];
+        let hCount = 1;
+        
+        for (let i = height - H; i >= 0; i -= H) {
+             let diagonal = [];
+             let startCoord = createVector(width, i);        
+             diagonal.push(startCoord);
+            
+             for(let j = 0; j < hCount; j++){
+                 let coord = createVector(startCoord.x - ((j + 1) * W), startCoord.y + ((j + 1) * H));
+                 diagonal.push(coord);
+             }
+             diagonals.push(diagonal);
+             hCount+=1;  
+        }
+        
+        let wCount = 1;
+        
+        for (let i = W; i <= width - W; i += W) {
+             let diagonal = [];
+             let startCoord = createVector(i, 0);       
+             diagonal.push(startCoord);
+            
+             for(let j = 0; j < wCount; j++){   
+                 let coord = createVector(startCoord.x - ((j + 1) * W), startCoord.y + ((j + 1) * H));
+                 diagonal.push(coord);
+             }
+             diagonals.push(diagonal);
+             wCount+=1;  
+        }
+        this.gridDiagonalsB = diagonals;     
+    }
 }
 
 
@@ -357,71 +588,60 @@ class GridLayer {
     set gridW(W) {
         this.W = W;
     }
-    
     get gridH() {
         return this.H;
     }
     set gridH(H) {
         this.H = H;
     }
-    
     get gridCoordinates() {
         return this.coordinates;
     }
     set gridCoordinates(coordinates) {
-        
         this.coordinates = coordinates;
     }   
-    
     get gridRows() {
         return this.rows;
     }
     set gridRows(rows) {
         this.rows = rows;
     }
-    
     get gridColumns() {
         return this.columns;
     }
     set gridColumns(columns) {
         this.columns = columns;
     }
-    
     get gridCells() {
         return this.cells;
     }
     set gridCells(cells) {
         this.cells = cells;
     }
-    
     get gridHorizontals() {
         return this.horizontals;
     }
     set gridHorizontals(horizontals) {
         this.horizontals = horizontals;
     }
-    
     get gridVerticals() {
         return this.verticals;
     }
     set gridVerticals(verticals) {
         this.verticals = verticals;
     }
-    
     get gridDiagonalsA() {
         return this.diagonalsA;
     }
     set gridDiagonalsA(diagonalsA) {
         this.diagonalsA = diagonalsA;
     }
-    
     get gridDiagonalsB() {
         return this.diagonalsB;
     }
     set gridDiagonalsB(diagonalsB) {
         this.diagonalsB = diagonalsB;
     }
-
 
     newCoordinates(W, H, width, height){
         
@@ -437,7 +657,6 @@ class GridLayer {
         this.gridCoordinates = coordinates;
         if(this.rows){this.newRows(H, canvasW, canvasH);}
         if(this.columns){this.newColumns(W, canvasW, canvasH);}
-        
         if(this.cells){this.newCells(W, H, canvasW, canvasH);}
         if(this.horizontals){this.newHorizontals(W, H, canvasW, canvasH);}
         if(this.verticals){this.newVerticals(W, H, canvasW, canvasH);}
@@ -809,7 +1028,7 @@ function setup() {
     let layerTypeOptions = ['grid','random','simple','horizon']; 
     let shapeTypeOptions = ['polys','stars','supers','polars','roses','radials']; 
     
-    noLoop();
+    //noLoop();
     noStroke();
     noFill();
     
@@ -817,10 +1036,8 @@ function setup() {
 
     // ffd771,ff71bf,71ffee
     
-     
-    
-    
-            // ******  UI CREATION ******
+
+    // ******  UI CREATION ******
     
     
     // Creates Canvas
@@ -860,40 +1077,34 @@ function setup() {
     
     
     
-    
+    i = new Iteration(width, height);
     
     
         //  **********        TEMP    ***********
     
-    let color1 = color(255,215,113);
-    let color2 = color(255,113,191);
-    let color3 = color(113,255,238);
-
-    palette = new Palette(color1, color2, color3);
-    palette.newSwatches(palette.colors);
-    
-    grid = new GridLayer(200,200,800,800);
-    grid = new GridLayer();
-    grid.newCoordinates(200,200,800,800);
-    grid.newRows(200,800,800);
-    grid.newColumns(200,800,800);
-    grid.newCells(200,200,800,800);
-    grid.newHorizontals(200,200,800,800);
-    grid.newVerticals(200,200,800,800);
-    grid.newDiagonalsA(200,200,800,800);
-    grid.newDiagonalsB(200,200,800,800);
-    
-
-    testRandom = new RandomLayer(800, 800);
-    testRandom.newCoordinates(300, width * .05, 20, 1.1);
+//    let color1 = color(255,215,113);
+//    let color2 = color(255,113,191);
+//    let color3 = color(113,255,238);
+//
+//    palette = new Palette(color1, color2, color3);
+//    palette.newSwatches(palette.colors);
+//    
+//    grid = new GridLayer(200,200,800,800);
+//    grid = new GridLayer();
+//    grid.newCoordinates(200,200,800,800);
+//    grid.newRows(200,800,800);
+//    grid.newColumns(200,800,800);
+//    grid.newCells(200,200,800,800);
+//    grid.newHorizontals(200,200,800,800);
+//    grid.newVerticals(200,200,800,800);
+//    grid.newDiagonalsA(200,200,800,800);
+//    grid.newDiagonalsB(200,200,800,800);
+//    
+//
+//    testRandom = new RandomLayer(800, 800);
+//    testRandom.newCoordinates(300, width * .05, 20, 1.1);
 //    testRandom.newSpread(10);
 //    testRandom.newCoordsRadius(40, 15);
-    
-    
-    i = new Iteration();
-    
-    
-    
     
     
     //   *******  PREVIOUS  ********
@@ -994,7 +1205,9 @@ function setup() {
 //    //newFile = dropImage.drop(gotFile);
 // 
     
+ 
     
+// End of Setup    
 } 
 
 
@@ -1022,7 +1235,7 @@ function addLayer() {
     
 //      adds layer name to canvas panel                          
 //      let canvasLayers = select('#layer-drop');                                               
-//      let layerSelect = createElement('p', this.elt.textContent);  
+//      let lrayerSelect = createElement('p', this.elt.textContent);  
 //      layerSelect.parent(canvasLayers);
 //      layerSelect.mousePressed(layerToggle); 
       
@@ -1032,59 +1245,32 @@ function addLayer() {
     
     //let layer = new Layer(this.elt.textContent, iteration.layers.length);
     
-    
       
       // let type = type of layer selected
     
         // layer = new Layer(type)   layer type classes to  Extend Layers ...     <<< next major jump
-               
-    
-    
-    
-    
-      let layer = new GridLayer();
-      layer.newCoordinates(40,40,600,400);
-    
-//    layer.newRows(40,600,400);
-//    layer.newColumns(40,600,400);
-//    layer.newCells(40,40,600,400);
-//    layer.newHorizontals(40,40,600,400);
-//    layer.newVerticals(40,40,600,400);
-//    layer.newDiagonalsA(40,40,600,400);
-//    layer.newDiagonalsB(40,40,600,400);
-  
-      i.layers.push(layer);
-
-      // adds layer panel to layer container
-      let layersContainer = select('#layers-container');                               
-      let layerPanel = createElement('div'); 
-      layerPanel.parent(layersContainer);
-      let layerTitle = createElement('h3', layer.type);
-      layerTitle.parent(layerPanel);
-      //layerTitle.mousePressed(layerToggle);
-      let settings = layer.settingsUI();   
-      let settingsContainer = createDiv(settings);
-      settingsContainer.parent(layerPanel);
-      
-    
-                   //   in grid class construct the html in the ui function ...then add to ui .. then this ui updates this layer ...
-          
-     // setting Containers inner HTML is  settings
-    
-    
-//      let layerTest = createElement('p', settings);
-//      layerTest.parent(settingsContainer);
-      
-    
-      // creates remove button
-      let removeButton = createElement('button', 'Remove'); 
-      removeButton.parent(layerPanel);
-      removeButton.mousePressed(removeLayer);   
+      let layer;
+      switch(this.elt.textContent) {
+          case 'grid':
+            layer = new GridLayer(width, height); 
+            break;
+          case 'random':
+            layer = new RandomLayer(width, height);
+            i.layers.push(layer);
+            let index = i.layers.length - 1;
+            i.layers[index].newCoordinates(100);
+            break;
+          case 'simple':
+            break;
+          case 'landscape':
+      }
+      //i.layers.push(layer);
 }
 
 function removeLayer() { 
-    let layerPanel = this.parent();
+    let layerPanel = this.parent();    // on button create include id  // in removelayer select this.id   // reg expression to extract number // i.layers[index]. splice?
     this.parent().remove();
+    
 }
 
 
@@ -1129,15 +1315,11 @@ function addShape() {
 
 
 
-
-
-
-
-
-
-
-
-
+class Shape {
+    constructor() {
+      
+    }
+}
 
 
 
@@ -1149,21 +1331,55 @@ let roseShapes = [
 
 function draw() {
     
+    
+    //i.paint();
+    
+    
     stroke(0);
+    strokeWeight(10);
+    background(255);
+
+    //adjustable spirals     layered/even polars w variable radius spread   
     
-    strokeWeight(1);
-    
-    for(let [index, coord] of testRandom.coordinates.entries()){
+//    let divisors = 20;
+//    let radius = 30;
+//    let loops = 3;
+//    let spiral = 3;
+//    let layers = 2;
+//
+//    let shapes = [];// function calls?
+//    
+//
+//    let x = width/2;
+//    let y = height/2;
+//    let angle = TWO_PI / divisors;
+//    
+//    for (let a = 0; a < TWO_PI * loops; a += angle) {  
+//        let sx = x + cos(a) * radius;
+//        let sy = y + sin(a) * radius;
+//        
+//        point(sx, sy);
+//        
+//        if(spiral > 0){
+//            radius += spiral;    
+//        }
+//        
+//        
+//    } 
+    if(i.layers.length > 0){
+    for(let [index1, layer] of i.layers.entries()){
+    for(let [index2, coord] of i.layers[index1].coordinates.entries()){
         
 //        strokeWeight(testRandom.randomLayerRadius[index]);
-//        point(coord.x, coord.y);
+        stroke(20);
+        point(coord.x, coord.y);
         
         
           //fill(palette.swatches[int(random(0, palette.swatches.length - 1))][int(random(0, palette.swatches[0].length - 1))]);
         
-           stroke(palette.swatches[int(random(0, palette.swatches.length - 1))][int(random(0, palette.swatches[0].length - 1))]);
+          // stroke(palette.swatches[int(random(0, palette.swatches.length - 1))][int(random(0, palette.swatches[0].length - 1))]);
         
-        
+         
         
 //            let d;
 //            let n;
@@ -1184,25 +1400,27 @@ function draw() {
         
         
         
-            let roseIndex = int(random(0,roseShapes.length));
-            
-//            let d = int(random(10,100));
-//            let n = int(random(2,9));    
-            
-            push();
-            translate(coord.x, coord.y);
-            roseM(roseShapes[roseIndex].d, roseShapes[roseIndex].n, testRandom.randomLayerRadius[index]);
-            pop();
-    
+//            let roseIndex = int(random(0,roseShapes.length));
+//            
+////            let d = int(random(10,100));
+////            let n = int(random(2,9));    
+//            
+//            push();
+//            translate(coord.x, coord.y);
+//            roseM(roseShapes[roseIndex].d, roseShapes[roseIndex].n, testRandom.randomLayerRadius[index]);
+//            pop();
+//    
 
 
-        
         
         
         
     }
-    
-  
+    }
+    }
+
+//    
+//  
     
 //    grid.rows.forEach(function(el){
 //        fill(random(0,255), random(0,255), random(0,255)); 
@@ -1288,8 +1506,10 @@ function draw() {
     
 //    });
     
-    
 //  
+    
+    
+// End of Draw     
 }
 
 
