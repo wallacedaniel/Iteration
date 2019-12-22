@@ -7,7 +7,7 @@
 
 
 class Iteration {
-  constructor(width, height) {
+  constructor(width, height) {                    //  getters  and  setters for layers
     this.width;
     this.height;
     this.layers = []; 
@@ -16,74 +16,55 @@ class Iteration {
   paint(){
       
   }
-
+    
+  removeLayer(index){
+    this.layers.splice(index, 1);    
+  }
 }
 
-
-//  should all class method calls go through getter > method as well ?? 
-
-
-
-
 class Layer { 
-  constructor(type, canvasW, canvasH) {
+  constructor(type, canvasW, canvasH, index) {
     this.type = type;
     this.W = canvasW;
-    this.H = canvasH; 
+    this.H = canvasH;
+    this.index = index;
     this.shapes = [];
     this.palette = [];
     this.add(this.type);
   }
   
-  add(type) {
-      
-      
-//      let layer = new GridLayer();
-//      layer.newCoordinates(40,40,600,400);
-    
-//    layer.newRows(40,600,400);
-//    layer.newColumns(40,600,400);
-//    layer.newCells(40,40,600,400);
-//    layer.newHorizontals(40,40,600,400);
-//    layer.newVerticals(40,40,600,400);
-//    layer.newDiagonalsA(40,40,600,400);
-//    layer.newDiagonalsB(40,40,600,400);
-  
-      //i.layers.push(layer);
-
+  add(type) {  
       // adds layer panel to layer container
       let layersContainer = select('#layers-container');                               
       let layerPanel = createElement('div'); 
       layerPanel.parent(layersContainer);
       let layerTitle = createElement('h3', this.type);
       layerTitle.parent(layerPanel);
-      //layerTitle.mousePressed(layerToggle);
-//      let settings = layer.settingsUI();   
-//      let settingsContainer = createDiv(settings);
-//      settingsContainer.parent(layerPanel);
-      
-    
+
       // creates remove button
-      let removeButton = createElement('button', 'Remove'); 
+      let removeButton = createElement('button', 'Remove').id(this.index).addClass('layer-remove');                        // <<<< this id should be better ..just a number .. should label layer-# and regex remove on other end
       removeButton.parent(layerPanel);
-      removeButton.mousePressed(this.remove); 
-      
+      removeButton.mousePressed(this.remove);   
   }
     
-  remove() {
-      
-      let layerPanel = this.parent();
+  remove() {  
       this.parent().remove();
+      // then fix  scale spread variation   -  then UI
+      let buttons = selectAll('.layer-remove');
+      for(let [index, button] of buttons.entries()){
+          button.id(index);
+      }
+      
+      i.removeLayer(this.elt.id);
   }
 }
 
 class RandomLayer extends Layer {
-    constructor(canvasW, canvasH) {
-        super('random', canvasW, canvasH); 
+    constructor(canvasW, canvasH, index) {
+        super('random', canvasW, canvasH, index); 
         this.qty = 100;
-        this.coordinates = [];//this.newCoordinates(this.qty);   
-        this.radiusScale = canvasW * .05;
-        this.coordsRadius = [];
+        this.coordinates = [];                       //   coordinates could be in layer class instead of child <<<<
+        this.scalesArray = Array(this.qty).fill(100); //   
     }
     
     get randomLayerQty() {   
@@ -95,42 +76,38 @@ class RandomLayer extends Layer {
     get randomLayerCoords() {
         return this.coordinates;
     }
-    set randomLayerCoords(coordinates) {
-        
+    set randomLayerCoords(coordinates) { 
         this.coordinates = coordinates;
     } 
-    get randomLayerRadius() {
-        return this.radiusScale;
-    }
-    set randomLayerRadius(radius) {   
-        this.radiusScale = radius;
-    } 
-    get randomLayerRadiusScale() {
-        return this.radiusScale;
-    }
-    set randomLayerRadiusScale(scale) {   
-        this.radiusScale = scale;
-    }  
     
-    newCoordinates(qty, radiusScale, radiusVariation, spread){ 
-        
-        
+    get randomLayerScalesArray() {
+        return this.scalesArray;
+    }
+    set randomLayerScalesArray(scalesArray) {   
+        this.scalesArray = scalesArray;
+    }
+    
+    
+    newCoordinates(qty, shapeScale, scaleVariation, spread){ 
         
         this.randomLayerQty = qty;
-        this.randomLayerRadiusScale = radiusScale;
+        let scalesArray = [];
         
-        let radiusCoords = [];
         
         for (let i = 0; i < qty; i++) {
             
-            if(radiusVariation){
-                radiusCoords.push(int(random(radiusScale - radiusVariation, radiusScale + radiusVariation)));         
+            if(scaleVariation){
+                scalesArray.push(int(random(shapeScale - scaleVariation, shapeScale + scaleVariation)));         
             }
             else {
-                radiusCoords.push(radiusScale);    
+                scalesArray.push(shapeScale);    
             } 
         }
-        this.randomLayerRadius = radiusCoords;                         
+        this.randomLayerScalesArray = scalesArray;  
+        
+        
+        
+        
         
         let coordinates = [];
         
@@ -143,14 +120,14 @@ class RandomLayer extends Layer {
                 while(counter < 10000){ 
 
                     let overlapping = false;
-                    let coords = createVector(int(random(0, super.W + 1)), int(random(0, super.H + 1)));  //  
+                    let coords = createVector(int(random(0, this.W + 1)), int(random(0, this.H + 1)));  //  
 
                     for (let j = 0; j < coordinates.length; j++) {
 
                           let existingCoord = coordinates[j];
                           let d = dist(coords.x, coords.y, existingCoord.x, existingCoord.y);
 
-                          if (d < (radiusCoords[i] + radiusCoords[j]) * spread) {
+                          if (d < (scalesArray[i] + scalesArray[j]) * spread) {
                             overlapping = true;
                             break;
                           }
@@ -885,21 +862,6 @@ class Palette {
 
 
 
-//class Layer {
-//  constructor(type, position) {
-//    this.type = type; 
-//    this.position = position;
-//    //this.coords = getCoords(this.type);
-//  }
-//}
-//
-//
-//
-
-
-
-
-
 
 
 // too much canvas canvas canvas in the naming -- differentiate
@@ -1082,12 +1044,12 @@ function setup() {
     
         //  **********        TEMP    ***********
     
-//    let color1 = color(255,215,113);
-//    let color2 = color(255,113,191);
-//    let color3 = color(113,255,238);
-//
-//    palette = new Palette(color1, color2, color3);
-//    palette.newSwatches(palette.colors);
+    let color1 = color(255,215,113);
+    let color2 = color(255,113,191);
+    let color3 = color(113,255,238);
+
+    palette = new Palette(color1, color2, color3);
+    palette.newSwatches(palette.colors);
 //    
 //    grid = new GridLayer(200,200,800,800);
 //    grid = new GridLayer();
@@ -1252,13 +1214,12 @@ function addLayer() {
       let layer;
       switch(this.elt.textContent) {
           case 'grid':
-            layer = new GridLayer(width, height); 
+            layer = new GridLayer(width, height, i.layers.length); 
             break;
           case 'random':
-            layer = new RandomLayer(width, height);
-            i.layers.push(layer);
-            let index = i.layers.length - 1;
-            i.layers[index].newCoordinates(100);
+            layer = new RandomLayer(width, height, i.layers.length);
+            i.layers.push(layer); 
+            i.layers[i.layers.length - 1].newCoordinates(100, width * .05);
             break;
           case 'simple':
             break;
@@ -1335,8 +1296,7 @@ function draw() {
     //i.paint();
     
     
-    stroke(0);
-    strokeWeight(10);
+  
     background(255);
 
     //adjustable spirals     layered/even polars w variable radius spread   
@@ -1371,13 +1331,17 @@ function draw() {
     for(let [index2, coord] of i.layers[index1].coordinates.entries()){
         
 //        strokeWeight(testRandom.randomLayerRadius[index]);
-        stroke(20);
+        strokeWeight(layer.scalesArray[index2]);
+        
+        
+        stroke(palette.swatches[int(random(0, palette.swatches.length - 1))][int(random(0, palette.swatches[0].length - 1))]);
+        
         point(coord.x, coord.y);
         
         
           //fill(palette.swatches[int(random(0, palette.swatches.length - 1))][int(random(0, palette.swatches[0].length - 1))]);
         
-          // stroke(palette.swatches[int(random(0, palette.swatches.length - 1))][int(random(0, palette.swatches[0].length - 1))]);
+          
         
          
         
