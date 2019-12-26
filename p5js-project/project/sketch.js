@@ -1,3 +1,5 @@
+// adjust setting container id to index ... random ui w drop area ... shape drop and reaction  .. work backwards from i.paint() 
+
 
 class Iteration {
   constructor(width, height) {                    //  getters  and  setters for layers
@@ -418,11 +420,68 @@ class GridLayer extends Layer {
         this.gridDiagonalsB = diagonals;     
     }
     
-    settingsUI(){                                          //  repeating ourself ... plus index stuff within the 
-        
+    settingsUI(){                                          //  repeating ourself ... plus index stuff within the    
         console.log('grid layer');
+    }
+}
 
+class SimpleLayer extends Layer {                                                
+    constructor(canvasW, canvasH, index) {
+        super('simple', canvasW, canvasH, index);                          
+        this.coordinates = [];                       
+    }
+    
+    get simpleCoordinates() {
+        return this.coordinates;
+    }
+    set simpleCoordinates(coordinates) {
+        this.coordinates = coordinates;
+    }
+    
+    newCoordinates(canvasW, canvasH){
         
+        let coordinates = [];
+        let coordinate;
+        
+        coordinate = createVector(width/2, height/2);
+        coordinates.push(coordinate);
+        coordinate = createVector(0, 0);
+        coordinates.push(coordinate);
+        coordinate = createVector(width, 0);
+        coordinates.push(coordinate);
+        coordinate = createVector(width, height);
+        coordinates.push(coordinate);
+        coordinate = createVector(0, height);
+        coordinates.push(coordinate);
+        coordinate = createVector(width/2, 0);
+        coordinates.push(coordinate);
+        coordinate = createVector(width, height/2);
+        coordinates.push(coordinate);
+        coordinate = createVector(width/2, height);
+        coordinates.push(coordinate);
+        coordinate = createVector(0, height/2);
+        coordinates.push(coordinate);
+        coordinate = createVector(width * .25, height * .25);
+        coordinates.push(coordinate);
+        coordinate = createVector(width * .75, height * .25);
+        coordinates.push(coordinate);
+        coordinate = createVector(width * .25, height * .75);
+        coordinates.push(coordinate);
+        coordinate = createVector(width * .75, height * .75);
+        coordinates.push(coordinate);
+        
+        this.simpleCoordinates = coordinates;
+    }
+    
+    settingsUI(){                                          
+        console.log('simple layer');
+    }
+}
+
+class HorizonLayer extends Layer {                                               
+    constructor(canvasW, canvasH, index) {
+        super('horizon', canvasW, canvasH, index); 
+        this.levels;                               
     }
 }
 
@@ -737,8 +796,14 @@ function addLayer() {
             i.layers[i.layers.length - 1].settingsUI();
             break;
           case 'simple':
+            layer = new SimpleLayer(width, height, i.layers.length);
+            i.layers.push(layer);
+            i.layers[i.layers.length - 1].newCoordinates();
+            i.layers[i.layers.length - 1].settingsUI();
             break;
-          case 'landscape':
+          case 'horizon':
+            layer = new HorizonLayer(width, height, i.layers.length);
+            i.layers.push(layer); 
       }
       //i.layers.push(layer);
 }
