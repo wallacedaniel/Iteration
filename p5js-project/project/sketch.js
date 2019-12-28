@@ -1,6 +1,50 @@
 // adjust setting container id to index ... random ui w drop area ... shape drop and reaction  .. work backwards from i.paint() 
 
 
+
+
+
+//dropImagedropImage = select('#dropImage');
+    //newFile = dropImage.drop(gotFile);
+
+
+//
+//
+//function randomPoints(){
+//    
+//    //randomQty = int(randomQtyElement.value());
+//    
+//    let randPoints = [];
+//   /* for(let i = 0; i < randomQty; i++){
+//        let randPair = [];
+//        randPair[0] = int(random(width));
+//        randPair[1] = int(random(height));
+//        randPoints.push(randPair);
+//    }*/
+//    return randPoints;
+//};
+//
+//function updateRandomPoints(){
+//    canvas.randoms = randomPoints();
+//}
+//
+//
+//function gotFile(file){
+//    //createP(file.name + " " + file.size);   
+//    //createP(file.type); 
+//    //createP(file.size); 
+//    //newImage = file;
+//    img = createImg(file.data);
+//    img.size(canvas.W,canvas.H);
+//    img.mouseClicked(insertImage);
+//}
+//
+//function insertImage(){
+//}
+
+
+
+
 class Iteration {
   constructor(width, height) {                    //  getters  and  setters for layers
     this.width;
@@ -33,17 +77,16 @@ class Layer {
       // adds layer panel to layer container
       let layersContainer = select('#layers-container'); 
       
-      let layerPanel = createElement('div'); 
+      let layerPanel = createElement('div').id('layer-' + this.index).addClass('layer-panel'); 
       layerPanel.parent(layersContainer);
       
       let layerTitle = createElement('h3', this.type);
       layerTitle.parent(layerPanel);
       
-      let layerSettings = createElement('div').id('settings-container'); //.id('settings-container')
+      let layerSettings = createElement('div').id('settings-container-' + this.index).addClass('settings-container'); //.id('settings-container')
       layerSettings.parent(layerPanel);
       
-      // creates remove button
-      console.log(this.index);
+      // creates remove button-' + this.index
       let removeButton = createElement('button', 'Remove').id(this.index).addClass('layer-remove');                        // <<<< this id should be better ..just a number .. should label layer-# and regex remove on other end
       removeButton.parent(layerPanel);
       removeButton.mousePressed(this.remove);   
@@ -55,8 +98,17 @@ class Layer {
       for(let [index, button] of buttons.entries()){
           button.id(index);
       }
-      
       i.removeLayer(this.elt.id);
+      
+      let layers = selectAll('.layer-panel');
+      for(let [index, layer] of layers.entries()){
+          layer.id('layer-' + index);
+      }
+      
+      let settings = selectAll('.settings-container');
+      for(let [index, setting] of settings.entries()){
+          setting.id('settings-container-' + index);
+      }
   }
 }
 
@@ -143,7 +195,7 @@ class RandomLayer extends Layer {                                               
     
     settingsUI(){
         
-        let settingsContainer = select('#settings-container');
+        let settingsContainer = select('#settings-container-' + this.index);
         
         
         let qtyText = createElement('p', this.qty);
@@ -641,6 +693,11 @@ function setup() {
 
     palette = new Palette(color1, color2, color3);
     palette.newSwatches(palette.colors);
+    
+    let saveButton = select('#save')
+    saveButton.mousePressed(saveImage);
+
+
 
     
     //   *******  PREVIOUS  ********
@@ -748,7 +805,7 @@ function setup() {
 
 
 
-//        *****         UI FUNCTIONS          *****
+//        *****         UI FUNCTIONS       Iteration object methods?   *****
 
 
 function updateCanvasSize() {                
@@ -787,26 +844,31 @@ function addLayer() {
             layer = new GridLayer(width, height, i.layers.length);
             i.layers.push(layer); 
             i.layers[i.layers.length - 1].newCoordinates(width * .1, height * .1, width, height);
-            i.layers[i.layers.length - 1].settingsUI();
             break;
           case 'random':
             layer = new RandomLayer(width, height, i.layers.length);
             i.layers.push(layer); 
             i.layers[i.layers.length - 1].newCoordinates(100, width * .05);
-            i.layers[i.layers.length - 1].settingsUI();
             break;
           case 'simple':
             layer = new SimpleLayer(width, height, i.layers.length);
             i.layers.push(layer);
             i.layers[i.layers.length - 1].newCoordinates();
-            i.layers[i.layers.length - 1].settingsUI();
             break;
           case 'horizon':
             layer = new HorizonLayer(width, height, i.layers.length);
             i.layers.push(layer); 
       }
-      //i.layers.push(layer);
+      i.layers[i.layers.length - 1].settingsUI();
 }
+
+function saveImage(){
+    
+    let name = select('#name').value();
+    saveCanvas(c, 'iteration-' + name + '.jpg');
+}
+
+
 
 
 
@@ -819,41 +881,23 @@ function addShape() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 class Shape {
     constructor() {
       
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1159,14 +1203,6 @@ function reduceDenominator(numerator, denominator) {
     return denominator / rec(numerator, denominator);
 }
 
-
-
-
-
-
-
-
-
 function star(x, y, radius1, radius2, npoints) {
   let angle = TWO_PI / npoints;
   let halfAngle = angle / 2.0;
@@ -1206,17 +1242,6 @@ function sgn(val) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 // remove style ?  or what's the deal with these?
 
 
@@ -1245,48 +1270,6 @@ function drawTiledTris(cells, H, W){
     fill(palette.colors[int(random(0,palette.colors.length))]);
     triangle(cells[0], cells[1] + H, cells[0] + W/2, cells[1] + H/2, cells[0] + W, cells[1] + H);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -2568,6 +2551,325 @@ float sgn(float val) {
 
 
 */
+
+
+
+
+
+
+
+
+
+//
+//
+//function setup() {
+//  let c = createCanvas(100, 100);
+//  background(200);
+//  textAlign(CENTER);
+//  text('drop file', width / 2, height / 2);
+//  c.drop(gotFile);
+//}
+//
+//function gotFile(file) {
+//  background(200);
+//  text('received file:', width / 2, height / 2);
+//  text(file.name, width / 2, height / 2 + 50);
+//}Canvas turns into whatever image is dragged/dropped onto it.buttons
+//edit
+//reset
+//copy
+//drop example 1let img;
+//
+//function setup() {
+//  let c = createCanvas(100, 100);
+//  background(200);
+//  textAlign(CENTER);
+//  text('drop image', width / 2, height / 2);
+//  c.drop(gotFile);
+//}
+//
+//function draw() {
+//  if (img) {
+//    image(img, 0, 0, width, height);
+//  }
+//}
+//
+//function gotFile(file) {
+//  img = createImg(file.data, '').hide();
+//}
+
+
+// Click and Drag an object
+// Daniel Shiffman <http://www.shiffman.net>
+
+//var dragging = false; // Is the object being dragged?
+//var rollover = false; // Is the mouse over the ellipse?
+//
+//var x, y, w, h;          // Location and size
+//var offsetX, offsetY;    // Mouseclick offset
+//
+//function setup() {
+//  createCanvas(640, 360);
+//  
+//  // Starting location
+//  x = 100;
+//  y = 100;
+//  // Dimensions
+//  w = 75;
+//  h = 50;
+//}
+//
+//function draw() {
+//  background(255);
+//  
+//  
+//  // Is mouse over object
+//  if (mouseX > x && mouseX < x + w && mouseY > y && mouseY < y + h) {
+//    rollover = true;
+//  } 
+//  else {
+//    rollover = false;
+//  }
+//  
+//  // Adjust location if being dragged
+//  if (dragging) {
+//    x = mouseX + offsetX;
+//    y = mouseY + offsetY;
+//  }
+//
+//  stroke(0);
+//  // Different fill based on state
+//  if (dragging) {
+//    fill (50);
+//  } else if (rollover) {
+//    fill(100);
+//  } else {
+//    fill(175, 200);
+//  }
+//  rect(x, y, w, h);
+//}
+//
+//function mousePressed() {
+//  // Did I click on the rectangle?
+//  if (mouseX > x && mouseX < x + w && mouseY > y && mouseY < y + h) {
+//    dragging = true;
+//    // If so, keep track of relative location of click to corner of rectangle
+//    offsetX = x-mouseX;
+//    offsetY = y-mouseY;
+//  }
+//}
+//
+//function mouseReleased() {
+//  // Quit dragging
+//  dragging = false;
+//}
+
+
+
+
+
+
+
+
+//
+//
+//if(design.design == "starry-landscape"){
+//        
+//        String axis = "Y";
+//        setGradient(0, 0, width, height, lastColor, firstColor, axis);
+       /*
+        PShape[] newShape = new PShape[1];
+        
+        int layers = 1;
+        float horizonHigh = .2;
+        float horizonLow = .6;
+      
+        while(layers > 0){
+          int curveY = int(random(height * horizonHigh, height * horizonLow));
+          int endY = curveY;
+          int endX = 0;
+        
+        PShape horizon = createShape();
+        horizon.beginShape();
+        horizon.fill(200);
+        horizon.stroke(0);
+        horizon.strokeWeight(50);
+        horizon.curveVertex(0, curveY); 
+        
+        for (int i = 0; i <= width; i += design.canvas.W) {   
+          horizon.curveVertex(i, curveY);
+        
+          if (i != width){          
+              curveY = int(random(height * horizonHigh, height * horizonLow));
+          }  
+          if (i == width){
+              endX = i;
+          } 
+        }
+        horizon.curveVertex(endX, curveY);  
+        horizon.endShape();
+        
+        newShape[0] = horizon; 
+              
+        int x1 = 100;
+        int pair1 = 150;
+        int x2 = 140;
+        int pair2 = 190;
+        int x3 = 175;
+        int pair3 = 225;
+      
+        PShape pairs = createShape();
+        pairs.beginShape();
+        pairs.stroke(0);
+        pairs.strokeWeight(10);
+        pairs.vertex(x1, 300);
+        pairs.bezierVertex(100, 200, 200, 200, pair1, 300);
+        pairs.vertex(x2, 300);
+        pairs.bezierVertex(100, 200, 200, 200, pair2, 300);
+        pairs.vertex(x3, 300);
+        pairs.bezierVertex(100, 200, 200, 200, pair3, 300);
+        pairs.endShape();
+        newShape[0] = pairs; 
+      
+        int x1 = 100;
+        int pair1 = 150;
+        int x2 = 140;
+        int pair2 = 190;
+        int x3 = 175;
+        int pair3 = 225;
+        
+        PShape parent = createShape(GROUP);
+        parent.beginShape();
+        PShape child = createShape();
+        child.beginShape();
+        child.strokeWeight(10);
+        child.stroke(0);
+        child.vertex(x1, 450);
+        child.bezierVertex(100, 350, 200, 350, pair1, 450);
+        child.endShape();
+        parent.addChild(child);
+         
+        child = createShape();
+        child.beginShape();
+        child.strokeWeight(10);
+        child.stroke(0);
+        child.vertex(x2, 450);
+        child.bezierVertex(100, 350, 200, 350, pair2, 450);
+        child.endShape();
+        parent.addChild(child);
+         
+        child = createShape();
+        child.beginShape();
+        child.strokeWeight(10);
+        child.stroke(0);
+        child.vertex(x3, 450);
+        child.bezierVertex(100, 350, 200, 350, pair3, 450);
+        child.endShape();
+        parent.addChild(child);
+         
+        shape(parent);
+        
+         */
+        //layer.add(newShape);
+        //shape(pairs);
+        //newElements.add(layer); 
+        //this.elements = newElements;
+        
+        
+        
+        
+        
+        
+        
+   /*
+         // Gathers possible radials 
+        IntList[] radials = radialOptions(18, 40);
+        
+        // Picks radial options
+        int randomIndex = int(random(0,radials[0].maxIndex()));
+        int divisor = radials[0].get(randomIndex);
+        int angle = radials[1].get(randomIndex);
+               
+         int x = design.canvas.coordinates.get(0)[0];
+         int y = design.canvas.coordinates.get(0)[1];
+         
+         PShape[] newShape = new PShape[1];
+         newShape[0] = drawRadial(width*3, divisor, angle, int(skyX), int(skyY), design.palette.colors);
+         
+         shape(newShape[0]);
+         */
+          
+//       float skyX = random(-600, width/1.1);
+//       float skyY = random(-400, height/1.1);
+//       PShape target = drawTarget(skyX, skyY, width*2, int(random(6,12)));
+//       shape(target);
+//
+//      //filter(INVERT);  
+//      PShape newStar = new PShape(); 
+//      for (int i = 0; i < randomQty; i++){
+//        
+//           newStar = drawStar(random(0, width), random(0, height/2), random(15,25), random(45,55), int(random(5,12)), design.palette.colors);
+//           shape(newStar);                                                                               
+//       } 
+//       //filter(INVERT); 
+//      int layers = 5;
+//      float horizonHigh = .2;
+//      float horizonLow = .6;
+//      int strokeWeight = 20;
+//      
+//      while(layers > 0){
+//        int curveY = int(random(height * horizonHigh, height * horizonLow));
+//        int endY = curveY;
+//        int endX = 0;
+//    
+//       smooth();
+//        //PShape horizon = createShape();
+//        //PShape land = createShape();
+//        //PShape landscape = createShape(GROUP);
+//
+//        beginShape();
+//        fill(design.palette.colors[2 * layers]);
+//        stroke(design.palette.colors[2 * layers - 1]);
+//        strokeWeight(strokeWeight);
+//        curveVertex(0, curveY); 
+//        
+//        for (int i = 0; i <= width; i += design.canvas.W) {   
+//          curveVertex(i, curveY);
+//        
+//          if (i != width){          
+//              curveY = int(random(height * horizonHigh, height * horizonLow));
+//          }  
+//          if (i == width){
+//              endX = i;
+//          } 
+//        }
+//        curveVertex(endX, curveY);  
+//        vertex(width, height);
+//        vertex(0, height);
+//        vertex(0, endY);
+//        endShape();
+//        
+//        horizonHigh += .16;
+//        horizonLow += .1;
+//        strokeWeight += 15;
+//        
+//        layers--; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
