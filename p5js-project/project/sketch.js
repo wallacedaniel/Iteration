@@ -1,57 +1,35 @@
-// adjust setting container id to index ... random ui w drop area ... shape drop and reaction  .. work backwards from i.paint() 
-
-
-
-
-
-//dropImagedropImage = select('#dropImage');
-    //newFile = dropImage.drop(gotFile);
-
-
-//
-//
-//function randomPoints(){
-//    
-//    //randomQty = int(randomQtyElement.value());
-//    
-//    let randPoints = [];
-//   /* for(let i = 0; i < randomQty; i++){
-//        let randPair = [];
-//        randPair[0] = int(random(width));
-//        randPair[1] = int(random(height));
-//        randPoints.push(randPair);
-//    }*/
-//    return randPoints;
-//};
-//
-//function updateRandomPoints(){
-//    canvas.randoms = randomPoints();
-//}
-//
-//
-//function gotFile(file){
-//    //createP(file.name + " " + file.size);   
-//    //createP(file.type); 
-//    //createP(file.size); 
-//    //newImage = file;
-//    img = createImg(file.data);
-//    img.size(canvas.W,canvas.H);
-//    img.mouseClicked(insertImage);
-//}
-//
-//function insertImage(){
-//}
-
-
-
 
 class Iteration {
-  constructor(width, height) {                    //  getters  and  setters for layers
-    this.width;
-    this.height;
+  constructor(width, height, c) {                   
+    this.width = width;
+    this.height = height;
+    this.canvas = c;
     this.layers = []; 
   }
     
+  get iterationCanvas(){
+    return this.canvas;   
+  }
+    
+  set iterationCanvas(c){
+    this.canvas = c;   
+  }
+    
+  updateCanvasSize() {                                       //  updating canvas size does not update stroke size relative to the canvas    
+    canvasW = select('#canvas-w');   
+    canvasH = select('#canvas-h');
+    if(canvasW.value() && canvasW.value()){
+        c.remove();
+        let canvasContainer = select('#canvas-container');                          
+        c = createCanvas(int(canvasW.value()), int(canvasH.value()));    //  and update iteraiton width and height    need getters and setters 
+        c.parent(canvasContainer);
+        this.iterationCanvas = c;
+    }
+    else{
+        alert('enter a value between 100 and 12k');    
+    }
+  }
+      
   paint(){
       
   }
@@ -59,7 +37,36 @@ class Iteration {
   removeLayer(index){
     this.layers.splice(index, 1);    
   }
+
 }
+
+
+function addLayer() {     //  when adding the layer the ui should appear first before the draw?
+  let layer;
+  switch(this.elt.textContent) {
+      case 'grid':
+        layer = new GridLayer(width, height, i.layers.length);
+        i.layers.push(layer); 
+        i.layers[i.layers.length - 1].newCoordinates(width * .1, height * .1, width, height);
+        break;
+      case 'random':
+        layer = new RandomLayer(width, height, i.layers.length);
+        i.layers.push(layer); 
+        //i.layers[i.layers.length - 1].newCoordinates(100, width * .05);
+          i.layers[i.layers.length - 1].newCoordinates(400, 25, 10, 1.2);
+        break;
+      case 'simple':
+        layer = new SimpleLayer(width, height, i.layers.length);
+        i.layers.push(layer);
+        i.layers[i.layers.length - 1].newCoordinates();
+        break;
+      case 'horizon':
+        layer = new HorizonLayer(width, height, i.layers.length);
+        i.layers.push(layer); 
+  }
+  i.layers[i.layers.length - 1].settingsUI();
+}
+
 
 
 class Layer { 
@@ -78,12 +85,14 @@ class Layer {
       let layersContainer = select('#layers-container'); 
       
       let layerPanel = createElement('div').id('layer-' + this.index).addClass('layer-panel'); 
+      layerPanel.elt.setAttribute('draggable', 'true');
+      layerPanel.elt.setAttribute('ondragstart', 'drag(event)');
       layerPanel.parent(layersContainer);
       
       let layerTitle = createElement('h3', this.type);
       layerTitle.parent(layerPanel);
       
-      let layerSettings = createElement('div').id('settings-container-' + this.index).addClass('settings-container'); //.id('settings-container')
+      let layerSettings = createElement('div').id('settings-container-' + this.index).addClass('settings-container'); 
       layerSettings.parent(layerPanel);
       
       // creates remove button-' + this.index
@@ -197,31 +206,39 @@ class RandomLayer extends Layer {                                               
         
         let settingsContainer = select('#settings-container-' + this.index);
         
+        let shapeDrop = createElement('div').id('shape-drop-' + this.index);
+        shapeDrop.elt.setAttribute("style", "background:#FFF; height:40px; width:40px;");
+        shapeDrop.parent(settingsContainer)
         
-        let qtyText = createElement('p', this.qty);
-        qtyText.parent(settingsContainer);
+        let coordsQty = createInput(this.qty);
+        coordsQty.input(inputEvent);
+        coordsQty.parent(settingsContainer);
         
-//        let qtyText = createElement('p', this.qty);
-//        qtyText.parent(settingsContainer);
+        let coordsScale = createSlider(0, this.W, this.W * .05); 
+        coordsScale.input(inputEvent);
+        coordsScale.parent(settingsContainer);
         
- 
-//        
-//      let layerPanel = createElement('div'); 
-//      layerPanel.parent(layersContainer);
-//      let layerTitle = createElement('h3', this.type);
-//      layerTitle.parent(layerPanel);
-//      
-//      let layerSettings = createElement('div').id('settings-container'); 
-//      layerPanel.parent(layersContainer);
-//      
-//      // creates remove button
-//      let removeButton = createElement('button', 'Remove').id(this.index).addClass('layer-remove');                        // <<<< this id should be better ..just a number .. should label layer-# and regex remove on other end
-//      removeButton.parent(layerPanel);
-//      removeButton.mousePressed(this.remove);  
+        let coordsScaleVariation = createInput('0');
+        coordsScaleVariation.input(inputEvent);
+        coordsScaleVariation.parent(settingsContainer);
         
-
+        let coordsSpread = createInput('0');
+        coordsSpread.input(inputEvent);
+        coordsSpread.parent(settingsContainer);
         
+        let updateButton = createButton('Update');
+        updateButton.parent(settingsContainer);
+        updateButton.mousePressed(updateEvent);       //   << not creating these in class? 
     }
+}
+
+
+function inputEvent(){
+    console.log(this.elt.value);
+}
+
+function updateEvent(){
+    console.log('updated');
 }
 
 
@@ -538,8 +555,10 @@ class HorizonLayer extends Layer {
 }
 
 class Palette {
-    constructor(color1, color2, color3) {
-        this.colors = [color1, color2, color3]; 
+//    constructor(color1, color2, color3) {
+//        this.colors = [color1, color2, color3];
+     constructor() {
+        this.colors = []; 
         this.swatches;
         //this.swatches = this.newSwatches(this.colors);
     }
@@ -562,6 +581,15 @@ class Palette {
     newSwatches(colors){
         
         let swatches = [];
+        
+        
+        
+        for(let [index, color] of colors.entries()){
+            
+            
+            
+        }
+        
         
         let swatch = [colors[0]];
         
@@ -650,7 +678,7 @@ function setup() {
     c = createCanvas(800, 800);
     c.parent(canvasContainer);
     
-    
+     i = new Iteration(width, height, c);
     
     // Canvas Size Input
     canvasW = select('#canvas-w');                 // constrain and optimize interface on options
@@ -658,7 +686,7 @@ function setup() {
     canvasW.value(width);
     canvasH.value(height);
     let canvasSize = select('#canvas-size');
-    canvasSize.mousePressed(updateCanvasSize);  
+    canvasSize.mousePressed(i.updateCanvasSize);  
     
     
      // Display layer type options
@@ -682,22 +710,41 @@ function setup() {
     
     
     
-    i = new Iteration(width, height);
+   
     
     
         //  **********        TEMP    ***********
     
-    let color1 = color(255,215,113);
-    let color2 = color(255,113,191);
-    let color3 = color(113,255,238);
+    let color4 = color(135,190,155);
+    let color6 = color(194,218,201);
+    let color3 = color(254,223,206);
+    let color1 = color(225,129,103);
+    let color5 = color(235,81,76);
+    let color2 = color(142,47,22);
+    let color7 = color(220,26,22);
+    let color8 = color(255,245,240);
+    let color9 = color(16,221,229);
+    
+    let palette1 = [color1, color2, color3, color4, color5, color6, color7, color8, color9];
 
-    palette = new Palette(color1, color2, color3);
-    palette.newSwatches(palette.colors);
+    palette = new Palette();
+    //palette.newSwatches(palette.colors);
+    palette.newSwatches(palette1);
     
     let saveButton = select('#save')
     saveButton.mousePressed(saveImage);
 
 
+    let playButton = select('#play');
+    let stopButton = select('#stop');
+    let rateSlider = select('#rate');
+    
+    playButton.mousePressed(play);
+    stopButton.mousePressed(stop);
+    let rate = rateSlider.value();
+    rateSlider.input(frames);
+   
+    
 
     
     //   *******  PREVIOUS  ********
@@ -805,77 +852,36 @@ function setup() {
 
 
 
-//        *****         UI FUNCTIONS       Iteration object methods?   *****
 
-
-function updateCanvasSize() {                
-    canvasW = select('#canvas-w');   
-    canvasH = select('#canvas-h');
-    if(canvasW.value() && canvasW.value()){
-        c.remove();
-        let canvasContainer = select('#canvas-container');                          
-        c = createCanvas(int(canvasW.value()), int(canvasH.value()));
-        c.parent(canvasContainer);  
-    }
-    else{
-        alert('enter a value between 100 and 12k');    
-    }
-}
-
-function addLayer() {  
-
-  
-//      let canvasLayers = select('#layer-drop');                                               
-//      let lrayerSelect = createElement('p', this.elt.textContent);  
-//      layerSelect.parent(canvasLayers);
-//      layerSelect.mousePressed(layerToggle); 
-      
  
-
-      //    this.elt.textContent
-    
-    //let layer = new Layer(this.elt.textContent, iteration.layers.length);
-    
-      
-    
-      let layer;
-      switch(this.elt.textContent) {
-          case 'grid':
-            layer = new GridLayer(width, height, i.layers.length);
-            i.layers.push(layer); 
-            i.layers[i.layers.length - 1].newCoordinates(width * .1, height * .1, width, height);
-            break;
-          case 'random':
-            layer = new RandomLayer(width, height, i.layers.length);
-            i.layers.push(layer); 
-            i.layers[i.layers.length - 1].newCoordinates(100, width * .05);
-            break;
-          case 'simple':
-            layer = new SimpleLayer(width, height, i.layers.length);
-            i.layers.push(layer);
-            i.layers[i.layers.length - 1].newCoordinates();
-            break;
-          case 'horizon':
-            layer = new HorizonLayer(width, height, i.layers.length);
-            i.layers.push(layer); 
-      }
-      i.layers[i.layers.length - 1].settingsUI();
+function frames(){
+    frameRate(this.value());
 }
 
+function  play(){
+    loop();    
+}
+    
+function stop(){
+    noLoop();    
+}
+    
 function saveImage(){
-    
     let name = select('#name').value();
-    saveCanvas(c, 'iteration-' + name + '.jpg');
+    if(name != ''){                                           //   change to ternary operator
+        saveCanvas(c, 'iteration-' + name, 'jpg');
+    }else{
+        saveCanvas(c, 'iteration', 'jpg');   
+    }
 }
 
-
-
-
+function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+}
 
 function addShape() { 
     console.log('shape added');
 }
-
 
 
 
@@ -943,6 +949,10 @@ function draw() {
 //        
 //        
 //    } 
+    
+    
+    //    enforced contrast    < better palette to accept any quantity
+    
     if(i.layers.length > 0){
     for(let [index1, layer] of i.layers.entries()){
     for(let [index2, coord] of i.layers[index1].coordinates.entries()){
@@ -950,18 +960,52 @@ function draw() {
 //        strokeWeight(testRandom.randomLayerRadius[index]);
         
         if(layer.type == 'random'){
-            strokeWeight(layer.scalesArray[index2]);    
+            
+            
+            
+            // STARS
+            let levelPicker = int(random(0,4));  // currently can never be less than 50% setting second value higher creates greater likelihood of double star
+            let starPoints = int((random(4,12)));
+            let shapeScale = layer.scalesArray[index2];
+            let strokeScale = layer.scalesArray[index2] * .1;
+            
+            strokeScale = int(random(strokeScale * .5, strokeScale * 2));
+            strokeWeight(strokeScale); 
+            
+            stroke(palette.swatches[int(random(0, palette.swatches.length))][int(random(0, palette.swatches[0].length))]);
+            fill(palette.swatches[int(random(0, palette.swatches.length))][int(random(0, palette.swatches[0].length))]);
+            
+            //let radiusVariation = random(.3, .8);   // could also be applied to outer radius
+            let radiusVariation = .5;
+            star(coord.x, coord.y, shapeScale * .5, shapeScale, starPoints);
+            
+            if(levelPicker > 0){ 
+                
+                strokeScale *= .5;
+                strokeScale = int(random(strokeScale * radiusVariation, strokeScale * 2));
+                strokeWeight(strokeScale);
+                
+                stroke(palette.swatches[int(random(0, palette.swatches.length))][int(random(0, palette.swatches[0].length ))]);
+                fill(palette.swatches[int(random(0, palette.swatches.length))][int(random(0, palette.swatches[0].length))]);
+                
+                star(coord.x, coord.y, (shapeScale * .5) * radiusVariation, shapeScale * .5, starPoints);   
+                
+            }
+            
+            
+            
+            
         }
         else {
             strokeWeight(10);    
         }
         
-        stroke(palette.swatches[int(random(0, palette.swatches.length - 1))][int(random(0, palette.swatches[0].length - 1))]);
-        
-        point(coord.x, coord.y);
         
         
-          //fill(palette.swatches[int(random(0, palette.swatches.length - 1))][int(random(0, palette.swatches[0].length - 1))]);
+        //point(coord.x, coord.y);
+        
+        
+          
         
           
         
@@ -2077,9 +2121,7 @@ public PShape drawTarget(float xloc, float yloc, int size, int numSteps) {
 //    }
 //}
 //        
-//function saveImage(){
-//    saveCanvas(c, 'iteration', 'jpg');
-//}
+
 //
 //
 //function randomPoints(){
@@ -2859,18 +2901,49 @@ float sgn(float val) {
 
 
 
+// adjust setting container id to index ... random ui w drop area ... shape drop and reaction  .. work backwards from i.paint() 
 
 
 
 
 
+//dropImagedropImage = select('#dropImage');
+    //newFile = dropImage.drop(gotFile);
 
 
-
-
-
-
-
+//
+//
+//function randomPoints(){
+//    
+//    //randomQty = int(randomQtyElement.value());
+//    
+//    let randPoints = [];
+//   /* for(let i = 0; i < randomQty; i++){
+//        let randPair = [];
+//        randPair[0] = int(random(width));
+//        randPair[1] = int(random(height));
+//        randPoints.push(randPair);
+//    }*/
+//    return randPoints;
+//};
+//
+//function updateRandomPoints(){
+//    canvas.randoms = randomPoints();
+//}
+//
+//
+//function gotFile(file){
+//    //createP(file.name + " " + file.size);   
+//    //createP(file.type); 
+//    //createP(file.size); 
+//    //newImage = file;
+//    img = createImg(file.data);
+//    img.size(canvas.W,canvas.H);
+//    img.mouseClicked(insertImage);
+//}
+//
+//function insertImage(){
+//}
 
 
 

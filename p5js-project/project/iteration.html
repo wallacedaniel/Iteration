@@ -93,8 +93,10 @@
                             <div id="app-controls">
                                 <button id="play" type="button" class="btn btn-secondary">></button>                                
                                 <button id="stop" type="button" class="btn btn-secondary">[]</button>
-                                <label for="rate">Rate</label>                                <!--  range -- -->
-                                <input type="text" id="rate">
+
+                                <label for="rate">Rate</label>  
+                                <input type="range" min="1" max="60" value="60"  id="rate">
+
                                 <label for="name">Name</label>                                 <!--  include in save -->
                                 <input type="text" id="name">
                                 <label for="data">Save Data</label>                            <!--  write to file -->                        
