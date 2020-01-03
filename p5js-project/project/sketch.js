@@ -581,38 +581,54 @@ class Palette {
     newSwatches(colors){
         
         let swatches = [];
-        
-        
-        
-        for(let [index, color] of colors.entries()){
-            
-            
+           
+        // for each color
+        for(let i = 0; i < colors.length; i++){
+            // for each color following
+            for(let j = i + 1; j < colors.length; j++){
+                
+                console.log(i + "   " + j);
+                
+                let swatch = []
+                // color 1
+                swatch[0] = colors[i]
+                
+                // add interpolated colors
+                for(let k = 1; k < 10; k++){
+                    swatch[k] = lerpColor(colors[i], colors[j], k * .1);    
+                }
+                // color 2
+                swatch[10] = colors[j];
+                swatches.push(swatch);
+            }   
             
         }
         
         
-        let swatch = [colors[0]];
+//        let swatch = [colors[0]];
+//        
+//        for(let i = 1; i < 10; i++){
+////        if(this.type == 'custom'){}
+//            swatch[i] = lerpColor(colors[0], colors[1], i * .1);    
+//        }
+//        swatch[10] = colors[1];
+//        swatches.push(swatch);
+//        if(colors[2]){
+//            let swatch2 = [colors[1]];                 //   Cleaner ?    could be more multiple colors / custom qty steps / tints / shades / types
+//            let swatch3 = [colors[2]];
+//            
+//            for(let i = 1; i < 10; i++){
+//    //        if(this.type == 'custom'){}
+//                swatch2[i] = lerpColor(colors[1], colors[2], i * .1);
+//                swatch3[i] = lerpColor(colors[2], colors[0], i * .1);
+//            }
+//            swatch2[10] = colors[2]
+//            swatch3[10] = colors[0]
+//            swatches.push(swatch2);
+//            swatches.push(swatch3);    
+//        }
         
-        for(let i = 1; i < 10; i++){
-//        if(this.type == 'custom'){}
-            swatch[i] = lerpColor(colors[0], colors[1], i * .1);    
-        }
-        swatch[10] = colors[1];
-        swatches.push(swatch);
-        if(colors[2]){
-            let swatch2 = [colors[1]];                 //   Cleaner ?    could be more multiple colors / custom qty steps / tints / shades / types
-            let swatch3 = [colors[2]];
-            
-            for(let i = 1; i < 10; i++){
-    //        if(this.type == 'custom'){}
-                swatch2[i] = lerpColor(colors[1], colors[2], i * .1);
-                swatch3[i] = lerpColor(colors[2], colors[0], i * .1);
-            }
-            swatch2[10] = colors[2]
-            swatch3[10] = colors[0]
-            swatches.push(swatch2);
-            swatches.push(swatch3);    
-        }
+
         this.paletteSwatches = swatches;
     } 
 }
@@ -715,18 +731,19 @@ function setup() {
     
         //  **********        TEMP    ***********
     
-    let color4 = color(135,190,155);
-    let color6 = color(194,218,201);
+    let color1 = color(135,190,155);
+    let color2 = color(194,218,201);
     let color3 = color(254,223,206);
-    let color1 = color(225,129,103);
+    let color4 = color(225,129,103);
     let color5 = color(235,81,76);
-    let color2 = color(142,47,22);
+    let color6 = color(142,47,22);
     let color7 = color(220,26,22);
     let color8 = color(255,245,240);
     let color9 = color(16,221,229);
     
     let palette1 = [color1, color2, color3, color4, color5, color6, color7, color8, color9];
 
+    palette = new Palette();
     palette = new Palette();
     //palette.newSwatches(palette.colors);
     palette.newSwatches(palette1);
@@ -920,7 +937,7 @@ function draw() {
     
     
   
-    background(255);
+    background(palette.swatches[int(random(0, palette.swatches.length))][int(random(0, palette.swatches[0].length ))]);
 
     //adjustable spirals     layered/even polars w variable radius spread   
     
@@ -989,7 +1006,7 @@ function draw() {
                 fill(palette.swatches[int(random(0, palette.swatches.length))][int(random(0, palette.swatches[0].length))]);
                 
                 star(coord.x, coord.y, (shapeScale * .5) * radiusVariation, shapeScale * .5, starPoints);   
-                
+            
             }
             
             
