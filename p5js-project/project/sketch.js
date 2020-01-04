@@ -740,7 +740,7 @@ function setup() {
     let color7 = color(220,26,22);
     let color8 = color(255,245,240);
     let color9 = color(16,221,229);
-    
+    // 
     let palette1 = [color1, color2, color3, color4, color5, color6, color7, color8, color9];
 
     palette = new Palette();
@@ -935,9 +935,12 @@ function draw() {
     
     //i.paint();
     
-    
+    let swatchIndex = int(random(0, palette.swatches.length));
+    let colorIndex = int(random(0, palette.swatches[0].length ));
+    let bgColor = palette.swatches[swatchIndex][colorIndex];
+    let theColor = bgColor;
   
-    background(palette.swatches[int(random(0, palette.swatches.length))][int(random(0, palette.swatches[0].length ))]);
+    background(bgColor);
 
     //adjustable spirals     layered/even polars w variable radius spread   
     
@@ -977,24 +980,52 @@ function draw() {
 //        strokeWeight(testRandom.randomLayerRadius[index]);
         
         if(layer.type == 'random'){
-            
-            
-            
+
             // STARS
-            let levelPicker = int(random(0,4));  // currently can never be less than 50% setting second value higher creates greater likelihood of double star
+            // variable: levels(1 or 2, 50% or greater of 2)   points(4 - 12)    strokeScale/variation(strokeScale variable)   inner/outerRadiusVariation(radiusVariation variable applied to either star radius      could also vary inner star points vs outer)    contrast enforced manual adjustment in colorCheck function w out breaking
+            let levelPicker = int(random(0,4));  
             let starPoints = int((random(4,12)));
             let shapeScale = layer.scalesArray[index2];
             let strokeScale = layer.scalesArray[index2] * .1;
+            //let radiusVariation = random(.3, .8);  
+            let radiusVariation = .5;
             
             strokeScale = int(random(strokeScale * .5, strokeScale * 2));
             strokeWeight(strokeScale); 
             
-            stroke(palette.swatches[int(random(0, palette.swatches.length))][int(random(0, palette.swatches[0].length))]);
-            fill(palette.swatches[int(random(0, palette.swatches.length))][int(random(0, palette.swatches[0].length))]);
+
+            function colorCheck(previousColor){
+                
+                let newColor = previousColor;   
+                let colorCheck = false;
+                let count = 0;
+                while(newColor == previousColor || colorCheck == false){                                           
+                    swatchIndex = int(random(0, palette.swatches.length));
+                    colorIndex = int(random(0, palette.swatches[0].length ));
+                    newColor = palette.swatches[swatchIndex][colorIndex];
+                    let bright1 = brightness(previousColor);
+                    let bright2 = brightness(newColor);
+                    let light1 = lightness(previousColor);
+                    let light2 = lightness(newColor);
+                    if(abs(bright1 - bright2) > 15 && abs(light1 - light2) > 15){           //  adjust these values for contrast enforce
+                        colorCheck = true;
+                    }
+                       
+                }
+                
+                return newColor;
+                
+            }
             
-            //let radiusVariation = random(.3, .8);   // could also be applied to outer radius
-            let radiusVariation = .5;
-            star(coord.x, coord.y, shapeScale * .5, shapeScale, starPoints);
+
+            
+            theColor = colorCheck(bgColor);
+            stroke(theColor);
+            
+            theColor = colorCheck(theColor);
+            fill(theColor);
+            
+            star(coord.x, coord.y, shapeScale * radiusVariation, shapeScale, starPoints);
             
             if(levelPicker > 0){ 
                 
@@ -1002,16 +1033,15 @@ function draw() {
                 strokeScale = int(random(strokeScale * radiusVariation, strokeScale * 2));
                 strokeWeight(strokeScale);
                 
-                stroke(palette.swatches[int(random(0, palette.swatches.length))][int(random(0, palette.swatches[0].length ))]);
-                fill(palette.swatches[int(random(0, palette.swatches.length))][int(random(0, palette.swatches[0].length))]);
+                theColor = colorCheck(theColor);
+                stroke(theColor);
+                
+                theColor = colorCheck(theColor);
+                fill(theColor);
                 
                 star(coord.x, coord.y, (shapeScale * .5) * radiusVariation, shapeScale * .5, starPoints);   
             
             }
-            
-            
-            
-            
         }
         else {
             strokeWeight(10);    
@@ -1156,7 +1186,13 @@ function draw() {
 //  
     
     
-// End of Draw     
+// End of Draw   
+    
+    
+    
+    //saveImage();
+    
+    
 }
 
 
