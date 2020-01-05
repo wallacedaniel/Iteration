@@ -53,7 +53,7 @@ function addLayer() {     //  when adding the layer the ui should appear first b
         layer = new RandomLayer(width, height, i.layers.length);
         i.layers.push(layer); 
         //i.layers[i.layers.length - 1].newCoordinates(100, width * .05);
-          i.layers[i.layers.length - 1].newCoordinates(400, 25, 10, 1.2);
+          i.layers[i.layers.length - 1].newCoordinates(300, 50, 20, .9);
         break;
       case 'simple':
         layer = new SimpleLayer(width, height, i.layers.length);
@@ -555,12 +555,9 @@ class HorizonLayer extends Layer {
 }
 
 class Palette {
-//    constructor(color1, color2, color3) {
-//        this.colors = [color1, color2, color3];
      constructor() {
         this.colors = []; 
         this.swatches;
-        //this.swatches = this.newSwatches(this.colors);
     }
     
     get paletteColors() {
@@ -582,53 +579,19 @@ class Palette {
         
         let swatches = [];
            
-        // for each color
         for(let i = 0; i < colors.length; i++){
-            // for each color following
             for(let j = i + 1; j < colors.length; j++){
                 
-                console.log(i + "   " + j);
-                
                 let swatch = []
-                // color 1
                 swatch[0] = colors[i]
                 
-                // add interpolated colors
                 for(let k = 1; k < 10; k++){
                     swatch[k] = lerpColor(colors[i], colors[j], k * .1);    
                 }
-                // color 2
                 swatch[10] = colors[j];
                 swatches.push(swatch);
             }   
-            
         }
-        
-        
-//        let swatch = [colors[0]];
-//        
-//        for(let i = 1; i < 10; i++){
-////        if(this.type == 'custom'){}
-//            swatch[i] = lerpColor(colors[0], colors[1], i * .1);    
-//        }
-//        swatch[10] = colors[1];
-//        swatches.push(swatch);
-//        if(colors[2]){
-//            let swatch2 = [colors[1]];                 //   Cleaner ?    could be more multiple colors / custom qty steps / tints / shades / types
-//            let swatch3 = [colors[2]];
-//            
-//            for(let i = 1; i < 10; i++){
-//    //        if(this.type == 'custom'){}
-//                swatch2[i] = lerpColor(colors[1], colors[2], i * .1);
-//                swatch3[i] = lerpColor(colors[2], colors[0], i * .1);
-//            }
-//            swatch2[10] = colors[2]
-//            swatch3[10] = colors[0]
-//            swatches.push(swatch2);
-//            swatches.push(swatch3);    
-//        }
-        
-
         this.paletteSwatches = swatches;
     } 
 }
@@ -740,7 +703,7 @@ function setup() {
     let color7 = color(220,26,22);
     let color8 = color(255,245,240);
     let color9 = color(16,221,229);
-    // 
+    //  
     let palette1 = [color1, color2, color3, color4, color5, color6, color7, color8, color9];
 
     palette = new Palette();
@@ -790,8 +753,7 @@ function setup() {
       gridType.mousePressed(setGridType);
     });*/
     
-//    
-//    firstDraw = 1;
+
 //    
 //    bgStyle = createRadio();
 //    bgStyle.option('background');
@@ -932,14 +894,10 @@ let roseShapes = [
 
 function draw() {
     
-    
-    //i.paint();
-    
     let swatchIndex = int(random(0, palette.swatches.length));
     let colorIndex = int(random(0, palette.swatches[0].length ));
     let bgColor = palette.swatches[swatchIndex][colorIndex];
     let theColor = bgColor;
-  
     background(bgColor);
 
     //adjustable spirals     layered/even polars w variable radius spread   
@@ -968,134 +926,147 @@ function draw() {
 //        }
 //        
 //        
-//    } 
-    
-    
+//    }  
     //    enforced contrast    < better palette to accept any quantity
     
     if(i.layers.length > 0){
-    for(let [index1, layer] of i.layers.entries()){
-    for(let [index2, coord] of i.layers[index1].coordinates.entries()){
         
-//        strokeWeight(testRandom.randomLayerRadius[index]);
+//    for(let [index1, layer] of i.layers.entries()){
+//    for(let [index2, coord] of i.layers[index1].coordinates.entries()){
         
-        if(layer.type == 'random'){
+//        if(layer.type == 'random'){
 
-            // STARS
-            // variable: levels(1 or 2, 50% or greater of 2)   points(4 - 12)    strokeScale/variation(strokeScale variable)   inner/outerRadiusVariation(radiusVariation variable applied to either star radius      could also vary inner star points vs outer)    contrast enforced manual adjustment in colorCheck function w out breaking
-            let levelPicker = int(random(0,4));  
-            let starPoints = int((random(4,12)));
-            let shapeScale = layer.scalesArray[index2];
-            let strokeScale = layer.scalesArray[index2] * .1;
-            //let radiusVariation = random(.3, .8);  
-            let radiusVariation = .5;
+//            // STARS
+//            // variable: levels(1 or 2, 50% or greater of 2)   points(4 - 12)    strokeScale/variation(strokeScale variable)   inner/outerRadiusVariation(radiusVariation variable applied to either star radius      could also vary inner star points vs outer)    contrast enforced manual adjustment in colorCheck function w out breaking
+//            let levelPicker = int(random(0,4));  
+//            let starPoints = int((random(4,12)));
+//            let shapeScale = layer.scalesArray[index2];
+//            let strokeScale = layer.scalesArray[index2] * .1;
+//            //let radiusVariation = random(.3, .8);  
+//            let radiusVariation = .5;
+//            
+//            strokeScale = int(random(strokeScale * .5, strokeScale * 2));
+//            strokeWeight(strokeScale); 
+//            
+//            theColor = colorCheck(bgColor);
+//            stroke(theColor);
+//            theColor = colorCheck(theColor);
+//            fill(theColor);
+//            
+//            star(coord.x, coord.y, shapeScale * radiusVariation, shapeScale, starPoints);
+//            
+//            if(levelPicker > 0){ 
+//                strokeScale *= .5;
+//                strokeScale = int(random(strokeScale * radiusVariation, strokeScale * 2));
+//                strokeWeight(strokeScale);
+//                
+//                theColor = colorCheck(theColor);
+//                stroke(theColor);
+//                theColor = colorCheck(theColor);
+//                fill(theColor);
+//                
+//                star(coord.x, coord.y, (shapeScale * .5) * radiusVariation, shapeScale * .5, starPoints);   
+//            }
+//            
+                
+//                // ROSES
+//            
+                //let shapeScale = layer.scalesArray[index2];
+                //let strokeScale = layer.scalesArray[index2] * .05;
             
-            strokeScale = int(random(strokeScale * .5, strokeScale * 2));
-            strokeWeight(strokeScale); 
+//                strokeWeight(shapeScale); 
+//
+//                theColor = colorCheck(bgColor);
+//                stroke(theColor);
+//                theColor = colorCheck(theColor);
+//                fill(theColor);
+//            
+//            
+//                let d;
+//                let n;
+//                do {
+//                    d = int(random(1,10));
+//                    n = int((random(1,8)));
+//                } while (d  == n || (d == 3 && n  == 1)  || (d == 6 && n  == 2)  || (d == 9 && n == 3)) ;
+//                push();
+//                translate(coord.x, coord.y);
+//                rose(d, n, shapeScale);
+//                pop(); 
             
+            
+            
+                    // M ROSES
+//                    strokeWeight(3); 
+//
+//                    let roseIndex = int(random(0,roseShapes.length)); 
+//
+//                    push();
+//                    translate(coord.x, coord.y);
+//                    roseM(roseShapes[roseIndex].d, roseShapes[roseIndex].n, shapeScale);
+//                    pop();
+    
 
-            function colorCheck(previousColor){
-                
-                let newColor = previousColor;   
-                let colorCheck = false;
-                let count = 0;
-                while(newColor == previousColor || colorCheck == false){                                           
-                    swatchIndex = int(random(0, palette.swatches.length));
-                    colorIndex = int(random(0, palette.swatches[0].length ));
-                    newColor = palette.swatches[swatchIndex][colorIndex];
-                    let bright1 = brightness(previousColor);
-                    let bright2 = brightness(newColor);
-                    let light1 = lightness(previousColor);
-                    let light2 = lightness(newColor);
-                    if(abs(bright1 - bright2) > 15 && abs(light1 - light2) > 15){           //  adjust these values for contrast enforce
-                        colorCheck = true;
-                    }
-                       
-                }
-                
-                return newColor;
-                
-            }
+       // }
+        
+        
+        
+        
+        if(i.layers[0].type == 'simple'){ 
             
-
+            // M ROSES
             
+            let d = int(random(10,100));
+            let n = int(random(2,9)); 
+            
+            strokeWeight(1);
             theColor = colorCheck(bgColor);
             stroke(theColor);
-            
             theColor = colorCheck(theColor);
             fill(theColor);
+            let roseIndex = int(random(0,roseShapes.length)); 
             
-            star(coord.x, coord.y, shapeScale * radiusVariation, shapeScale, starPoints);
+            push();
+            translate(width/2, height/2);
+            roseM(d, n, height/3);
+            pop();
+            console.log("{'d':" + d + ", 'n':" + n + "}");
             
-            if(levelPicker > 0){ 
-                
-                strokeScale *= .5;
-                strokeScale = int(random(strokeScale * radiusVariation, strokeScale * 2));
-                strokeWeight(strokeScale);
-                
-                theColor = colorCheck(theColor);
-                stroke(theColor);
-                
-                theColor = colorCheck(theColor);
-                fill(theColor);
-                
-                star(coord.x, coord.y, (shapeScale * .5) * radiusVariation, shapeScale * .5, starPoints);   
             
-            }
-        }
-        else {
-            strokeWeight(10);    
-        }
-        
-        
-        
-        //point(coord.x, coord.y);
-        
-        
-          
-        
-          
-        
-         
-        
-//            let d;
-//            let n;
-//            do {
-//                d = int(random(1,10));
-//                n = int((random(1,8)));
-//            } while (d  == n || (d == 3 && n  == 1)  || (d == 6 && n  == 2)  || (d == 9 && n == 3)) ;
-//            push();
-//            translate(coord.x, coord.y);
-//            rose(d, n, testRandom.randomLayerRadius[index]);
-//            pop();  
-//        
-//        
-//        
-//        
-//        
-        
-        
-        
-        
-//            let roseIndex = int(random(0,roseShapes.length));
+            
+            // SUPER ELLIPSES
+            
+//            strokeWeight(1);
+//            theColor = colorCheck(bgColor);
+//            stroke(theColor);
+//            theColor = colorCheck(theColor);
+//            fill(theColor);
 //            
-////            let d = int(random(10,100));
-////            let n = int(random(2,9));    
-//            
+//            let n = random(0.3,5);
 //            push();
-//            translate(coord.x, coord.y);
-//            roseM(roseShapes[roseIndex].d, roseShapes[roseIndex].n, testRandom.randomLayerRadius[index]);
+//            translate(width/2, height/2);
+//            superEllipse(width/3, height/3, n);
 //            pop();
-//    
-
-
+//            console.log(n);
+        }
         
-        
-        
-    }
-    }
+ 
+    
+    
+    
+    
+//        
+//    }
+//    }  
     }
 
+    
+    
+    
+    
+    
+    
+    
+    
 //    
 //  
     
@@ -1194,6 +1165,29 @@ function draw() {
     
     
 }
+
+function colorCheck(previousColor){
+    let newColor = previousColor;   
+    let colorCheck = false;
+    let count = 0;
+    while(newColor == previousColor || colorCheck == false){                                           
+        swatchIndex = int(random(0, palette.swatches.length));
+        colorIndex = int(random(0, palette.swatches[0].length ));
+        newColor = palette.swatches[swatchIndex][colorIndex];
+        let bright1 = brightness(previousColor);
+        let bright2 = brightness(newColor);
+        let light1 = lightness(previousColor);
+        let light2 = lightness(newColor);
+        if(abs(bright1 - bright2) > 10 && abs(light1 - light2) > 10){           //  adjust these values for contrast enforce ... w/out breaking 
+            colorCheck = true;
+        }    
+    }
+    return newColor;
+}
+
+
+
+
 
 
 // SHAPES
