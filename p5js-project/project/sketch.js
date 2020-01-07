@@ -900,34 +900,8 @@ function draw() {
     let theColor = bgColor;
     background(bgColor);
 
-    //adjustable spirals     layered/even polars w variable radius spread   
-    
-//    let divisors = 20;
-//    let radius = 30;
-//    let loops = 3;
-//    let spiral = 3;
-//    let layers = 2;
-//
-//    let shapes = [];// function calls?
-//    
-//
-//    let x = width/2;
-//    let y = height/2;
-//    let angle = TWO_PI / divisors;
-//    
-//    for (let a = 0; a < TWO_PI * loops; a += angle) {  
-//        let sx = x + cos(a) * radius;
-//        let sy = y + sin(a) * radius;
-//        
-//        point(sx, sy);
-//        
-//        if(spiral > 0){
-//            radius += spiral;    
-//        }
-//        
-//        
-//    }  
-    //    enforced contrast    < better palette to accept any quantity
+
+
     
     if(i.layers.length > 0){
         
@@ -1013,23 +987,346 @@ function draw() {
         
         if(i.layers[0].type == 'simple'){ 
             
+            
+       
+            
+            strokeWeight(20);
+//            theColor = colorCheck(bgColor);
+//            stroke(theColor);
+//            theColor = colorCheck(theColor);
+//            fill(theColor);
+            
+            
+                //adjustable spirals     layered/even polars w variable radius spread   
+    
+
+            
+            let divisorOptions = [3,4,6,8];
+            
+            let radius = 30;
+            let loops = 5;
+            let spiral = 3;
+            let layers = 2;
+    
+            let newCoords = polarCoordinates(width/2, height/2, height/3, divisorOptions[int(random(0,divisorOptions.length))] );
+            
+            function polarCoordinates(x, y, radius, divisor, rotations, spiral, spread){
+                
+                let angle = TWO_PI / divisor;
+                let coordinates = [];
+                let origin = createVector(x, y);
+                coordinates.push(origin);
+                
+                for (let a = 0; a < TWO_PI * loops; a += angle) {  
+                    let sx = x + cos(a) * radius;
+                    let sy = y + sin(a) * radius;
+                    
+                    let coords = createVector(sx, sy);
+                    coordinates.push(coords);
+
+                    if(spiral){
+                        radius += spiral;    
+                    }
+                } 
+                return coordinates;
+            }
+            
+            
+            
+            
+            snowflake(newCoords, palette);
+            
+            function snowflake(coords, palette){
+                
+                let polyOptions = [0,3,4,6,8];
+                let polySides = polyOptions[int(random(0,polyOptions.length))];  
+                
+//    while((this.divisor == 3 && polySides == 4) || (this.divisor == 4 && polySides == 3 )){
+//      polySides = polyOptions[int(random(0,polyOptions.length))];
+//      
+//    }         
+                if(polySides == 0){
+                    ellipseMode(CENTER);
+                    for(let [index, coordinate] of coords.entries()){
+                        //palette pick
+                        line(coords[0].x, coords[0].y, coordinate.x, coordinate.y);
+                        ellipse(coordinate.x, coordinate.y, 40, 40);
+                    } 
+                } else {
+                    for(let [index, coordinate] of coords.entries()){
+                        if(index != 0){
+                            //console.log(coords[0]);
+                            line(coords[0].x, coords[0].y, coordinate.x, coordinate.y);
+                            drawTarget(coordinate.x, coordinate.y, 40, int(random(1,11)), palette, int(random(3,13)));   
+                        } 
+                    }   
+                } 
+            }
+            
+ 
+            
+            
+        
+            
+            
+            
+            
+            //class Snowflake{
+//  
+//    constructor(radius, locX, locY, palette) {
+//        this.levels = int(random(2,5));
+//        this.radius = radius;
+//        this.locX = locX;
+//        this.locY = locY;
+//        this.strokeWeight = int(this.radius * .04);  
+//        this.strokeColor = 0;
+//        this.palette = palette;
+//        let divisorOptions = [3,4,6,8];
+//        this.divisor = divisorOptions[int(random(0,divisorOptions.length))]; 
+//    }
+//    
+//    drawSnowflake(){
+//        
+//        
+//    translate(this.locX, this.locY);
+//    let x = 0;
+//    let y = 0;
+//    let angle = TWO_PI / this.divisor;
+//    //stroke(this.strokeColor);
+//    //strokeWeight(this.strokeWeight);
+//    //let fillColor;                                                                       
+//    let polyOptions = [3,4,6,8];
+//    let polySides = polyOptions[int(random(0,polyOptions.length))];    
+//    //PShape newShape;                                                                //??    <<<<
+//    let polarPicker = int(random(0, 10));
+//
+//
+//    while((this.divisor == 3 && polySides == 4) || (this.divisor == 4 && polySides == 3 )){
+//      polySides = polyOptions[int(random(0,polyOptions.length))];
+//      
+//    }
+            
+            
+            
+            
+            
+            
+            
+            
+//    
+//    if(polySides == 3 && this.levels == 2){
+//      this.levels = int(random(3,5));  
+//    }    
+//    
+//    //this.strokeColor = this.palette[int(random(0,palette.length-1))];
+//    //stroke(this.strokeColor);
+//
+//    // Draws just the lines first
+//    for (let a = 0; a < TWO_PI * 6; a += angle) {  
+//      let sx = x + cos(a) * this.radius;
+//      let sy = y + sin(a) * this.radius;
+//      line(0, 0, sx, sy);
+//    }
+//       
+//       
+//       
+//    //  SHAPES  
+//       
+//       
+//    let tempRadius = this.radius;
+//    
+//    for(let i = 0; i < this.levels; i++){
+//      this.radius = tempRadius;
+//      //stroke(this.strokeColor);                       
+//      //fillColor = this.strokeColor;                
+//      
+//      if(i != 0){
+//        this.radius = this.radius * (i * .25);
+//      }       
+//      
+//      //this.fillColor = this.palette[int(random(2,palette.length))];
+//      //this.strokeColor = this.palette[int(random(2,palette.length))];
+//      //stroke(this.strokeColor);
+//      
+//      for (let a = 0; a < TWO_PI * 6; a += angle) {  
+//        let sx = x + cos(a) * this.radius;
+//        let sy = y + sin(a) * this.radius;
+//        //noFill();
+//        //fill(this.fillColor);                     
+//        
+//             
+//        //ellipse(sx, sy, radius/4, radius/4); 
+//        
+//         if(polarPicker >= 0 && polarPicker < 7){
+//              //newShape = drawPolygon(sx, sy, radius/4, polySides, this.strokeWeight);    // <<<<<<<<<<<<<<<<<<<
+//              //shape(newShape); 
+//              noFill();
+//              //newShape = drawPolygon(sx, sy, radius/2, polySides, this.strokeWeight);           <<<<<<<<<<<<<<<<<<<<<,
+//              ///shape(newShape); 
+//          } else {
+//              ellipse(sx, sy, this.radius/2, this.radius/2);   
+//              noFill();
+//              ellipse(sx, sy, this.radius/4, this.radius/4); 
+//          }
+//      }
+//         
+//      if (this.divisor == 3){
+//        
+//        push();        
+//        rotate(1.05);        
+//        scale(.75);
+//              
+//          //stroke(this.strokeColor);
+//          for (let a = 0; a < TWO_PI * 6; a += angle) {  
+//            let sx = x + cos(a) * this.radius;
+//            let sy = y + sin(a) * this.radius;
+//            line(0, 0, sx, sy);
+//          }         
+//          
+//          for(let j = 0; j < this.levels; j++){
+//      
+//            this.radius = tempRadius;
+//            
+//            if(j != 0){
+//              this.radius = this.radius * (j * .25);
+//            }   
+//
+//            //this.fillColor = this.palette[int(random(2,palette.length))]; 
+//            //this.strokeColor = this.palette[int(random(2,palette.length))];
+//            //stroke(this.strokeColor);
+//            
+//            for (let a = 0; a < TWO_PI * 6; a += angle) {  
+//              let sx = x + cos(a) * this.radius;
+//              let sy = y + sin(a) * this.radius;
+//              //fill(this.fillColor);                                        
+//
+//
+//             if(polarPicker >= 0 && polarPicker < 7){
+//                  ///newShape = drawPolygon(sx, sy, radius/4, polySides, this.strokeWeight);            <<<<<<<<<<<<<<<
+//                 // shape(newShape); 
+//                  noFill();
+//                  //newShape = drawPolygon(sx, sy, radius/2, polySides, this.strokeWeight);        <<<<<<<<<<<<<<<<<<<
+//                 /// shape(newShape); 
+//              } else {
+//                  ellipse(sx, sy, this.radius/2, this.radius/2);   
+//                  noFill();
+//                  ellipse(sx, sy, this.radius/4, this.radius/4); 
+//              }
+//              
+//
+//              //newShape = drawStar(sx, sy, radius/4, radius/2, polySides, this.palette);
+//              //shape(newShape);
+//              //newShape = drawStar(sx, sy, radius/10, radius/6,  polySides, this.palette);  
+//              //shape(newShape);
+//              
+//            }           
+//          }      
+//        rotate(-1.05);
+//        //rotate(-.33);
+//        pop();      
+//      }
+//
+//      if (this.divisor == 4 ){
+//        
+//        push();      
+//        rotate(.75);        
+//        scale(.75);       
+//        
+//          //stroke(this.strokeColor);
+//          for (let a = 0; a < TWO_PI * 6; a += angle) {  
+//            let sx = x + cos(a) * this.radius;
+//            let sy = y + sin(a) * this.radius;
+//            line(0, 0, sx, sy);
+//          }
+//                    
+//          for(let j = 0; j < this.levels; j++){
+//      
+//            this.radius = tempRadius;
+//            
+//            if(j != 0){
+//              this.radius = this.radius * (j * .25);
+//            }      
+//                          // <<<<<<<<<<<<<<<<<
+//            //stroke(this.strokeColor);
+//            //this.fillColor = this.palette[int(random(0,palette.length-1))]; 
+//            for (let a = 0; a < TWO_PI * 6; a += angle) {  
+//              let sx = x + cos(a) * this.radius;
+//              let sy = y + sin(a) * this.radius;              
+//              //fill(this.fillColor); 
+//              //   <<<<<<<<<<<<<<<<<
+//              
+//              
+//              if(polarPicker >= 0 && polarPicker < 7){
+//                  //newShape = drawPolygon(sx, sy, radius/4, polySides, this.strokeWeight);             <<<<<<<<<<<<<<<<
+//                  //shape(newShape); 
+//                  noFill();
+//                  //newShape = drawPolygon(sx, sy, radius/2, polySides, this.strokeWeight);             ,<<<<<<<<<<<<<<<<
+//                  //shape(newShape); 
+//              } else {
+//                  ellipse(sx, sy, this.radius/2, this.radius/2);   
+//                  noFill();
+//                  ellipse(sx, sy, this.radius/4, this.radius/4); 
+//              }
+//              
+//              
+//            
+//                                
+//              //newShape = drawStar(sx, sy, radius/2, radius/4, polySides, this.palette);
+//              //shape(newShape); 
+//              //newShape = drawStar(sx, sy, radius/10, radius/6, polySides, this.palette);
+//              //shape(newShape); 
+//            }           
+//          } 
+//        rotate(-.75);       
+//        pop(); 
+//
+//      }
+//        
+//    }
+//        
+//}
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            // POLY TARGET TOOL
+            //drawTarget(width/2, height/2, height/3, int(random(1,11)), palette, int(random(3,13)));     // i.layers.palette
+            
+
+            
             // M ROSES
             
-            let d = int(random(10,100));
-            let n = int(random(2,9)); 
-            
-            strokeWeight(1);
-            theColor = colorCheck(bgColor);
-            stroke(theColor);
-            theColor = colorCheck(theColor);
-            fill(theColor);
-            let roseIndex = int(random(0,roseShapes.length)); 
-            
-            push();
-            translate(width/2, height/2);
-            roseM(d, n, height/3);
-            pop();
-            console.log("{'d':" + d + ", 'n':" + n + "}");
+//            let d = int(random(10,100));
+//            let n = int(random(2,9)); 
+//            
+//            strokeWeight(1);
+//            theColor = colorCheck(bgColor);
+//            stroke(theColor);
+//            theColor = colorCheck(theColor);
+//            fill(theColor);
+//            let roseIndex = int(random(0,roseShapes.length)); 
+//            
+//            push();
+//            translate(width/2, height/2);
+//            roseM(d, n, height/3);
+//            pop();
+//            console.log("{'d':" + d + ", 'n':" + n + "}");
             
             
             
@@ -1239,6 +1536,27 @@ function colorCheck(previousColor){
 //  ********   SHAPE FUNCTIONS   *********
 
 
+function drawTarget(xLoc, yLoc, size, numSteps, colors, polySides) {
+  let alphaValues = 255/numSteps;
+  let steps = size/numSteps;
+  let colorHolder = color(0, 0, 0);
+  for (let i = 0; i < numSteps; i++) {
+        
+        let swatchIndex = int(random(0, colors.swatches.length));
+        let colorIndex = int(random(0, colors.swatches[0].length ));
+        let strokeColor = colors.swatches[swatchIndex][colorIndex];
+        
+        strokeColor = colorCheck(colorHolder);
+    
+        stroke(strokeColor);
+        colorHolder = strokeColor;
+                         
+        fill(245, i * alphaValues * .17);    
+        polygon(xLoc, yLoc, size - i*steps, polySides, numSteps);                                                                 
+  }
+  noFill();
+}
+
 
 function polygon(x, y, radius, npoints) {
   let angle = TWO_PI / npoints;
@@ -1336,20 +1654,6 @@ function sgn(val) {
 // remove style ?  or what's the deal with these?
 
 
-
-function drawTarget(xLoc, yLoc, size, numSteps, colors, polySides) {
-  let alphaValues = 255/numSteps;
-  let steps = size/numSteps;
-  let strokePicker = 2;
-
-  for (let i = 0; i < numSteps; i++) {
-    stroke(colors[strokePicker]);                  
-    fill(245, i * alphaValues * .17);    
-    polygon(xloc, yloc, size - i*steps, polySides, numSteps);                                   
-    strokePicker += 1;                               
-  }
-  noFill();
-}
 
 
 function drawTiledTris(cells, H, W){
