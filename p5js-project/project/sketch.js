@@ -997,36 +997,41 @@ function draw() {
 //            fill(theColor);
             
             
-                //adjustable spirals     layered/even polars w variable radius spread   
-    
-
+        
             
-            let divisorOptions = [3,4,6,8];
-            
-            let radius = 30;
-            let loops = 5;
-            let spiral = 3;
-            let layers = 2;
-    
-            let newCoords = polarCoordinates(width/2, height/2, height/3, divisorOptions[int(random(0,divisorOptions.length))] );
-            
-            function polarCoordinates(x, y, radius, divisor, rotations, spiral, spread){
+            function polarCoordinates(x, y, radius, divisor, rotations, spiral, spread){                                                // case of uneven divisors?
                 
                 let angle = TWO_PI / divisor;
+                
                 let coordinates = [];
                 let origin = createVector(x, y);
                 coordinates.push(origin);
+                 
+                if(!rotations){
+                   rotations = 1;
+                }
                 
-                for (let a = 0; a < TWO_PI * loops; a += angle) {  
-                    let sx = x + cos(a) * radius;
+                let divisorCount = 0;
+                
+                for (let a = 0; a < (TWO_PI * rotations) + angle; a += angle) {                              
+                    let sx = x + cos(a) * radius;                                                  
                     let sy = y + sin(a) * radius;
                     
                     let coords = createVector(sx, sy);
-                    coordinates.push(coords);
+                    coordinates.push(coords);                                                      
+                                                                                                    
+                    
+                    if(divisorCount == divisor && !spiral){
+                        radius += 100;
+                        divisorCount = 0;
+                    }
+                    
+                    
 
                     if(spiral){
                         radius += spiral;    
                     }
+                    divisorCount++;
                 } 
                 return coordinates;
             }
@@ -1034,32 +1039,89 @@ function draw() {
             
             
             
-            snowflake(newCoords, palette);
+            snowflake(width/2, height/2, 50, palette);
             
-            function snowflake(coords, palette){
+            function snowflake(xLoc, yLoc, radius, palette){
+                
+                let divisorOptions = [3,4,6,8];
+                let divisor = divisorOptions[int(random(0,divisorOptions.length))];
+                //let divisor = 4;
                 
                 let polyOptions = [0,3,4,6,8];
-                let polySides = polyOptions[int(random(0,polyOptions.length))];  
+                let polySides = polyOptions[int(random(0,polyOptions.length))]; 
                 
-//    while((this.divisor == 3 && polySides == 4) || (this.divisor == 4 && polySides == 3 )){
-//      polySides = polyOptions[int(random(0,polyOptions.length))];
-//      
-//    }         
+                while((divisor == 3 && polySides == 4) || (divisor == 4 && polySides == 3 )){
+                    polySides = polyOptions[int(random(0,polyOptions.length))];
+                }  
+                    
+                let levels = int(random(2,5));
+              
+                if(divisor == 3 && levels == 2){
+                    levels = int(random(3,5));  
+                } 
+                
+                let newCoords = polarCoordinates(xLoc, yLoc, radius, divisor, levels);
+            
+
+                  
+                //this.strokeWeight = int(this.radius * .04); 
+                
+                
                 if(polySides == 0){
                     ellipseMode(CENTER);
-                    for(let [index, coordinate] of coords.entries()){
-                        //palette pick
-                        line(coords[0].x, coords[0].y, coordinate.x, coordinate.y);
-                        ellipse(coordinate.x, coordinate.y, 40, 40);
-                    } 
-                } else {
-                    for(let [index, coordinate] of coords.entries()){
-                        if(index != 0){
-                            //console.log(coords[0]);
-                            line(coords[0].x, coords[0].y, coordinate.x, coordinate.y);
-                            drawTarget(coordinate.x, coordinate.y, 40, int(random(1,11)), palette, int(random(3,13)));   
+                    for(let [index, coordinate] of newCoords.entries()){
+                        if(index != 0){                                                                     //  NEXT NEXT
+                            line(newCoords[0].x, newCoords[0].y, coordinate.x, coordinate.y);              // variations in size and spread and case of 3 and 4 divisors
                         } 
-                    }   
+                    }
+                    for(let [index, coordinate] of newCoords.entries()){
+                        if(index != 0){
+                            ellipse(coordinate.x, coordinate.y, 40, 40);  
+                        } 
+                    }
+//                    if(divisor == 3){
+//                            push(); 
+//                            rotate(1.05);        
+//                            scale(.75); 
+//                            line(newCoords[0].x, newCoords[0].y, coordinate.x, coordinate.y);
+//                            drawTarget(coordinate.x, coordinate.y, 40, int(random(1,11)), palette, polySides);
+//                            pop();
+//                    }
+//                    if(divisor == 4){
+//                            push();
+//                            rotate(.75);        
+//                            scale(.75);
+//                            line(newCoords[0].x, newCoords[0].y, coordinate.x, coordinate.y);
+//                            drawTarget(coordinate.x, coordinate.y, 40, int(random(1,11)), palette, polySides);    
+//                            pop();
+//                    }
+                } else {
+                    for(let [index, coordinate] of newCoords.entries()){
+                        if(index != 0){ 
+                            line(newCoords[0].x, newCoords[0].y, coordinate.x, coordinate.y); 
+                        } 
+                    }
+                    for(let [index, coordinate] of newCoords.entries()){
+                        if(index != 0){ 
+                            drawTarget(coordinate.x, coordinate.y, 40, int(random(1,11)), palette, polySides);   
+                        } 
+                    }
+//                    if(divisor == 3){
+//                            push(); 
+//                            rotate(1.05);        
+//                            scale(.75);
+//                            line(newCoords[0].x, newCoords[0].y, coordinate.x, coordinate.y);
+//                            drawTarget(coordinate.x, coordinate.y, 40, int(random(1,11)), palette, polySides);
+//                            pop();
+//                    }
+//                    if(divisor == 4){
+//                            push();
+//                            rotate(.75);        
+//                            scale(.75);
+//                            line(newCoords[0].x, newCoords[0].y, coordinate.x, coordinate.y);
+//                            drawTarget(coordinate.x, coordinate.y, 40, int(random(1,11)), palette, polySides);
+//                            pop();
+//                    }
                 } 
             }
             
@@ -1089,17 +1151,10 @@ function draw() {
 //        
 //        
 //    translate(this.locX, this.locY);
-//    let x = 0;
-//    let y = 0;
-//    let angle = TWO_PI / this.divisor;
-//    //stroke(this.strokeColor);
-//    //strokeWeight(this.strokeWeight);
-//    //let fillColor;                                                                       
+                                                                       
 //    let polyOptions = [3,4,6,8];
 //    let polySides = polyOptions[int(random(0,polyOptions.length))];    
-//    //PShape newShape;                                                                //??    <<<<
-//    let polarPicker = int(random(0, 10));
-//
+// 
 //
 //    while((this.divisor == 3 && polySides == 4) || (this.divisor == 4 && polySides == 3 )){
 //      polySides = polyOptions[int(random(0,polyOptions.length))];
@@ -1107,19 +1162,7 @@ function draw() {
 //    }
             
             
-            
-            
-            
-            
-            
-            
-//    
-//    if(polySides == 3 && this.levels == 2){
-//      this.levels = int(random(3,5));  
-//    }    
-//    
-//    //this.strokeColor = this.palette[int(random(0,palette.length-1))];
-//    //stroke(this.strokeColor);
+     
 //
 //    // Draws just the lines first
 //    for (let a = 0; a < TWO_PI * 6; a += angle) {  
@@ -1144,30 +1187,14 @@ function draw() {
 //        this.radius = this.radius * (i * .25);
 //      }       
 //      
-//      //this.fillColor = this.palette[int(random(2,palette.length))];
-//      //this.strokeColor = this.palette[int(random(2,palette.length))];
-//      //stroke(this.strokeColor);
+//
 //      
 //      for (let a = 0; a < TWO_PI * 6; a += angle) {  
 //        let sx = x + cos(a) * this.radius;
 //        let sy = y + sin(a) * this.radius;
-//        //noFill();
-//        //fill(this.fillColor);                     
-//        
-//             
-//        //ellipse(sx, sy, radius/4, radius/4); 
-//        
+//       
 //         if(polarPicker >= 0 && polarPicker < 7){
-//              //newShape = drawPolygon(sx, sy, radius/4, polySides, this.strokeWeight);    // <<<<<<<<<<<<<<<<<<<
-//              //shape(newShape); 
-//              noFill();
-//              //newShape = drawPolygon(sx, sy, radius/2, polySides, this.strokeWeight);           <<<<<<<<<<<<<<<<<<<<<,
-//              ///shape(newShape); 
-//          } else {
-//              ellipse(sx, sy, this.radius/2, this.radius/2);   
-//              noFill();
-//              ellipse(sx, sy, this.radius/4, this.radius/4); 
-//          }
+
 //      }
 //         
 //      if (this.divisor == 3){
@@ -1191,9 +1218,7 @@ function draw() {
 //              this.radius = this.radius * (j * .25);
 //            }   
 //
-//            //this.fillColor = this.palette[int(random(2,palette.length))]; 
-//            //this.strokeColor = this.palette[int(random(2,palette.length))];
-//            //stroke(this.strokeColor);
+// 
 //            
 //            for (let a = 0; a < TWO_PI * 6; a += angle) {  
 //              let sx = x + cos(a) * this.radius;
@@ -1202,22 +1227,7 @@ function draw() {
 //
 //
 //             if(polarPicker >= 0 && polarPicker < 7){
-//                  ///newShape = drawPolygon(sx, sy, radius/4, polySides, this.strokeWeight);            <<<<<<<<<<<<<<<
-//                 // shape(newShape); 
-//                  noFill();
-//                  //newShape = drawPolygon(sx, sy, radius/2, polySides, this.strokeWeight);        <<<<<<<<<<<<<<<<<<<
-//                 /// shape(newShape); 
-//              } else {
-//                  ellipse(sx, sy, this.radius/2, this.radius/2);   
-//                  noFill();
-//                  ellipse(sx, sy, this.radius/4, this.radius/4); 
-//              }
-//              
-//
-//              //newShape = drawStar(sx, sy, radius/4, radius/2, polySides, this.palette);
-//              //shape(newShape);
-//              //newShape = drawStar(sx, sy, radius/10, radius/6,  polySides, this.palette);  
-//              //shape(newShape);
+
 //              
 //            }           
 //          }      
@@ -1257,24 +1267,7 @@ function draw() {
 //              
 //              
 //              if(polarPicker >= 0 && polarPicker < 7){
-//                  //newShape = drawPolygon(sx, sy, radius/4, polySides, this.strokeWeight);             <<<<<<<<<<<<<<<<
-//                  //shape(newShape); 
-//                  noFill();
-//                  //newShape = drawPolygon(sx, sy, radius/2, polySides, this.strokeWeight);             ,<<<<<<<<<<<<<<<<
-//                  //shape(newShape); 
-//              } else {
-//                  ellipse(sx, sy, this.radius/2, this.radius/2);   
-//                  noFill();
-//                  ellipse(sx, sy, this.radius/4, this.radius/4); 
-//              }
-//              
-//              
-//            
-//                                
-//              //newShape = drawStar(sx, sy, radius/2, radius/4, polySides, this.palette);
-//              //shape(newShape); 
-//              //newShape = drawStar(sx, sy, radius/10, radius/6, polySides, this.palette);
-//              //shape(newShape); 
+//      
 //            }           
 //          } 
 //        rotate(-.75);       
