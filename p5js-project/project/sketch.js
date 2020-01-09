@@ -1,3 +1,5 @@
+//https://www.act-on.com/careers/details/?jobId=oh6Sbfwa
+
 
 class Iteration {
   constructor(width, height, c) {                   
@@ -990,7 +992,7 @@ function draw() {
             
        
             
-            strokeWeight(20);
+            //strokeWeight(20);
 //            theColor = colorCheck(bgColor);
 //            stroke(theColor);
 //            theColor = colorCheck(theColor);
@@ -999,7 +1001,7 @@ function draw() {
             
         
             
-            function polarCoordinates(x, y, radius, divisor, rotations, spiral, spread){                                                // case of uneven divisors?
+            function polarCoordinates(x, y, radius, divisor, spiral, rotations){                                                // case of uneven divisors?
                 
                 let angle = TWO_PI / divisor;
                 
@@ -1013,35 +1015,28 @@ function draw() {
                 
                 let divisorCount = 0;
                 
-                for (let a = 0; a < (TWO_PI * rotations) + angle; a += angle) {                              
+                for (let a = 0; a < TWO_PI * rotations ; a += angle) {  
+                    
                     let sx = x + cos(a) * radius;                                                  
                     let sy = y + sin(a) * radius;
                     
                     let coords = createVector(sx, sy);
                     coordinates.push(coords);                                                      
                                                                                                     
-                    
-                    if(divisorCount == divisor && !spiral){
-                        radius += 100;
-                        divisorCount = 0;
-                    }
-                    
-                    
-
                     if(spiral){
                         radius += spiral;    
                     }
-                    divisorCount++;
                 } 
                 return coordinates;
-            }
+            } 
             
-            
-            
-            
-            snowflake(width/2, height/2, 50, palette);
+                                         // should be radius of flake not of polys 
+            snowflake(width/2, height/2, 200, palette);
             
             function snowflake(xLoc, yLoc, radius, palette){
+                
+                let strokeW = int(radius * .1); 
+                strokeWeight(strokeW);
                 
                 let divisorOptions = [3,4,6,8];
                 let divisor = divisorOptions[int(random(0,divisorOptions.length))];
@@ -1059,70 +1054,83 @@ function draw() {
                 if(divisor == 3 && levels == 2){
                     levels = int(random(3,5));  
                 } 
+              
+                for(let i = 0; i < levels; i++){
+                    
+                    theColor = colorCheck(bgColor);
+                    stroke(theColor);
+                    
+                    let newCoords = polarCoordinates(xLoc, yLoc, (radius - (i* (radius * .33))), divisor);
+        
+                        if(polySides == 0){
+                            //ellipseMode(CENTER);
+                            for(let [index, coordinate] of newCoords.entries()){
+                                
+                                if(index != 0){                                                                     //  NEXT NEXT
+                                    line(newCoords[0].x, newCoords[0].y, coordinate.x, coordinate.y);              // variations in size and spread and case of 3 and 4 divisors
+                                }                                                                                   // fill and stroke variation  ... target tool fill and stroke
+                            }
+                            for(let [index, coordinate] of newCoords.entries()){
+                                if(index != 0){
+                                    ellipse(coordinate.x, coordinate.y, 40, 40);  
+                                } 
+                            }
+        //                    if(divisor == 3){
+        //                            push(); 
+        //                            rotate(1.05);        
+        //                            scale(.75); 
+        //                            line(newCoords[0].x, newCoords[0].y, coordinate.x, coordinate.y);
+        //                            drawTarget(coordinate.x, coordinate.y, 40, int(random(1,11)), palette, polySides);
+        //                            pop();
+        //                    }
+        //                    if(divisor == 4){
+        //                            push();
+        //                            rotate(.75);        
+        //                            scale(.75);
+        //                            line(newCoords[0].x, newCoords[0].y, coordinate.x, coordinate.y);
+        //                            drawTarget(coordinate.x, coordinate.y, 40, int(random(1,11)), palette, polySides);    
+        //                            pop();
+        //                    }
+                        } else {
+                            for(let [index, coordinate] of newCoords.entries()){
+                               
+                                if(index != 0){ 
+                                    line(newCoords[0].x, newCoords[0].y, coordinate.x, coordinate.y); 
+                                } 
+                            }
+                            for(let [index, coordinate] of newCoords.entries()){
+                                if(index != 0){
+
+                                    
+                                    drawTarget(coordinate.x, coordinate.y, int(random(1,11)), palette, polySides);   
+                                } 
+                            }
+        //                    if(divisor == 3){
+        //                            push(); 
+        //                            rotate(1.05);        
+        //                            scale(.75);
+        //                            line(newCoords[0].x, newCoords[0].y, coordinate.x, coordinate.y);
+        //                            drawTarget(coordinate.x, coordinate.y, 40, int(random(1,11)), palette, polySides);
+        //                            pop();
+        //                    }
+        //                    if(divisor == 4){
+        //                            push();
+        //                            rotate(.75);        
+        //                            scale(.75);
+        //                            line(newCoords[0].x, newCoords[0].y, coordinate.x, coordinate.y);
+        //                            drawTarget(coordinate.x, coordinate.y, 40, int(random(1,11)), palette, polySides);
+        //                            pop();
+        //                    }
+                        } 
+                }
                 
-                let newCoords = polarCoordinates(xLoc, yLoc, radius, divisor, levels);
+                
+                
             
 
-                  
-                //this.strokeWeight = int(this.radius * .04); 
                 
                 
-                if(polySides == 0){
-                    ellipseMode(CENTER);
-                    for(let [index, coordinate] of newCoords.entries()){
-                        if(index != 0){                                                                     //  NEXT NEXT
-                            line(newCoords[0].x, newCoords[0].y, coordinate.x, coordinate.y);              // variations in size and spread and case of 3 and 4 divisors
-                        } 
-                    }
-                    for(let [index, coordinate] of newCoords.entries()){
-                        if(index != 0){
-                            ellipse(coordinate.x, coordinate.y, 40, 40);  
-                        } 
-                    }
-//                    if(divisor == 3){
-//                            push(); 
-//                            rotate(1.05);        
-//                            scale(.75); 
-//                            line(newCoords[0].x, newCoords[0].y, coordinate.x, coordinate.y);
-//                            drawTarget(coordinate.x, coordinate.y, 40, int(random(1,11)), palette, polySides);
-//                            pop();
-//                    }
-//                    if(divisor == 4){
-//                            push();
-//                            rotate(.75);        
-//                            scale(.75);
-//                            line(newCoords[0].x, newCoords[0].y, coordinate.x, coordinate.y);
-//                            drawTarget(coordinate.x, coordinate.y, 40, int(random(1,11)), palette, polySides);    
-//                            pop();
-//                    }
-                } else {
-                    for(let [index, coordinate] of newCoords.entries()){
-                        if(index != 0){ 
-                            line(newCoords[0].x, newCoords[0].y, coordinate.x, coordinate.y); 
-                        } 
-                    }
-                    for(let [index, coordinate] of newCoords.entries()){
-                        if(index != 0){ 
-                            drawTarget(coordinate.x, coordinate.y, 40, int(random(1,11)), palette, polySides);   
-                        } 
-                    }
-//                    if(divisor == 3){
-//                            push(); 
-//                            rotate(1.05);        
-//                            scale(.75);
-//                            line(newCoords[0].x, newCoords[0].y, coordinate.x, coordinate.y);
-//                            drawTarget(coordinate.x, coordinate.y, 40, int(random(1,11)), palette, polySides);
-//                            pop();
-//                    }
-//                    if(divisor == 4){
-//                            push();
-//                            rotate(.75);        
-//                            scale(.75);
-//                            line(newCoords[0].x, newCoords[0].y, coordinate.x, coordinate.y);
-//                            drawTarget(coordinate.x, coordinate.y, 40, int(random(1,11)), palette, polySides);
-//                            pop();
-//                    }
-                } 
+
             }
             
  
