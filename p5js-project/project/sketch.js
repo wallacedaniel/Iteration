@@ -896,6 +896,8 @@ let roseShapes = [
 
 function draw() {
     
+
+    
     let swatchIndex = int(random(0, palette.swatches.length));
     let colorIndex = int(random(0, palette.swatches[0].length ));
     let bgColor = palette.swatches[swatchIndex][colorIndex];
@@ -903,8 +905,11 @@ function draw() {
     background(bgColor);
 
 
-
-    
+//    stroke(0);
+//    strokeWeight(1);
+//    line(0, height/2, width, height/2);
+//    line(width/2, 0, width/2, height);
+//    
     if(i.layers.length > 0){
         
 //    for(let [index1, layer] of i.layers.entries()){
@@ -989,18 +994,6 @@ function draw() {
         
         if(i.layers[0].type == 'simple'){ 
             
-            
-       
-            
-            //strokeWeight(20);
-//            theColor = colorCheck(bgColor);
-//            stroke(theColor);
-//            theColor = colorCheck(theColor);
-//            fill(theColor);
-            
-            
-        
-            
             function polarCoordinates(x, y, radius, divisor, spiral, rotations){                                                // case of uneven divisors?
                 
                 let angle = TWO_PI / divisor;
@@ -1030,19 +1023,18 @@ function draw() {
                 return coordinates;
             } 
             
-                                         // should be radius of flake not of polys 
             snowflake(width/2, height/2, 200, palette);
             
             function snowflake(xLoc, yLoc, radius, palette){
                 
-                let strokeW = int(radius * .1); 
+                let strokeW = int(radius * .04); 
                 strokeWeight(strokeW);
                 
                 let divisorOptions = [3,4,6,8];
                 let divisor = divisorOptions[int(random(0,divisorOptions.length))];
-                //let divisor = 4;
+                //divisor = 4;
                 
-                let polyOptions = [0,3,4,6,8];
+                let polyOptions = [0,3,4,6,8];   
                 let polySides = polyOptions[int(random(0,polyOptions.length))]; 
                 
                 while((divisor == 3 && polySides == 4) || (divisor == 4 && polySides == 3 )){
@@ -1054,257 +1046,69 @@ function draw() {
                 if(divisor == 3 && levels == 2){
                     levels = int(random(3,5));  
                 } 
+                
+                //levels = 5;
+                //polySides = 0;
               
                 for(let i = 0; i < levels; i++){
                     
                     theColor = colorCheck(bgColor);
                     stroke(theColor);
                     
-                    let newCoords = polarCoordinates(xLoc, yLoc, (radius - (i* (radius * .33))), divisor);
-        
+                    
+                    let newCoords = polarCoordinates(xLoc, yLoc, (radius - (i* (radius * .25))), divisor);
+                    let subCoords;
+                    
+                    if(divisor == 4 || divisor == 3){   
+                        subCoords = polarCoordinates(xLoc, yLoc, (radius - (i* (radius * .25))) * .75, divisor *2);                    
+                    }
                         if(polySides == 0){
                             //ellipseMode(CENTER);
                             for(let [index, coordinate] of newCoords.entries()){
                                 
-                                if(index != 0){                                                                     //  NEXT NEXT
-                                    line(newCoords[0].x, newCoords[0].y, coordinate.x, coordinate.y);              // variations in size and spread and case of 3 and 4 divisors
-                                }                                                                                   // fill and stroke variation  ... target tool fill and stroke
+                                if(index != 0){                                                                     
+                                    line(newCoords[0].x, newCoords[0].y, coordinate.x, coordinate.y); 
+                                    if(divisor == 4 || divisor == 3){
+                                          line(newCoords[0].x, newCoords[0].y, subCoords[index + index].x, subCoords[index + index].y);
+                                    }
+                                }                                                                                   
                             }
                             for(let [index, coordinate] of newCoords.entries()){
                                 if(index != 0){
-                                    ellipse(coordinate.x, coordinate.y, 40, 40);  
+                                    ellipse(coordinate.x, coordinate.y, 40, 40);
+                                    if(divisor == 4 || divisor == 3){
+                                          ellipse(subCoords[index + index].x, subCoords[index + index].y, 20, 20);
+                                    }
                                 } 
                             }
-        //                    if(divisor == 3){
-        //                            push(); 
-        //                            rotate(1.05);        
-        //                            scale(.75); 
-        //                            line(newCoords[0].x, newCoords[0].y, coordinate.x, coordinate.y);
-        //                            drawTarget(coordinate.x, coordinate.y, 40, int(random(1,11)), palette, polySides);
-        //                            pop();
-        //                    }
-        //                    if(divisor == 4){
-        //                            push();
-        //                            rotate(.75);        
-        //                            scale(.75);
-        //                            line(newCoords[0].x, newCoords[0].y, coordinate.x, coordinate.y);
-        //                            drawTarget(coordinate.x, coordinate.y, 40, int(random(1,11)), palette, polySides);    
-        //                            pop();
-        //                    }
+
                         } else {
+                            
                             for(let [index, coordinate] of newCoords.entries()){
                                
                                 if(index != 0){ 
                                     line(newCoords[0].x, newCoords[0].y, coordinate.x, coordinate.y); 
+                                    if(divisor == 4 || divisor == 3){
+                                        line(newCoords[0].x, newCoords[0].y, subCoords[index + index].x, subCoords[index + index].y);
+                                    }
                                 } 
                             }
+                            
                             for(let [index, coordinate] of newCoords.entries()){
                                 if(index != 0){
-
-                                    
-                                    drawTarget(coordinate.x, coordinate.y, int(random(1,11)), palette, polySides);   
-                                } 
+                                    drawTarget(coordinate.x, coordinate.y,  radius * .4, 2, palette, polySides);  
+                                    if(divisor == 4 || divisor == 3){
+                                          drawTarget(subCoords[index + index].x, subCoords[index + index].y, (radius * .4), 2, palette, polySides);
+                                    }
+                                }
                             }
-        //                    if(divisor == 3){
-        //                            push(); 
-        //                            rotate(1.05);        
-        //                            scale(.75);
-        //                            line(newCoords[0].x, newCoords[0].y, coordinate.x, coordinate.y);
-        //                            drawTarget(coordinate.x, coordinate.y, 40, int(random(1,11)), palette, polySides);
-        //                            pop();
-        //                    }
-        //                    if(divisor == 4){
-        //                            push();
-        //                            rotate(.75);        
-        //                            scale(.75);
-        //                            line(newCoords[0].x, newCoords[0].y, coordinate.x, coordinate.y);
-        //                            drawTarget(coordinate.x, coordinate.y, 40, int(random(1,11)), palette, polySides);
-        //                            pop();
-        //                    }
                         } 
+                    }  
                 }
-                
-                
-                
-            
 
-                
-                
 
-            }
-            
- 
-            
-            
-        
-            
-            
-            
-            
-            //class Snowflake{
-//  
-//    constructor(radius, locX, locY, palette) {
-//        this.levels = int(random(2,5));
-//        this.radius = radius;
-//        this.locX = locX;
-//        this.locY = locY;
-//        this.strokeWeight = int(this.radius * .04);  
-//        this.strokeColor = 0;
-//        this.palette = palette;
-//        let divisorOptions = [3,4,6,8];
-//        this.divisor = divisorOptions[int(random(0,divisorOptions.length))]; 
-//    }
-//    
-//    drawSnowflake(){
-//        
-//        
-//    translate(this.locX, this.locY);
-                                                                       
-//    let polyOptions = [3,4,6,8];
-//    let polySides = polyOptions[int(random(0,polyOptions.length))];    
-// 
-//
-//    while((this.divisor == 3 && polySides == 4) || (this.divisor == 4 && polySides == 3 )){
-//      polySides = polyOptions[int(random(0,polyOptions.length))];
-//      
-//    }
-            
-            
-     
-//
-//    // Draws just the lines first
-//    for (let a = 0; a < TWO_PI * 6; a += angle) {  
-//      let sx = x + cos(a) * this.radius;
-//      let sy = y + sin(a) * this.radius;
-//      line(0, 0, sx, sy);
-//    }
-//       
-//       
-//       
-//    //  SHAPES  
-//       
-//       
-//    let tempRadius = this.radius;
-//    
-//    for(let i = 0; i < this.levels; i++){
-//      this.radius = tempRadius;
-//      //stroke(this.strokeColor);                       
-//      //fillColor = this.strokeColor;                
-//      
-//      if(i != 0){
-//        this.radius = this.radius * (i * .25);
-//      }       
-//      
-//
-//      
-//      for (let a = 0; a < TWO_PI * 6; a += angle) {  
-//        let sx = x + cos(a) * this.radius;
-//        let sy = y + sin(a) * this.radius;
-//       
-//         if(polarPicker >= 0 && polarPicker < 7){
+         
 
-//      }
-//         
-//      if (this.divisor == 3){
-//        
-//        push();        
-//        rotate(1.05);        
-//        scale(.75);
-//              
-//          //stroke(this.strokeColor);
-//          for (let a = 0; a < TWO_PI * 6; a += angle) {  
-//            let sx = x + cos(a) * this.radius;
-//            let sy = y + sin(a) * this.radius;
-//            line(0, 0, sx, sy);
-//          }         
-//          
-//          for(let j = 0; j < this.levels; j++){
-//      
-//            this.radius = tempRadius;
-//            
-//            if(j != 0){
-//              this.radius = this.radius * (j * .25);
-//            }   
-//
-// 
-//            
-//            for (let a = 0; a < TWO_PI * 6; a += angle) {  
-//              let sx = x + cos(a) * this.radius;
-//              let sy = y + sin(a) * this.radius;
-//              //fill(this.fillColor);                                        
-//
-//
-//             if(polarPicker >= 0 && polarPicker < 7){
-
-//              
-//            }           
-//          }      
-//        rotate(-1.05);
-//        //rotate(-.33);
-//        pop();      
-//      }
-//
-//      if (this.divisor == 4 ){
-//        
-//        push();      
-//        rotate(.75);        
-//        scale(.75);       
-//        
-//          //stroke(this.strokeColor);
-//          for (let a = 0; a < TWO_PI * 6; a += angle) {  
-//            let sx = x + cos(a) * this.radius;
-//            let sy = y + sin(a) * this.radius;
-//            line(0, 0, sx, sy);
-//          }
-//                    
-//          for(let j = 0; j < this.levels; j++){
-//      
-//            this.radius = tempRadius;
-//            
-//            if(j != 0){
-//              this.radius = this.radius * (j * .25);
-//            }      
-//                          // <<<<<<<<<<<<<<<<<
-//            //stroke(this.strokeColor);
-//            //this.fillColor = this.palette[int(random(0,palette.length-1))]; 
-//            for (let a = 0; a < TWO_PI * 6; a += angle) {  
-//              let sx = x + cos(a) * this.radius;
-//              let sy = y + sin(a) * this.radius;              
-//              //fill(this.fillColor); 
-//              //   <<<<<<<<<<<<<<<<<
-//              
-//              
-//              if(polarPicker >= 0 && polarPicker < 7){
-//      
-//            }           
-//          } 
-//        rotate(-.75);       
-//        pop(); 
-//
-//      }
-//        
-//    }
-//        
-//}
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
             
             // POLY TARGET TOOL
             //drawTarget(width/2, height/2, height/3, int(random(1,11)), palette, int(random(3,13)));     // i.layers.palette
@@ -1541,21 +1345,22 @@ function drawTarget(xLoc, yLoc, size, numSteps, colors, polySides) {
   let alphaValues = 255/numSteps;
   let steps = size/numSteps;
   let colorHolder = color(0, 0, 0);
+    
   for (let i = 0; i < numSteps; i++) {
         
-        let swatchIndex = int(random(0, colors.swatches.length));
-        let colorIndex = int(random(0, colors.swatches[0].length ));
-        let strokeColor = colors.swatches[swatchIndex][colorIndex];
-        
-        strokeColor = colorCheck(colorHolder);
-    
-        stroke(strokeColor);
-        colorHolder = strokeColor;
-                         
-        fill(245, i * alphaValues * .17);    
+//        let swatchIndex = int(random(0, colors.swatches.length));
+//        let colorIndex = int(random(0, colors.swatches[0].length ));
+//        let strokeColor = colors.swatches[swatchIndex][colorIndex];
+//        
+//        strokeColor = colorCheck(colorHolder);
+//    
+//        stroke(strokeColor);
+//        colorHolder = strokeColor;
+//                         
+//        fill(245, i * alphaValues * .17);    
         polygon(xLoc, yLoc, size - i*steps, polySides, numSteps);                                                                 
   }
-  noFill();
+  //noFill();
 }
 
 
@@ -2214,218 +2019,7 @@ public PShape drawTarget(float xloc, float yloc, int size, int numSteps) {
 }
 
 */
-//
-//
-//
-//
-//
-//class Snowflake{
-//  
-//    constructor(radius, locX, locY, palette) {
-//        this.levels = int(random(2,5));
-//        this.radius = radius;
-//        this.locX = locX;
-//        this.locY = locY;
-//        this.strokeWeight = int(this.radius * .04);  
-//        this.strokeColor = 0;
-//        this.palette = palette;
-//        let divisorOptions = [3,4,6,8];
-//        this.divisor = divisorOptions[int(random(0,divisorOptions.length))]; 
-//    }
-//    
-//    drawSnowflake(){
-//        
-//        
-//    translate(this.locX, this.locY);
-//    let x = 0;
-//    let y = 0;
-//    let angle = TWO_PI / this.divisor;
-//    //stroke(this.strokeColor);
-//    //strokeWeight(this.strokeWeight);
-//    //let fillColor;                                                                       
-//    let polyOptions = [3,4,6,8];
-//    let polySides = polyOptions[int(random(0,polyOptions.length))];    
-//    //PShape newShape;                                                                //??    <<<<
-//    let polarPicker = int(random(0, 10));
-//
-//
-//    while((this.divisor == 3 && polySides == 4) || (this.divisor == 4 && polySides == 3 )){
-//      polySides = polyOptions[int(random(0,polyOptions.length))];
-//      
-//    }
-//    
-//    if(polySides == 3 && this.levels == 2){
-//      this.levels = int(random(3,5));  
-//    }    
-//    
-//    //this.strokeColor = this.palette[int(random(0,palette.length-1))];
-//    //stroke(this.strokeColor);
-//
-//    // Draws just the lines first
-//    for (let a = 0; a < TWO_PI * 6; a += angle) {  
-//      let sx = x + cos(a) * this.radius;
-//      let sy = y + sin(a) * this.radius;
-//      line(0, 0, sx, sy);
-//    }
-//       
-//       
-//       
-//    //  SHAPES  
-//       
-//       
-//    let tempRadius = this.radius;
-//    
-//    for(let i = 0; i < this.levels; i++){
-//      this.radius = tempRadius;
-//      //stroke(this.strokeColor);                       
-//      //fillColor = this.strokeColor;                
-//      
-//      if(i != 0){
-//        this.radius = this.radius * (i * .25);
-//      }       
-//      
-//      //this.fillColor = this.palette[int(random(2,palette.length))];
-//      //this.strokeColor = this.palette[int(random(2,palette.length))];
-//      //stroke(this.strokeColor);
-//      
-//      for (let a = 0; a < TWO_PI * 6; a += angle) {  
-//        let sx = x + cos(a) * this.radius;
-//        let sy = y + sin(a) * this.radius;
-//        //noFill();
-//        //fill(this.fillColor);                     
-//        
-//             
-//        //ellipse(sx, sy, radius/4, radius/4); 
-//        
-//         if(polarPicker >= 0 && polarPicker < 7){
-//              //newShape = drawPolygon(sx, sy, radius/4, polySides, this.strokeWeight);    // <<<<<<<<<<<<<<<<<<<
-//              //shape(newShape); 
-//              noFill();
-//              //newShape = drawPolygon(sx, sy, radius/2, polySides, this.strokeWeight);           <<<<<<<<<<<<<<<<<<<<<,
-//              ///shape(newShape); 
-//          } else {
-//              ellipse(sx, sy, this.radius/2, this.radius/2);   
-//              noFill();
-//              ellipse(sx, sy, this.radius/4, this.radius/4); 
-//          }
-//      }
-//         
-//      if (this.divisor == 3){
-//        
-//        push();        
-//        rotate(1.05);        
-//        scale(.75);
-//              
-//          //stroke(this.strokeColor);
-//          for (let a = 0; a < TWO_PI * 6; a += angle) {  
-//            let sx = x + cos(a) * this.radius;
-//            let sy = y + sin(a) * this.radius;
-//            line(0, 0, sx, sy);
-//          }         
-//          
-//          for(let j = 0; j < this.levels; j++){
-//      
-//            this.radius = tempRadius;
-//            
-//            if(j != 0){
-//              this.radius = this.radius * (j * .25);
-//            }   
-//
-//            //this.fillColor = this.palette[int(random(2,palette.length))]; 
-//            //this.strokeColor = this.palette[int(random(2,palette.length))];
-//            //stroke(this.strokeColor);
-//            
-//            for (let a = 0; a < TWO_PI * 6; a += angle) {  
-//              let sx = x + cos(a) * this.radius;
-//              let sy = y + sin(a) * this.radius;
-//              //fill(this.fillColor);                                        
-//
-//
-//             if(polarPicker >= 0 && polarPicker < 7){
-//                  ///newShape = drawPolygon(sx, sy, radius/4, polySides, this.strokeWeight);            <<<<<<<<<<<<<<<
-//                 // shape(newShape); 
-//                  noFill();
-//                  //newShape = drawPolygon(sx, sy, radius/2, polySides, this.strokeWeight);        <<<<<<<<<<<<<<<<<<<
-//                 /// shape(newShape); 
-//              } else {
-//                  ellipse(sx, sy, this.radius/2, this.radius/2);   
-//                  noFill();
-//                  ellipse(sx, sy, this.radius/4, this.radius/4); 
-//              }
-//              
-//
-//              //newShape = drawStar(sx, sy, radius/4, radius/2, polySides, this.palette);
-//              //shape(newShape);
-//              //newShape = drawStar(sx, sy, radius/10, radius/6,  polySides, this.palette);  
-//              //shape(newShape);
-//              
-//            }           
-//          }      
-//        rotate(-1.05);
-//        //rotate(-.33);
-//        pop();      
-//      }
-//
-//      if (this.divisor == 4 ){
-//        
-//        push();      
-//        rotate(.75);        
-//        scale(.75);       
-//        
-//          //stroke(this.strokeColor);
-//          for (let a = 0; a < TWO_PI * 6; a += angle) {  
-//            let sx = x + cos(a) * this.radius;
-//            let sy = y + sin(a) * this.radius;
-//            line(0, 0, sx, sy);
-//          }
-//                    
-//          for(let j = 0; j < this.levels; j++){
-//      
-//            this.radius = tempRadius;
-//            
-//            if(j != 0){
-//              this.radius = this.radius * (j * .25);
-//            }      
-//                          // <<<<<<<<<<<<<<<<<
-//            //stroke(this.strokeColor);
-//            //this.fillColor = this.palette[int(random(0,palette.length-1))]; 
-//            for (let a = 0; a < TWO_PI * 6; a += angle) {  
-//              let sx = x + cos(a) * this.radius;
-//              let sy = y + sin(a) * this.radius;              
-//              //fill(this.fillColor); 
-//              //   <<<<<<<<<<<<<<<<<
-//              
-//              
-//              if(polarPicker >= 0 && polarPicker < 7){
-//                  //newShape = drawPolygon(sx, sy, radius/4, polySides, this.strokeWeight);             <<<<<<<<<<<<<<<<
-//                  //shape(newShape); 
-//                  noFill();
-//                  //newShape = drawPolygon(sx, sy, radius/2, polySides, this.strokeWeight);             ,<<<<<<<<<<<<<<<<
-//                  //shape(newShape); 
-//              } else {
-//                  ellipse(sx, sy, this.radius/2, this.radius/2);   
-//                  noFill();
-//                  ellipse(sx, sy, this.radius/4, this.radius/4); 
-//              }
-//              
-//              
-//            
-//                                
-//              //newShape = drawStar(sx, sy, radius/2, radius/4, polySides, this.palette);
-//              //shape(newShape); 
-//              //newShape = drawStar(sx, sy, radius/10, radius/6, polySides, this.palette);
-//              //shape(newShape); 
-//            }           
-//          } 
-//        rotate(-.75);       
-//        pop(); 
-//
-//      }
-//        
-//    }
-//        
-//}
-//    
+
 //}
 //        
 //
@@ -2528,202 +2122,7 @@ public PShape drawTarget(float xloc, float yloc, int size, int numSteps) {
     
     
     
-    
-    
-    
-    
-    
-    
-        
-    translate(locX, locY);
-    float x = 0;
-    float y = 0;
-    float angle = TWO_PI / divisor;
-    stroke(this.strokeColor);
-    strokeWeight(this.strokeWeight);
-    color fillColor;    
-    int[] polyOptions = new int[]{3,4,6,8};
-    int polySides = polyOptions[int(random(0,polyOptions.length))];    
-    PShape newShape;
-    int polarPicker = int(random(0, 10));
-
-
-    while((this.divisor == 3 && polySides == 4) || (this.divisor == 4 && polySides == 3 )){
-      polySides = polyOptions[int(random(0,polyOptions.length))];
-      
-    }
-    
-    if(polySides == 3 && this.levels == 2){
-      this.levels = int(random(3,5));  
-    }    
-    
-    strokeColor = this.palette[int(random(0,palette.length-1))];
-    stroke(strokeColor);
-
-    // Draws just the lines first
-    for (float a = 0; a < TWO_PI * 6; a += angle) {  
-      float sx = x + cos(a) * radius;
-      float sy = y + sin(a) * radius;
-      line(0, 0, sx, sy);
-    }
-       
-       
-       
-    //  SHAPES  
-       
-       
-    float tempRadius = radius;
-    
-    for(int i = 0; i < this.levels; i++){
-      radius = tempRadius;
-      //stroke(this.strokeColor);                       // <<<<<
-      //fillColor = this.strokeColor;                // <<<<<<
-      
-      if(i != 0){
-        radius = radius * (i * .25);
-      }       
-      
-      fillColor = this.palette[int(random(2,palette.length))];
-      strokeColor = this.palette[int(random(2,palette.length))];
-      stroke(strokeColor);
-      
-      for (float a = 0; a < TWO_PI * 6; a += angle) {  
-        float sx = x + cos(a) * radius;
-        float sy = y + sin(a) * radius;
-        //noFill();
-        fill(fillColor);                     // <<<<<<<<<<<<<<<<<<<<
-        
-             
-        //ellipse(sx, sy, radius/4, radius/4); 
-        
-         if(polarPicker >= 0 && polarPicker < 7){
-              newShape = drawPolygon(sx, sy, radius/4, polySides, this.strokeWeight);
-              shape(newShape); 
-              noFill();
-              newShape = drawPolygon(sx, sy, radius/2, polySides, this.strokeWeight);
-              shape(newShape); 
-          } else {
-              ellipse(sx, sy, radius/2, radius/2);   
-              noFill();
-              ellipse(sx, sy, radius/4, radius/4); 
-          }
-      }
-         
-      if (this.divisor == 3){
-        
-        push();        
-        rotate(1.05);        
-        scale(.75);
-              
-          stroke(this.strokeColor);
-          for (float a = 0; a < TWO_PI * 6; a += angle) {  
-            float sx = x + cos(a) * radius;
-            float sy = y + sin(a) * radius;
-            line(0, 0, sx, sy);
-          }         
-          
-          for(int j = 0; j < this.levels; j++){
-      
-            radius = tempRadius;
-            
-            if(j != 0){
-              radius = radius * (j * .25);
-            }   
-
-            fillColor = this.palette[int(random(2,palette.length))]; 
-            strokeColor = this.palette[int(random(2,palette.length))];
-            stroke(strokeColor);
-            
-            for (float a = 0; a < TWO_PI * 6; a += angle) {  
-              float sx = x + cos(a) * radius;
-              float sy = y + sin(a) * radius;
-              fill(fillColor);                                        
-
-
-             if(polarPicker >= 0 && polarPicker < 7){
-                  newShape = drawPolygon(sx, sy, radius/4, polySides, this.strokeWeight);
-                  shape(newShape); 
-                  noFill();
-                  newShape = drawPolygon(sx, sy, radius/2, polySides, this.strokeWeight);
-                  shape(newShape); 
-              } else {
-                  ellipse(sx, sy, radius/2, radius/2);   
-                  noFill();
-                  ellipse(sx, sy, radius/4, radius/4); 
-              }
-              
-
-              //newShape = drawStar(sx, sy, radius/4, radius/2, polySides, this.palette);
-              //shape(newShape);
-              //newShape = drawStar(sx, sy, radius/10, radius/6,  polySides, this.palette);  
-              //shape(newShape);
-              
-            }           
-          }      
-        rotate(-1.05);
-        //rotate(-.33);
-        pop();      
-      }
-
-      if (this.divisor == 4 ){
-        
-        push();      
-        rotate(.75);        
-        scale(.75);       
-        
-          stroke(this.strokeColor);
-          for (float a = 0; a < TWO_PI * 6; a += angle) {  
-            float sx = x + cos(a) * radius;
-            float sy = y + sin(a) * radius;
-            line(0, 0, sx, sy);
-          }
-                    
-          for(int j = 0; j < this.levels; j++){
-      
-            radius = tempRadius;
-            
-            if(j != 0){
-              radius = radius * (j * .25);
-            }      
-                          // <<<<<<<<<<<<<<<<<
-            stroke(this.strokeColor);
-            fillColor = this.palette[int(random(0,palette.length-1))]; 
-            for (float a = 0; a < TWO_PI * 6; a += angle) {  
-              float sx = x + cos(a) * radius;
-              float sy = y + sin(a) * radius;              
-              fill(fillColor); 
-              //   <<<<<<<<<<<<<<<<<
-              
-              
-              if(polarPicker >= 0 && polarPicker < 7){
-                  newShape = drawPolygon(sx, sy, radius/4, polySides, this.strokeWeight);
-                  shape(newShape); 
-                  noFill();
-                  newShape = drawPolygon(sx, sy, radius/2, polySides, this.strokeWeight);
-                  shape(newShape); 
-              } else {
-                  ellipse(sx, sy, radius/2, radius/2);   
-                  noFill();
-                  ellipse(sx, sy, radius/4, radius/4); 
-              }
-              
-              
-            
-                                
-              //newShape = drawStar(sx, sy, radius/2, radius/4, polySides, this.palette);
-              //shape(newShape); 
-              //newShape = drawStar(sx, sy, radius/10, radius/6, polySides, this.palette);
-              //shape(newShape); 
-            }           
-          } 
-        rotate(-.75);       
-        pop(); 
-      }     
-    } 
-  }
-} 
-
-
+  
 *
 
 
