@@ -1,4 +1,24 @@
-//https://www.act-on.com/careers/details/?jobId=oh6Sbfwa
+// mugs 2789 px × 1218 px
+
+// med/large rose   i.layers[0].newCoordinates(700, width * .04, 50, 1);      stroke is .4
+// sm rosec         i.layers[0].newCoordinates(700, width * .025, 25, 1.05);   stroke is .5
+
+
+
+// shareable
+
+// intro  git read me w art and basic intro - click layers for points (in add layers set to defaults ..call new coordingates size/size variation relative to canvas... where adjust/enforce the variation in contrast in palete thingy that breaks?) - w animating palette to intro palette - call new coordinates in console w random > spread > shapes > grid > size n landscape n future   < reset canvas size - gallery of images
+
+    // random layer ...  i.layers[i.layers.length - 1].newCoordinates(500, width * .05, 30, .9); qty, size, variation, spread 
+
+// iteration is a creative coding learning project using P5.js to generate color patterns and design. 
+
+// the gallery below are images from various stages ... of my experimentation   with the tool   additionally I've used this as a learning space ... fundamentals 
+
+// attribution goes to Coding Train/Rainbow whose series of tutorials and code projects helped inspire this work 
+
+
+
 
 
 class Iteration {
@@ -55,7 +75,12 @@ function addLayer() {     //  when adding the layer the ui should appear first b
         layer = new RandomLayer(width, height, i.layers.length);
         i.layers.push(layer); 
         //i.layers[i.layers.length - 1].newCoordinates(100, width * .05);
-          i.layers[i.layers.length - 1].newCoordinates(300, 50, 20, .9);
+          
+        
+          
+          //i.layers[i.layers.length - 1].newCoordinates(700, width * .04, 50, 1);
+          i.layers[i.layers.length - 1].newCoordinates(700, width * .025, 25, 1.05);
+          
         break;
       case 'simple':
         layer = new SimpleLayer(width, height, i.layers.length);
@@ -656,7 +681,7 @@ function setup() {
     
     // Creates Canvas
     let canvasContainer = select('#canvas-container');
-    c = createCanvas(800, 800);
+    c = createCanvas(2790, 1220);
     c.parent(canvasContainer);
     
      i = new Iteration(width, height, c);
@@ -669,7 +694,6 @@ function setup() {
     let canvasSize = select('#canvas-size');
     canvasSize.mousePressed(i.updateCanvasSize);  
     
-    
      // Display layer type options
     let layerTypeUl = select('#layer-types');  
     layerTypeOptions.forEach(function(element) {
@@ -678,8 +702,6 @@ function setup() {
         layerType.parent(layerTypeUl);
         layerType.mousePressed(addLayer);          
     });
-    
-
     
     let shapeTypeUl = select('#shape-types');  
     shapeTypeOptions.forEach(function(element) {
@@ -694,24 +716,106 @@ function setup() {
    
     
     
-        //  **********        TEMP    ***********
+        //  **********        PALETTES    ***********
     
-    let color1 = color(135,190,155);
-    let color2 = color(194,218,201);
-    let color3 = color(254,223,206);
-    let color4 = color(225,129,103);
-    let color5 = color(235,81,76);
-    let color6 = color(142,47,22);
-    let color7 = color(220,26,22);
-    let color8 = color(255,245,240);
-    let color9 = color(16,221,229);
-    //  
-    let palette1 = [color1, color2, color3, color4, color5, color6, color7, color8, color9];
+//    let color1 = color(135,190,155);
+//    let color2 = color(194,218,201);
+//    let color3 = color(254,223,206);
+//    let color4 = color(225,129,103);
+//    let color5 = color(235,81,76);
+//    let color6 = color(142,47,22);
+//    let color7 = color(220,26,22);
+//    let color8 = color(255,245,240);
+//    let color9 = color(16,221,229);
+//    //  
+//    let palette1 = [color1, color2, color3, color4, color5, color6, color7, color8, color9];
+//
+//    
+//    
+    
+//    let color7 = color(255,131,251); // bright pink
+//      let color4 = color(30,30,74); // dark blue
+//      let color2 = color(250); // very light blue
+//      let color1 = color(255,218,218);  // light peach
+//      let color5 = color(223,255,246);   // light mint
+//      let color3 = color(216,254,255);   // light blue
+//    //let color4 = color(64,45,41);  // dark brown
+//   //let color5 = color(5,246,255); // bright blue
+//    let color6 = color(0,249,175); // bright green
+////    let color7 = color(220,26,22);
+////    let color8 = color(255,245,240);
+////    let color9 = color(16,221,229);
+//      
+//    let palette2 = [color3, color2,  color6, color5, color1, color4, color7]; 
+//    
+    
+    
+//    
+//    let color1 = color(245);
+//    let color2 = color(60);
+//    let color3 = color(int(random(0,256)), int(random(0,256)), int(random(0,256)));
+//    let color4 = color(int(random(0,256)), int(random(0,256)), int(random(0,256)));
+//    let color5 = color(int(random(0,256)), int(random(0,256)), int(random(0,256)));
+//   //let color6 = color(int(random(0,256)), int(random(0,256)), int(random(0,256)));
+//  // let color7 = color(int(random(0,256)), int(random(0,256)), int(random(0,256)));
+////    let color8 = color(int(random(0,256)), int(random(0,256)), int(random(0,256)));
+////    let color9 = color(int(random(0,256)), int(random(0,256)), int(random(0,256)));
+////    let color10 = color(int(random(0,256)), int(random(0,256)), int(random(0,256)));
+//    
+//    let palette3 = [color1, color2, color3, color4, color5];
 
-    palette = new Palette();
+    
+    
+//    
+//    let color1 = color(245);
+//    let color2 = color(60);
+//    let color3 = color(int(random(0,256)), int(random(0,256)), int(random(0,256)));
+//    let monoChromatic = [color1, color2, color3];
+    
+    
+    
+//    let color1 = color(245);
+//    let color2 = color(60);
+//    let color3 = color(93, 255, 57);
+//    let color4 = color(255, 87, 57);
+//    let color5 = color(255, 57, 192);
+//    let splitCompliment = [color1, color2, color3, color4, color5];
+    
+//        
+//    let color1 = color(245);
+//    let color2 = color(60);
+//    let color3 = color(93, 255, 57);
+//    let color4 = color(255, 140, 57);
+//    let color5 = color(219, 57, 255);
+//    let triadic = [color1, color2, color3, color4, color5];
+//    
+    
+//    let color1 = color(245);
+//    let color2 = color(60);
+//    let color3 = color(93, 255, 57);
+//    let color4 = color(57, 255, 182);  
+//    let color5 = color(192, 255, 57);
+//    
+//    let complimentary = color(255, 57, 93);
+//    
+//    let analagous = [color1, color2, color3, complimentary];
+    
+    //
+    
+    let color1 = color(245);
+    let color2 = color(60);
+    let color3 = color(93, 255, 57);
+    let color4 = color(255, 57, 93);  
+    let color5 = color(255, 140, 57);
+    let color6 = color(57, 130, 255);
+    
+    let tetradic = [color1, color2, color3, color4, color5, color6];
+    
+    
+    //palette = new Palette();
     palette = new Palette();
     //palette.newSwatches(palette.colors);
-    palette.newSwatches(palette1);
+    palette.newSwatches(tetradic);
     
     let saveButton = select('#save')
     saveButton.mousePressed(saveImage);
@@ -730,8 +834,7 @@ function setup() {
 
     
     //   *******  PREVIOUS  ********
-    
-    
+       
 //    
 //    layerCount = 0;
 
@@ -895,14 +998,11 @@ let roseShapes = [
 
 
 function draw() {
-    
 
     
-    let swatchIndex = int(random(0, palette.swatches.length));
-    let colorIndex = int(random(0, palette.swatches[0].length ));
-    let bgColor = palette.swatches[swatchIndex][colorIndex];
-    let theColor = bgColor;
-    background(bgColor);
+    background(255, 255, 255);
+    
+
 
 
 //    stroke(0);
@@ -910,15 +1010,68 @@ function draw() {
 //    line(0, height/2, width, height/2);
 //    line(width/2, 0, width/2, height);
 //    
+    
     if(i.layers.length > 0){
         
-//    for(let [index1, layer] of i.layers.entries()){
-//    for(let [index2, coord] of i.layers[index1].coordinates.entries()){
-        
-//        if(layer.type == 'random'){
+                            
+        let swatchIndex = int(random(0, palette.swatches.length));
+        let colorIndex = int(random(0, palette.swatches[0].length ));
+        let bgColor = palette.swatches[swatchIndex][colorIndex];
 
-//            // STARS
-//            // variable: levels(1 or 2, 50% or greater of 2)   points(4 - 12)    strokeScale/variation(strokeScale variable)   inner/outerRadiusVariation(radiusVariation variable applied to either star radius      could also vary inner star points vs outer)    contrast enforced manual adjustment in colorCheck function w out breaking
+        let theColor = bgColor;
+        background(bgColor);  
+        
+        for(let [index1, layer] of i.layers.entries()){
+            for(let [index2, coord] of i.layers[index1].coordinates.entries()){
+
+                if(layer.type == 'random'){
+                    
+                    
+                    
+  
+                    
+                
+                    
+                                    // ROSES
+            
+                let shapeScale = layer.scalesArray[index2];
+                let strokeScale = layer.scalesArray[index2] * .04;
+            
+                strokeWeight(strokeScale); 
+
+                theColor = colorCheck(bgColor);
+                stroke(theColor);
+                theColor = colorCheck(theColor);
+                fill(theColor);
+            
+            
+                let d;
+                let n;
+                do {
+                    d = int(random(1,10));
+                    n = int((random(1,8)));
+                } while (d  == n || (d == 3 && n  == 1)  || (d == 6 && n  == 2)  || (d == 9 && n == 3)) ;
+                push();
+                translate(coord.x, coord.y);
+                rose(d, n, shapeScale);
+                pop(); 
+                
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+
+            
+            
+            // STARS
+            // variable: levels(1 or 2, 50% or greater of 2)   points(4 - 12)    strokeScale/variation(strokeScale variable)   inner/outerRadiusVariation(radiusVariation variable applied to either star radius      could also vary inner star points vs outer)    contrast enforced manual adjustment in colorCheck function w out breaking
 //            let levelPicker = int(random(0,4));  
 //            let starPoints = int((random(4,12)));
 //            let shapeScale = layer.scalesArray[index2];
@@ -948,35 +1101,15 @@ function draw() {
 //                
 //                star(coord.x, coord.y, (shapeScale * .5) * radiusVariation, shapeScale * .5, starPoints);   
 //            }
-//            
+            
+            
+            
+            
                 
-//                // ROSES
-//            
-                //let shapeScale = layer.scalesArray[index2];
-                //let strokeScale = layer.scalesArray[index2] * .05;
-            
-//                strokeWeight(shapeScale); 
-//
-//                theColor = colorCheck(bgColor);
-//                stroke(theColor);
-//                theColor = colorCheck(theColor);
-//                fill(theColor);
-//            
-//            
-//                let d;
-//                let n;
-//                do {
-//                    d = int(random(1,10));
-//                    n = int((random(1,8)));
-//                } while (d  == n || (d == 3 && n  == 1)  || (d == 6 && n  == 2)  || (d == 9 && n == 3)) ;
-//                push();
-//                translate(coord.x, coord.y);
-//                rose(d, n, shapeScale);
-//                pop(); 
+
             
             
-            
-                    // M ROSES
+                     //M ROSES
 //                    strokeWeight(3); 
 //
 //                    let roseIndex = int(random(0,roseShapes.length)); 
@@ -985,9 +1118,9 @@ function draw() {
 //                    translate(coord.x, coord.y);
 //                    roseM(roseShapes[roseIndex].d, roseShapes[roseIndex].n, shapeScale);
 //                    pop();
-    
+//    
 
-       // }
+        }
         
         
         
@@ -1157,8 +1290,8 @@ function draw() {
     
     
 //        
-//    }
-//    }  
+    }
+    }  
     }
 
     
