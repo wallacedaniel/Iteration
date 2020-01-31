@@ -781,41 +781,43 @@ function setup() {
 //    let color5 = color(255, 57, 192);
 //    let splitCompliment = [color1, color2, color3, color4, color5];
     
-//        
+        
 //    let color1 = color(245);
 //    let color2 = color(60);
 //    let color3 = color(93, 255, 57);
 //    let color4 = color(255, 140, 57);
 //    let color5 = color(219, 57, 255);
 //    let triadic = [color1, color2, color3, color4, color5];
+    
+    
+    let color1 = color(255);
+    let color2 = color(0);
+    let color3 = color(93, 255, 57);
+    let color4 = color(57, 255, 182);  
+    let color5 = color(192, 255, 57);
 //    
+      let analagous = [color1, color2, color3, color4, color5];
+    
+//    let complimentary = color(255, 57, 93);
+//    
+//    let analagous = [color1, color2, color3, color4, color5, complimentary];
+    
+    //
     
 //    let color1 = color(245);
 //    let color2 = color(60);
 //    let color3 = color(93, 255, 57);
-//    let color4 = color(57, 255, 182);  
-//    let color5 = color(192, 255, 57);
+//    let color4 = color(255, 57, 93);  
+//    let color5 = color(255, 140, 57);
+//    let color6 = color(57, 130, 255);
 //    
-//    let complimentary = color(255, 57, 93);
+//    let tetradic = [color1, color2, color3, color4, color5, color6];
 //    
-//    let analagous = [color1, color2, color3, complimentary];
-    
-    //
-    
-    let color1 = color(245);
-    let color2 = color(60);
-    let color3 = color(93, 255, 57);
-    let color4 = color(255, 57, 93);  
-    let color5 = color(255, 140, 57);
-    let color6 = color(57, 130, 255);
-    
-    let tetradic = [color1, color2, color3, color4, color5, color6];
-    
-    
+//    
     //palette = new Palette();
     palette = new Palette();
     //palette.newSwatches(palette.colors);
-    palette.newSwatches(tetradic);
+    palette.newSwatches(analagous);
     
     let saveButton = select('#save')
     saveButton.mousePressed(saveImage);
