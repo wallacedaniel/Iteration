@@ -12,7 +12,7 @@ The palette is produced entering a collection of rgb values. The collection can 
 
 ![](images/random-organic-geometry.jpg)
 
-Layers can be applied, each with a different layer type. Each layer type offers unique settings and a set of associated coordinates to work with. Layer coordinates may be updated based on current settings. Layers may stack, update, and remove, then draw to the canvas in their order. Interface for layers will drag and drop and accept assignment of palettes and shapes
+Layers can be applied, each with a different layer type. Each layer type offers unique settings and a set of associated coordinates to work with. Layer coordinates may be updated based on current settings. Layers may stack, update, and remove, then draw to the canvas in their order. Interface for layers will drag and drop and accept assignment of palettes and shapes.
 
 ![](images/blue-green-landscape.jpg) 
 
